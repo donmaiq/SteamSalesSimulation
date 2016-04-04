@@ -33,6 +33,7 @@ https://github.com/MacsyMetropolia/OliotRyhma4
 - interest genre, some kind of spectrum? ex. fps,casual,rpg(0.1, 0.4, 0.8)
 - hype scale 0.0-1.0, higher is bigger chance to buy new big releases of interesting genre
 - variation scale 0.0-1.0, higher means user likes to play larger variety of games
+
 ##### game behaviour
 - sale rating 0.0-1.0, higher means more often on sale
 - sale scale [25%,45%,60%], most common sale amounts
