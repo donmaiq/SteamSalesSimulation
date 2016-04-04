@@ -22,6 +22,7 @@ https://github.com/MacsyMetropolia/OliotRyhma4
 #### Game class
 - string name
 - double price
+- array[] genres
 - int review(0-100), scale of how good the game is, higher = more word of mouth
 - double $ marketing, scale of how much the game is marketed, higher = wider potential audience
 - double $ revenue
