@@ -5,6 +5,7 @@
  */
 package steamjavalibrary;
 import java.util.ArrayList;
+import java.util.Random;
 /**
  *
  * @author Jonnie
@@ -22,9 +23,10 @@ public class SteamUser {
         PopulateGames();
     }
     //Populate ownedgames with random games
-    public void PopulateGames(){
-        SteamGame test = new SteamGame();
-        ownedgames.add(test);
+    private void PopulateGames(){
+        Random r = new Random();
+        int index = r.nextInt(2);
+        ownedgames.add(SteamJavaLibrary.gameslist.get(index));
     }
     
     public ArrayList<SteamGame> getOwnedgames() {
@@ -38,6 +40,14 @@ public class SteamUser {
         ownedgames.add(newgame);
         return true;
     }
-    
+    public int getUserID() {
+        return userID;
+    }
+    public String getName() {
+        return name;
+    }
+    public UserBehaviour getBehaviour() {
+        return behaviour;
+    }
     
 }

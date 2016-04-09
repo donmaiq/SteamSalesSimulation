@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 package steamjavalibrary;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.Math;
+import java.util.Random;
 
 /**
  *
@@ -18,11 +18,25 @@ public class GameBehaviour {
     private int pricedropamount; //0-50 %, how much price drops per iteration
 
     public GameBehaviour() {
-        salerating = (int) Math.random()*100;
-        salescale[0] = (int) Math.ceil(Math.random()*5)*5;
-        salescale[1] = (int) Math.ceil(Math.random()*5+5)*5;
-        salescale[2] = (int) Math.ceil(Math.random()*5+15)*5;
-        pricetimescale = (int) Math.random()*100;
-        pricedropamount = (int) Math.random()*50;
+        Random r = new Random();
+        salerating = r.nextInt(100);
+        salescale[0] = (int) Math.ceil(r.nextDouble()*5)*5; //5-25
+        salescale[1] = (int) Math.ceil(r.nextDouble()*5+5)*5; //30-50
+        salescale[2] = (int) Math.ceil(r.nextDouble()*8+12)*5; //65-80
+        pricetimescale = r.nextInt(100); 
+        pricedropamount = (int) r.nextGaussian()*15+25; //normal dist. 10-40, 25peak.
     }
+    public int getPricedropamount() {
+        return pricedropamount;
+    }
+    public int getPricetimescale(){
+        return pricetimescale;
+    }
+    public int[] getSalescale(){
+        return salescale;
+    }
+    public int getSalerating(){
+        return salerating;
+    }
+    
 }

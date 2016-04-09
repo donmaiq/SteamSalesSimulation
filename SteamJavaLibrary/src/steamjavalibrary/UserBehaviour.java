@@ -7,6 +7,7 @@ package steamjavalibrary;
 import java.util.HashMap;
 import java.util.Map;
 import java.lang.Math;
+import java.util.Random;
 /**
  *
  * @author Jonnie
@@ -17,14 +18,21 @@ public class UserBehaviour {
     private Map<String, Integer> genrespectrum = new HashMap();
 
     public UserBehaviour() {
-        hypescale = (int) Math.random()*100;
-        variationscale = (int) Math.random()*100;
-        String[] genres = {"rpg","mmo","fps","casual","adventure"};
+        Random r = new Random();
+        hypescale = r.nextInt(100);
+        variationscale = r.nextInt(100);
+        String[] genres = SteamJavaLibrary.genreslist;
         for(int i=0;i<genres.length;i++){
-            int value= (int) Math.random()*100;
-            genrespectrum.put(genres[i], value);
+            genrespectrum.put(genres[i], r.nextInt(100));
         }
     }
-   
+    public String getFavGenre(){
+        int max = 0;
+        String fav = null;
+        for(Map.Entry<String,Integer> pari : genrespectrum.entrySet()){
+            if(pari.getValue()>max){max=pari.getValue(); fav = pari.getKey();}
+        }
+        return fav;
+    }
     
 }
