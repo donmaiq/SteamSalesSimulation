@@ -5,6 +5,17 @@
  */
 package steamjavalibrary;
 import java.util.ArrayList;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+import com.google.gson.GsonBuilder;
+
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 /**
  *
  * @author joona
@@ -16,9 +27,34 @@ public class SteamJavaLibrary {
     
     
     public static void main(String[] args) {
-        // TODO code application logic here
-        //running some tests
+        //create list from json
         
+        try(Reader reader = new InputStreamReader
+        (SteamJavaLibrary.class.getResourceAsStream
+        ("steamgames.json"), "UTF-8")){
+            /*
+            Gson gson = new GsonBuilder().create();
+            JsonElement jelement = new JsonParser().parse(reader);
+            
+            JsonObject jobject = jelement.getAsJsonObject();
+            JsonArray jarray = jobject.getAsJsonArray("app");
+            
+            for(int i=0;i<5;i++){
+                
+                System.out.print(jarray.get(i).getAsInt());
+                System.out.print(jarray.get(i).getAsString());
+                //JsonNameId apps = new JsonNameId(jarray.get(i).getAsInt(),jarray.get(i).getAsString());
+                //allgames.setApps(apps);
+            }
+            GamesFromJson allgames = gson.fromJson(jelement, GamesFromJson.class);
+            System.out.println(allgames.getApps().size());
+            
+            */
+        } catch(Exception e){
+            System.out.println("error "+e);
+        }
+        
+        //running some tests
         SteamGame game1 = new SteamGame(1,"Dota 2");
         SteamGame game2 = new SteamGame(2,"Call of Duty");
         SteamGame game3 = new SteamGame(3,"Skyrim");
