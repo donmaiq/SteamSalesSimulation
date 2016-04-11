@@ -13,6 +13,12 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.google.gson.GsonBuilder;
 
+import java.util.zip.GZIPInputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+import java.io.File;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
@@ -25,13 +31,14 @@ public class SteamJavaLibrary {
     public static String[] genreslist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
     public static  GamesFromJson allgames = new GamesFromJson();
     
-    public static void main(String[] args) {
+    public static void main(String[] args){
         //create list from json
+        
+        //TODO READ USERS FROM allusers.txt.gz
         
         try(Reader reader = new InputStreamReader
         (SteamJavaLibrary.class.getResourceAsStream
         ("steamgames.json"), "UTF-8")){
-            
             Gson gson = new GsonBuilder().create();
             JsonElement jelement = new JsonParser().parse(reader);
             /*
