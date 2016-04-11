@@ -12,7 +12,7 @@ import java.util.Random;
  * @author Jonnie
  */
 public class SteamGame {
-    private int gameID;
+    private int appid;
     private String name;
     private double price;
     private String type; //Type of release. AAA / AA / A
@@ -30,12 +30,10 @@ public class SteamGame {
         steamcut += price-roundedrevenue;
     }
     
-    public SteamGame(int gameID, String name) {
+    public SteamGame() {
         Random r = new Random();
         revenue = 0.0;
         steamcut = 0.0;
-        this.gameID = gameID;
-        this.name = name;
         double randomseed = r.nextInt(100);
         if(randomseed<33){
             type="AAA";
@@ -51,9 +49,9 @@ public class SteamGame {
         //25% to be random int 0-100
         //this creates a linear chance until 50% where it rises until 75% and back to linear one in 100%
         if(r.nextInt(100)>25){
-            review = (int) r.nextGaussian()*25+75;
+            review = (int) (r.nextGaussian()*25+75);
         }else{
-            review = (int) r.nextInt(100);
+            review = r.nextInt(100);
         }
         marketing = r.nextInt(100);
         
@@ -72,7 +70,6 @@ public class SteamGame {
         }
     }
 
-    
     public void reducePrice() {
         double percent = 1-behaviour.getPricedropamount()/100;
         price=round2decimal(price*percent);
@@ -89,8 +86,8 @@ public class SteamGame {
     public String getName() {
         return name;
     }
-    public int getGameID() {
-        return gameID;
+    public int getAppID() {
+        return appid;
     }
     public double getPrice() {
         return price;

@@ -11,13 +11,13 @@ import java.util.ArrayList;
  * @author Jonnie
  */
 public class GamesFromJson {
-    private ArrayList<JsonNameId> apps = new ArrayList();
+    private ArrayList<SteamGame> app = new ArrayList();
     
-    public ArrayList<JsonNameId> getApps() {
-        return apps;
+    public ArrayList<SteamGame> getApps() {
+        return app;
     }
-    public void setApps(JsonNameId apps) {
-        this.apps.add(apps);
+    public void addApps(SteamGame apps) {
+        this.app.add(apps);
     }
     
 }

@@ -22,9 +22,8 @@ import java.io.Reader;
  */
 public class SteamJavaLibrary {
 
-    public static ArrayList<SteamGame> gameslist = new ArrayList();
     public static String[] genreslist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
-    
+    public static  GamesFromJson allgames = new GamesFromJson();
     
     public static void main(String[] args) {
         //create list from json
@@ -32,51 +31,31 @@ public class SteamJavaLibrary {
         try(Reader reader = new InputStreamReader
         (SteamJavaLibrary.class.getResourceAsStream
         ("steamgames.json"), "UTF-8")){
-            /*
+            
             Gson gson = new GsonBuilder().create();
             JsonElement jelement = new JsonParser().parse(reader);
-            
+            /*
             JsonObject jobject = jelement.getAsJsonObject();
             JsonArray jarray = jobject.getAsJsonArray("app");
-            
-            for(int i=0;i<5;i++){
-                
-                System.out.print(jarray.get(i).getAsInt());
-                System.out.print(jarray.get(i).getAsString());
-                //JsonNameId apps = new JsonNameId(jarray.get(i).getAsInt(),jarray.get(i).getAsString());
-                //allgames.setApps(apps);
-            }
-            GamesFromJson allgames = gson.fromJson(jelement, GamesFromJson.class);
-            System.out.println(allgames.getApps().size());
-            
             */
+            
+            allgames = gson.fromJson(jelement, GamesFromJson.class);
+            System.out.println(allgames.getApps().size());
         } catch(Exception e){
             System.out.println("error "+e);
         }
         
-        //running some tests
-        SteamGame game1 = new SteamGame(1,"Dota 2");
-        SteamGame game2 = new SteamGame(2,"Call of Duty");
-        SteamGame game3 = new SteamGame(3,"Skyrim");
-        gameslist.add(game1);
-        gameslist.add(game2);
         
+        //running some tests   
         SteamUser user1 = new SteamUser(1,"Jonnie");
         SteamUser user2 = new SteamUser(2,"Joona");
         
         System.out.println(user1.getName()+" omistaa "+user1.getOwnedgames().get(0).getName()+" pelin");
-        System.out.println("Sillä on arvostelu: "+gameslist.get(gameslist.indexOf(user1.getOwnedgames().get(0))).getReview());
-        System.out.print("Sen genre on: ");
-        for(int a=0;a<user1.getOwnedgames().get(0).getGenres().size();a++){
-            System.out.print(" "+user1.getOwnedgames().get(0).getGenres().get(a)+" ");
-        }System.out.print("\n");
+        System.out.println("Sillä on arvostelu: "+allgames.getApps().get(allgames.getApps().indexOf(user1.getOwnedgames().get(0))).getReview());
         System.out.println("Hänen lempigenre on "+user1.getBehaviour().getFavGenre()+"\n");
+        
         System.out.println(user2.getName()+" omistaa "+user2.getOwnedgames().get(0).getName()+" pelin");
-        System.out.println("Sillä on arvostelu: "+gameslist.get(gameslist.indexOf(user2.getOwnedgames().get(0))).getReview());
-        System.out.print("Sen genre on: ");
-        for(int a=0;a<user1.getOwnedgames().get(0).getGenres().size();a++){
-            System.out.print(" "+user2.getOwnedgames().get(0).getGenres().get(a)+" ");
-        }System.out.print("\n");
+        System.out.println("Sillä on arvostelu: "+allgames.getApps().get(allgames.getApps().indexOf(user2.getOwnedgames().get(0))).getReview());
         System.out.println("Hänen lempigenre on "+user2.getBehaviour().getFavGenre());
         
         

@@ -25,8 +25,10 @@ public class SteamUser {
     //Populate ownedgames with random games
     private void PopulateGames(){
         Random r = new Random();
-        int index = r.nextInt(2);
-        ownedgames.add(SteamJavaLibrary.gameslist.get(index));
+        for(int i=0;i<5;i++){
+            int index = r.nextInt(SteamJavaLibrary.allgames.getApps().size());
+            ownedgames.add(SteamJavaLibrary.allgames.getApps().get(index));
+        }
     }
     
     public ArrayList<SteamGame> getOwnedgames() {
