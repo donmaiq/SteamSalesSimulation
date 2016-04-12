@@ -10,7 +10,7 @@ import java.util.ArrayList;
  *
  * @author Jonnie
  */
-public class GamesFromJson {
+public class GamesArray {
     private ArrayList<SteamGame> app = new ArrayList();
     
     public ArrayList<SteamGame> getApps() {

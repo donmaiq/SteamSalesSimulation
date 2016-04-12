@@ -32,7 +32,7 @@ import java.util.Scanner;
 public class SteamJavaLibrary {
 
     public static String[] genreslist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
-    public static  GamesFromJson allgames = new GamesFromJson();
+    public static  GamesArray allgames = new GamesArray();
     public static  UsersArray allusers = new UsersArray();
     
     public static void main(String[] args){
@@ -44,20 +44,22 @@ public class SteamJavaLibrary {
         try(Reader reader = new InputStreamReader
         (SteamJavaLibrary.class.getResourceAsStream
         ("steamgames.json"), "UTF-8")){
+            System.out.println("Loading Games...");
             JsonElement jelement = new JsonParser().parse(reader);
             /*
             JsonObject jobject = jelement.getAsJsonObject();
             JsonArray jarray = jobject.getAsJsonArray("app");
             */
             
-            allgames = gson.fromJson(jelement, GamesFromJson.class);
-            System.out.println(allgames.getApps().size());
+            allgames = gson.fromJson(jelement, GamesArray.class);
+            System.out.println(allgames.getApps().size()+" games loaded.");
         } catch(Exception e){
             System.out.println("error "+e);
         }
         
-                try(FileReader read = new FileReader("C:/Downloads/allusers.json")){
+        try(FileReader read = new FileReader("C:/Downloads/allusers.json")){
         //try(GZIPInputStream read = new GZIPInputStream(new FileInputStream("allusers.txt.gz"))){
+            System.out.println("\nLoading Users...");
             JsonElement jelement = new JsonParser().parse(read);
            
             /*
@@ -68,7 +70,7 @@ public class SteamJavaLibrary {
             */
             
             allusers = gson.fromJson(jelement, UsersArray.class);
-            System.out.println(allusers.getUsers().get(12584).getPersonaname());
+            System.out.println(allusers.getUsers().size()+" users loaded.\n");
         } catch(Exception e){
             System.out.println("error "+e);
         }
@@ -78,7 +80,6 @@ public class SteamJavaLibrary {
         Random r = new Random();
         Scanner lukija = new Scanner(System.in);
         while(true){
-            String x = lukija.nextLine();
             SteamUser user1 = allusers.getUsers().get(r.nextInt(allusers.getUsers().size()));
             System.out.println(user1.getPersonaname()+" owns "+user1.getOwnedgames().size()+" games:");
             for(int i=0;i<user1.getOwnedgames().size();i++){
@@ -91,6 +92,8 @@ public class SteamJavaLibrary {
                 System.out.print("\n");
             }
             System.out.println("His favorite genre is "+user1.getBehaviour().getFavGenre()+"\n");
+            String x = lukija.nextLine();
+            if(x.equals("stop")) break;
         }
         
         
