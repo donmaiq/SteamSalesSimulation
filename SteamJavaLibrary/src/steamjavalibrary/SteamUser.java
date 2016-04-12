@@ -11,7 +11,7 @@ import java.util.Random;
  * @author Jonnie
  */
 public class SteamUser {
-    private int steamid;
+    private long steamid;
     private String personaname;
     private String avatar;
     private UserBehaviour behaviour = new UserBehaviour();
@@ -46,7 +46,7 @@ public class SteamUser {
         ownedgames.add(newgame);
         return true;
     }
-    public int getSteamid() {
+    public long getSteamid() {
         return steamid;
     }
     public String getPersonaname() {
