@@ -57,11 +57,11 @@ public class SteamJavaLibrary {
         SteamUser user1 = new SteamUser(1,"Jonnie");
         SteamUser user2 = new SteamUser(2,"Joona");
         
-        System.out.println(user1.getName()+" omistaa "+user1.getOwnedgames().get(0).getName()+" pelin");
+        System.out.println(user1.getPersonaname()+" omistaa "+user1.getOwnedgames().get(0).getName()+" pelin");
         System.out.println("Sillä on arvostelu: "+allgames.getApps().get(allgames.getApps().indexOf(user1.getOwnedgames().get(0))).getReview());
         System.out.println("Hänen lempigenre on "+user1.getBehaviour().getFavGenre()+"\n");
         
-        System.out.println(user2.getName()+" omistaa "+user2.getOwnedgames().get(0).getName()+" pelin");
+        System.out.println(user2.getPersonaname()+" omistaa "+user2.getOwnedgames().get(0).getName()+" pelin");
         System.out.println("Sillä on arvostelu: "+allgames.getApps().get(allgames.getApps().indexOf(user2.getOwnedgames().get(0))).getReview());
         System.out.println("Hänen lempigenre on "+user2.getBehaviour().getFavGenre());
         

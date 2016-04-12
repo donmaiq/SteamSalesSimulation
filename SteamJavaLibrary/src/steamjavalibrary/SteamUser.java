@@ -11,15 +11,19 @@ import java.util.Random;
  * @author Jonnie
  */
 public class SteamUser {
-    private int userID;
-    private String name;
+    private int steamid;
+    private String personaname;
+    private String avatar;
     private UserBehaviour behaviour = new UserBehaviour();
     private ArrayList<SteamGame> ownedgames = new ArrayList();
     
     //Constructor
-    public SteamUser(int userID, String name) {
-        this.userID = userID;
-        this.name = name;
+    public SteamUser() {
+        PopulateGames();
+    }    
+    public SteamUser(int steamid, String personaname) {
+        this.steamid = steamid;
+        this.personaname = personaname;
         PopulateGames();
     }
     //Populate ownedgames with random games
@@ -42,11 +46,11 @@ public class SteamUser {
         ownedgames.add(newgame);
         return true;
     }
-    public int getUserID() {
-        return userID;
+    public int getSteamid() {
+        return steamid;
     }
-    public String getName() {
-        return name;
+    public String getPersonaname() {
+        return personaname;
     }
     public UserBehaviour getBehaviour() {
         return behaviour;
