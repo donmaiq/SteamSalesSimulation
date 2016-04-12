@@ -34,5 +34,11 @@ public class UserBehaviour {
         }
         return fav;
     }
+    public int getHypescale() {
+        return hypescale;
+    }
+    public int getVariationscale() {
+        return variationscale;
+    }
     
 }

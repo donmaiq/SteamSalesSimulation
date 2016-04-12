@@ -80,9 +80,17 @@ public class SteamJavaLibrary {
         while(true){
             String x = lukija.nextLine();
             SteamUser user1 = allusers.getUsers().get(r.nextInt(allusers.getUsers().size()));
-            System.out.println(user1.getPersonaname()+" omistaa "+user1.getOwnedgames().get(0).getName()+" pelin");
-            System.out.println("Sillä on arvostelu: "+allgames.getApps().get(allgames.getApps().indexOf(user1.getOwnedgames().get(0))).getReview());
-            System.out.println("Hänen lempigenre on "+user1.getBehaviour().getFavGenre()+"\n");
+            System.out.println(user1.getPersonaname()+" owns "+user1.getOwnedgames().size()+" games:");
+            for(int i=0;i<user1.getOwnedgames().size();i++){
+                System.out.println(user1.getOwnedgames().get(i).getName());               
+                System.out.print("\tReview:"+user1.getOwnedgames().get(i).getReview()+"\n\tGenres:");
+                for(int a=0;a<user1.getOwnedgames().get(i).getGenres().size();a++){
+                    System.out.print(user1.getOwnedgames().get(i).getGenres().get(a));
+                    if(a+1!=user1.getOwnedgames().get(i).getGenres().size()) System.out.print(",");
+                }
+                System.out.print("\n");
+            }
+            System.out.println("His favorite genre is "+user1.getBehaviour().getFavGenre()+"\n");
         }
         
         
