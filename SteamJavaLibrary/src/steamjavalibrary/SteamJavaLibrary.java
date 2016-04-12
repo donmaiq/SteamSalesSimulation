@@ -16,7 +16,8 @@ import com.google.gson.GsonBuilder;
 import java.util.zip.GZIPInputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,6 +47,7 @@ public class SteamJavaLibrary {
         ("steamgames.json"), "UTF-8")){
             System.out.println("Loading Games...");
             JsonElement jelement = new JsonParser().parse(reader);
+            reader.close();
             /*
             JsonObject jobject = jelement.getAsJsonObject();
             JsonArray jarray = jobject.getAsJsonArray("app");
@@ -58,9 +60,20 @@ public class SteamJavaLibrary {
         }
         
         try(FileReader read = new FileReader("C:/Downloads/allusers.json")){
-        //try(GZIPInputStream read = new GZIPInputStream(new FileInputStream("allusers.txt.gz"))){
             System.out.println("\nLoading Users...");
-            JsonElement jelement = new JsonParser().parse(read);
+        /*try(GZIPInputStream read = new GZIPInputStream(new FileInputStream("C:/Downloads/allusers.txt.gz")) ){
+            
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            int bytes_read;
+            byte[] buffer = new byte[32768];
+            long c=0;
+            while((bytes_read = read.read(buffer)) > 0){
+                c++;
+                out.write(buffer, 0, bytes_read);
+            }
+            System.out.print(c);
+            String usersjson = out.toString("UTF-8"); */
+            //JsonElement jelement = new JsonParser().parse(usersjson);
            
             /*
             JsonObject jobject = jelement.getAsJsonObject();
@@ -69,7 +82,8 @@ public class SteamJavaLibrary {
             System.out.print(jarray.get(1000).getAsString());
             */
             
-            allusers = gson.fromJson(jelement, UsersArray.class);
+            allusers = gson.fromJson(read, UsersArray.class);
+            read.close();
             System.out.println(allusers.getUsers().size()+" users loaded.\n");
         } catch(Exception e){
             System.out.println("error "+e);
