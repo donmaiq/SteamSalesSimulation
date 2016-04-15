@@ -52,6 +52,9 @@ public class SteamUser {
     public String getPersonaname() {
         return personaname;
     }
+    public String getAvatar() {
+        return avatar;
+    }
     public UserBehaviour getBehaviour() {
         return behaviour;
     }

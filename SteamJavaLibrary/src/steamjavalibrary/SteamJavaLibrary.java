@@ -17,7 +17,8 @@ import javafx.scene.layout.GridPane;
 
 //testing utils
 import java.util.Random;
-import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -37,37 +38,46 @@ public class SteamJavaLibrary extends Application{
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
+        grid.setPadding(new Insets(5, 5, 5, 5));
         
-        Text scenetitle = new Text("SteamSalesSimulator");
-        scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(scenetitle, 0, 0, 2, 1);
-       
+        Image image = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo.png", 150, 50, false, false);
+        final ImageView imv = new ImageView();
+        imv.setImage(image);
+        final HBox pictureRegion = new HBox(10);
+        pictureRegion.getChildren().add(imv);
+        grid.add(pictureRegion, 0,0,2,1);
+        
+        final ImageView ava = new ImageView();
+        final HBox avaRegion = new HBox(10);
+        avaRegion.getChildren().add(ava);
+        grid.add(avaRegion, 1, 1);
+        
         Text username = new Text("placeholder");
         username.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(username, 1, 1);
+        grid.add(username, 1, 2);
         
         
         Button btn = new Button();
         btn.setText("print random user in console");
         HBox hbBtn = new HBox(10);   
-        hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        hbBtn.setAlignment(Pos.CENTER);
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                username.setText(Printrandom());
+                String[] userl = Printrandom();
+                username.setText(userl[0]);
+                Image newavatar = new Image(userl[1], 0, 40, false, false);
+                ava.setImage(newavatar);
             }
         });
         hbBtn.getChildren().add(btn);
-        grid.add(hbBtn, 1, 4);
-        
-        
-
+        grid.add(hbBtn, 1,4);
+     
         Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    public static String Printrandom(){
+    public static String[] Printrandom(){
         Random r = new Random();
         SteamUser user1 = data.allusers.getUsers().get(r.nextInt(data.allusers.getUsers().size()));
         System.out.println(user1.getPersonaname()+" owns "+user1.getOwnedgames().size()+" games:");
@@ -81,7 +91,10 @@ public class SteamJavaLibrary extends Application{
             System.out.print("\n");
         }
         System.out.println("His favorite genre is "+user1.getBehaviour().getFavGenre()+"\n");
-        return user1.getPersonaname();
+        String[] returni = new String[2];
+        returni[0] = user1.getPersonaname();
+        returni[1] = user1.getAvatar();
+        return returni;
     }
     
     public static void main(String[] args){
