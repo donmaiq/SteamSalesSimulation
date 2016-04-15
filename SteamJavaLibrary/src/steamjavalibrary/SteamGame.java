@@ -49,14 +49,14 @@ public class SteamGame {
         //25% to be random int 0-100
         //this creates a linear chance until 50% where it rises until 75% and back to linear one in 100%
         if(r.nextInt(100)>25){
-            review = (int) (r.nextGaussian()*25+75);
+            review = (int) ((r.nextGaussian()*25)+75);
         }else{
             review = r.nextInt(100);
         }
         marketing = r.nextInt(100);
         
         //CREATE 1-3 GENRES FOR GAME
-        String[] list = SteamJavaLibrary.genreslist;
+        String[] list = SteamJavaLibrary.data.genreslist;
         ArrayList<Integer> usedindex = new ArrayList();
         for(int i=0;i<r.nextInt(2)+1;i++){
             int rnd = -1;

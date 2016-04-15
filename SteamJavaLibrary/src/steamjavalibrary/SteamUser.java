@@ -21,7 +21,7 @@ public class SteamUser {
     public SteamUser() {
         PopulateGames();
     }    
-    public SteamUser(int steamid, String personaname) {
+    public SteamUser(long steamid, String personaname) {
         this.steamid = steamid;
         this.personaname = personaname;
         PopulateGames();
@@ -30,8 +30,8 @@ public class SteamUser {
     private void PopulateGames(){
         Random r = new Random();
         for(int i=0;i<r.nextInt(4)+1;i++){
-            int index = r.nextInt(SteamJavaLibrary.allgames.getApps().size());
-            ownedgames.add(SteamJavaLibrary.allgames.getApps().get(index));
+            int index = r.nextInt(SteamJavaLibrary.data.allgames.getApps().size());
+            ownedgames.add(SteamJavaLibrary.data.allgames.getApps().get(index));
         }
     }
     

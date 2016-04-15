@@ -6,7 +6,6 @@
 package steamjavalibrary;
 import java.util.HashMap;
 import java.util.Map;
-import java.lang.Math;
 import java.util.Random;
 /**
  *
@@ -21,7 +20,7 @@ public class UserBehaviour {
         Random r = new Random();
         hypescale = r.nextInt(100);
         variationscale = r.nextInt(100);
-        String[] genres = SteamJavaLibrary.genreslist;
+        String[] genres = SteamJavaLibrary.data.genreslist;
         for(int i=0;i<genres.length;i++){
             genrespectrum.put(genres[i], r.nextInt(100));
         }
