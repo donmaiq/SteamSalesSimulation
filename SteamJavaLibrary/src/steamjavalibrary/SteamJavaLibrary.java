@@ -45,6 +45,7 @@ public class SteamJavaLibrary extends Application{
         imv.setImage(image);
         final HBox pictureRegion = new HBox(10);
         pictureRegion.getChildren().add(imv);
+        pictureRegion.setAlignment(Pos.CENTER);
         grid.add(pictureRegion, 0,0,2,1);
         
         final ImageView ava = new ImageView();
