@@ -40,7 +40,7 @@ public class SteamJavaLibrary extends Application{
         grid.setVgap(10);
         grid.setPadding(new Insets(5, 5, 5, 5));
         
-        Image image = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo.png", 150, 50, false, false);
+        Image image = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white.png", 150, 50, false, false);
         final ImageView imv = new ImageView();
         imv.setImage(image);
         final HBox pictureRegion = new HBox(10);
@@ -50,11 +50,13 @@ public class SteamJavaLibrary extends Application{
         final ImageView ava = new ImageView();
         final HBox avaRegion = new HBox(10);
         avaRegion.getChildren().add(ava);
-        grid.add(avaRegion, 1, 1);
+        avaRegion.setId("profileimg");
+        grid.add(avaRegion, 0, 1);
         
-        Text username = new Text("placeholder");
+        Text username = new Text("");
         username.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(username, 1, 2);
+        username.setId("text");
+        grid.add(username, 1, 1);
         
         
         Button btn = new Button();
@@ -71,10 +73,13 @@ public class SteamJavaLibrary extends Application{
             }
         });
         hbBtn.getChildren().add(btn);
-        grid.add(hbBtn, 1,4);
-     
+        hbBtn.setId("button");
+        grid.add(hbBtn, 0,2,2,1);
+        
+        grid.setGridLinesVisible(true);
         Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
+        scene.getStylesheets().add(SteamJavaLibrary.class.getResource("Steam.css").toExternalForm());
         primaryStage.show();
     }
     public static String[] Printrandom(){
