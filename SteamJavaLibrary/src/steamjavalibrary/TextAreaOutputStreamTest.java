@@ -23,7 +23,7 @@ public class TextAreaOutputStreamTest extends JPanel {
          int count = 0;
          @Override
          public void actionPerformed(ActionEvent arg0) {
-
+            //Output here goes to GUI frame
             // though this outputs via System.out.println, it actually displays
             // in the JTextArea:
             System.out.println("Count is now: " + count + " seconds");
