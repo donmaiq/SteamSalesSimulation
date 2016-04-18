@@ -35,17 +35,18 @@ public class Data {
         Gson gson = new GsonBuilder().create();
         //TODO READ USERS FROM allusers.txt.gz
         
-        try(Reader reader = new InputStreamReader
-        (SteamJavaLibrary.class.getResourceAsStream
-        ("steamgames.json"), "UTF-8")){
-            System.out.println("Loading Games...");
-            JsonElement jelement = new JsonParser().parse(reader);
-            reader.close();
+        try(ZipFile zipFile = new ZipFile(new File("src/steamjavalibrary/allgames.zip")) ){
+            System.out.println("\nLoading Users...");
+            Enumeration<? extends ZipEntry> entries = zipFile.entries();         
+            ZipEntry entry = entries.nextElement();
+            InputStream stream = zipFile.getInputStream(entry);
+            Reader read = new InputStreamReader(stream, "UTF-8");
             /*
             JsonObject jobject = jelement.getAsJsonObject();
             JsonArray jarray = jobject.getAsJsonArray("app");
             */
-            allgames = gson.fromJson(jelement, GamesArray.class);
+            allgames = gson.fromJson(read, GamesArray.class);
+            read.close();
             System.out.println(allgames.getApps().size()+" games loaded.");
         } catch(Exception e){
             System.out.println("error "+e);
