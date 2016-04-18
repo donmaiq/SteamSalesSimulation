@@ -17,7 +17,7 @@ public class TextAreaOutputStreamTest extends JPanel {
       add(new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
       System.setOut(new PrintStream(taOutputStream));
-
+      System.out.println("asdasdasdasds");
       int timerDelay = 1000;
       new Timer(timerDelay , new ActionListener() {
          int count = 0;
