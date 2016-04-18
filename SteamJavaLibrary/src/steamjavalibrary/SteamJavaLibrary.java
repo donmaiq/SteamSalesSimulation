@@ -32,7 +32,7 @@ public class SteamJavaLibrary extends Application{
     public static Data data = new Data();
     
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception{
         
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -80,7 +80,7 @@ public class SteamJavaLibrary extends Application{
         grid.setGridLinesVisible(true);
         Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
-        scene.getStylesheets().add(SteamJavaLibrary.class.getResource("Steam.css").toExternalForm());
+        //scene.getStylesheets().add(SteamJavaLibrary.class.getResource("Steam.css").toExternalForm());
         primaryStage.show();
     }
     public static String[] Printrandom(){
