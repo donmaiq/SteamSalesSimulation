@@ -29,7 +29,6 @@ public class SteamGame {
         revenue += roundedrevenue;
         steamcut += price-roundedrevenue;
     }
-    
     public SteamGame() {
         Random r = new Random();
         revenue = 0.0;

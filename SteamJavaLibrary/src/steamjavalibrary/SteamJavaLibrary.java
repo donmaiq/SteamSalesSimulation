@@ -14,22 +14,28 @@ import javafx.scene.layout.GridPane;
 
 //testing utils
 import java.util.Random;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 /**
  *
@@ -64,6 +70,27 @@ public class SteamJavaLibrary extends Application{
                 grid1.setHgap(10);
                 grid1.setVgap(10);
                 grid1.setPadding(new Insets(5, 5, 5, 5));
+                
+                Button simbut = new Button();
+                simbut.setText("Start");
+                HBox hbsimbut = new HBox(10);  
+                hbsimbut.setAlignment(Pos.CENTER);
+                simbut.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        if(simbut.getText().equals("Start")){
+                            simbut.setText("Stop");
+                            startsimulation(1);
+                        }else{
+                            simbut.setText("Start");                            
+                            startsimulation(0);
+                        }
+                    }
+                });
+                hbsimbut.getChildren().add(simbut);
+                grid1.add(hbsimbut, 4,9,2,1);
+                grid1.add(textField, 0,1,8,5);
+                textField.setDisable(true);
             tab1.setContent(grid1);
             tabPane.getTabs().add(tab1);
         //END OF FIRST TAB
@@ -129,23 +156,29 @@ public class SteamJavaLibrary extends Application{
         //END OF THIRD TAB
         
         grid3.setGridLinesVisible(true);
-        
+        //grid1.setGridLinesVisible(true);
         primaryStage.show();
+    }
+    static TextArea textField = new TextArea();
+    
+    public static void appendText(String str) {
+        Platform.runLater(() -> textField.appendText(str));
+    }
+    
+    static Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), 
+            event -> appendText("test\n")));
+    
+    public static void startsimulation(int args){
+        if(args==1){   
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+        }else{
+            timeline.stop();
+        }
     }
     public static String[] Printrandom(){
         Random r = new Random();
         SteamUser user1 = data.allusers.getUsers().get(r.nextInt(data.allusers.getUsers().size()));
-        System.out.println(user1.getPersonaname()+" owns "+user1.getOwnedgames().size()+" games:");
-        for(int i=0;i<user1.getOwnedgames().size();i++){
-            System.out.println(user1.getOwnedgames().get(i).getName());               
-            System.out.print("\tReview:"+user1.getOwnedgames().get(i).getReview()+"\n\tGenres:");
-            for(int a=0;a<user1.getOwnedgames().get(i).getGenres().size();a++){
-                System.out.print(user1.getOwnedgames().get(i).getGenres().get(a));
-                if(a+1!=user1.getOwnedgames().get(i).getGenres().size()) System.out.print(",");
-            }
-            System.out.print("\n");
-        }
-        System.out.println("His favorite genre is "+user1.getBehaviour().getFavGenre()+"\n");
         String[] returni = new String[2];
         returni[0] = user1.getPersonaname();
         returni[1] = user1.getAvatar();
