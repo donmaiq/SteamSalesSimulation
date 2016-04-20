@@ -7,19 +7,26 @@ package steamjavalibrary;
 
 import javafx.geometry.Insets;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 
 //testing utils
 import java.util.Random;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TabPane.TabClosingPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -40,24 +47,57 @@ public class SteamJavaLibrary extends Application{
         grid.setVgap(10);
         grid.setPadding(new Insets(5, 5, 5, 5));
         
+        Group root = new Group();
+        Scene scene = new Scene(root, 800, 500);
+        
+        HBox placeholder = new HBox();
+        placeholder.getChildren().add(new Text("Placeholder"));
+        placeholder.setAlignment(Pos.CENTER);
+        
+        HBox placeholder2 = new HBox();
+        placeholder2.getChildren().add(new Text("Placeholder"));
+        placeholder2.setAlignment(Pos.CENTER);
+        
+        TabPane tabPane = new TabPane();
+        Tab tab = new Tab();
+        tab.setText("Simulation");
+        Tab tab2 = new Tab();
+        tab2.setText("Statistics");
+        Tab tab3 = new Tab();
+        tab3.setText("Users");
+        tab.setContent(placeholder);
+        tab2.setContent(placeholder2);
+        tab3.setContent(grid);
+        tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+        tabPane.getTabs().add(tab);
+        tabPane.getTabs().add(tab2);    
+        tabPane.getTabs().add(tab3);       
+        grid.add(tabPane, 0,0,2,1);
+    
+        
+        BorderPane borderPane = new BorderPane();
+        borderPane.prefHeightProperty().bind(scene.heightProperty());
+        borderPane.prefWidthProperty().bind(scene.widthProperty());
+        borderPane.setCenter(tabPane);
+        
         Image image = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white.png", 150, 50, false, false);
         final ImageView imv = new ImageView();
         imv.setImage(image);
         final HBox pictureRegion = new HBox(10);
         pictureRegion.getChildren().add(imv);
         pictureRegion.setAlignment(Pos.CENTER);
-        grid.add(pictureRegion, 0,0,2,1);
+        grid.add(pictureRegion, 0,1,2,1);
         
         final ImageView ava = new ImageView();
         final HBox avaRegion = new HBox(10);
         avaRegion.getChildren().add(ava);
         avaRegion.setId("profileimg");
-        grid.add(avaRegion, 0, 1);
+        grid.add(avaRegion, 0, 2);
         
         Text username = new Text("");
         username.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         username.setId("text");
-        grid.add(username, 1, 1);
+        grid.add(username, 1, 2);
         
         
         Button btn = new Button();
@@ -75,13 +115,14 @@ public class SteamJavaLibrary extends Application{
         });
         hbBtn.getChildren().add(btn);
         hbBtn.setId("button");
-        grid.add(hbBtn, 0,2,2,1);
+        grid.add(hbBtn, 0,3,2,1);
         
         grid.setGridLinesVisible(true);
-        Scene scene = new Scene(grid, 300, 275);
+        
         primaryStage.setScene(scene);
         //scene.getStylesheets().add(SteamJavaLibrary.class.getResource("Steam.css").toExternalForm());
         primaryStage.show();
+        root.getChildren().add(borderPane);
     }
     public static String[] Printrandom(){
         Random r = new Random();
