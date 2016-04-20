@@ -41,88 +41,96 @@ public class SteamJavaLibrary extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception{
         
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(5, 5, 5, 5));
-        
         Group root = new Group();
         Scene scene = new Scene(root, 800, 500);
-        
-        HBox placeholder = new HBox();
-        placeholder.getChildren().add(new Text("Placeholder"));
-        placeholder.setAlignment(Pos.CENTER);
-        
-        HBox placeholder2 = new HBox();
-        placeholder2.getChildren().add(new Text("Placeholder"));
-        placeholder2.setAlignment(Pos.CENTER);
-        
         TabPane tabPane = new TabPane();
-        Tab tab = new Tab();
-        tab.setText("Simulation");
-        Tab tab2 = new Tab();
-        tab2.setText("Statistics");
-        Tab tab3 = new Tab();
-        tab3.setText("Users");
-        tab.setContent(placeholder);
-        tab2.setContent(placeholder2);
-        tab3.setContent(grid);
         tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
-        tabPane.getTabs().add(tab);
-        tabPane.getTabs().add(tab2);    
-        tabPane.getTabs().add(tab3);       
-        grid.add(tabPane, 0,0,2,1);
-    
         
         BorderPane borderPane = new BorderPane();
         borderPane.prefHeightProperty().bind(scene.heightProperty());
         borderPane.prefWidthProperty().bind(scene.widthProperty());
         borderPane.setCenter(tabPane);
         
-        Image image = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white.png", 150, 50, false, false);
-        final ImageView imv = new ImageView();
-        imv.setImage(image);
-        final HBox pictureRegion = new HBox(10);
-        pictureRegion.getChildren().add(imv);
-        pictureRegion.setAlignment(Pos.CENTER);
-        grid.add(pictureRegion, 0,1,2,1);
-        
-        final ImageView ava = new ImageView();
-        final HBox avaRegion = new HBox(10);
-        avaRegion.getChildren().add(ava);
-        avaRegion.setId("profileimg");
-        grid.add(avaRegion, 0, 2);
-        
-        Text username = new Text("");
-        username.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        username.setId("text");
-        grid.add(username, 1, 2);
-        
-        
-        Button btn = new Button();
-        btn.setText("print random user in console");
-        HBox hbBtn = new HBox(10);   
-        hbBtn.setAlignment(Pos.CENTER);
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String[] userl = Printrandom();
-                username.setText(userl[0]);
-                Image newavatar = new Image(userl[1], 0, 40, false, false);
-                ava.setImage(newavatar);
-            }
-        });
-        hbBtn.getChildren().add(btn);
-        hbBtn.setId("button");
-        grid.add(hbBtn, 0,3,2,1);
-        
-        grid.setGridLinesVisible(true);
-        
         primaryStage.setScene(scene);
         //scene.getStylesheets().add(SteamJavaLibrary.class.getResource("Steam.css").toExternalForm());
-        primaryStage.show();
+        primaryStage.setTitle("Steam Sales Simulator");
         root.getChildren().add(borderPane);
+        
+        //FIRST TAB
+            Tab tab1 = new Tab();
+            tab1.setText("Simulation");
+                GridPane grid1 = new GridPane();
+                grid1.setAlignment(Pos.CENTER);
+                grid1.setHgap(10);
+                grid1.setVgap(10);
+                grid1.setPadding(new Insets(5, 5, 5, 5));
+            tab1.setContent(grid1);
+            tabPane.getTabs().add(tab1);
+        //END OF FIRST TAB
+        
+        //Second TAB
+            Tab tab2 = new Tab();
+            tab2.setText("Statistics");
+                GridPane grid2 = new GridPane();
+                grid2.setAlignment(Pos.CENTER);
+                grid2.setHgap(10);
+                grid2.setVgap(10);
+                grid2.setPadding(new Insets(5, 5, 5, 5));
+            tab2.setContent(grid2);
+            tabPane.getTabs().add(tab2);
+        //END OF SECOND TAB
+        
+        //THIRD TAB
+            Tab tab3 = new Tab();
+            tab3.setText("Users");
+                GridPane grid3 = new GridPane();
+                grid3.setAlignment(Pos.CENTER);
+                grid3.setHgap(10);
+                grid3.setVgap(10);
+                grid3.setPadding(new Insets(5, 5, 5, 5));
+                
+                Image image = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white.png", 150, 50, false, false);
+                final ImageView imv = new ImageView();
+                imv.setImage(image);
+                final HBox pictureRegion = new HBox(10);
+                pictureRegion.getChildren().add(imv);
+                pictureRegion.setAlignment(Pos.CENTER);
+                grid3.add(pictureRegion, 0,1,2,1);
+
+                final ImageView ava = new ImageView();
+                final HBox avaRegion = new HBox(10);
+                avaRegion.getChildren().add(ava);
+                avaRegion.setId("profileimg");
+                grid3.add(avaRegion, 0, 2);
+
+                Text username = new Text("");
+                username.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+                username.setId("text");
+                grid3.add(username, 1, 2);
+
+                Button btn = new Button();
+                btn.setText("print random user in console");
+                HBox hbBtn = new HBox(10);  
+                hbBtn.setAlignment(Pos.CENTER);
+                btn.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String[] userl = Printrandom();
+                        username.setText(userl[0]);
+                        Image newavatar = new Image(userl[1], 0, 40, false, false);
+                        ava.setImage(newavatar);
+                    }
+                });
+                hbBtn.getChildren().add(btn);
+                hbBtn.setId("button");
+                grid3.add(hbBtn, 0,3,2,1);
+            tab3.setContent(grid3);
+            tabPane.getTabs().add(tab3);
+        //END OF THIRD TAB
+        
+        grid3.setGridLinesVisible(true);
+        
+        primaryStage.show();
     }
     public static String[] Printrandom(){
         Random r = new Random();
