@@ -1,0 +1,7 @@
+.loading{
+    -fx-background-color: #CCFF99;
+    -fx-fill:aqua;
+}
+#text{
+     -fx-font: 30px "Serif";
+}
