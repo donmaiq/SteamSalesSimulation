@@ -20,6 +20,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -79,9 +80,13 @@ public class SteamJavaLibrary extends Application{
         
         
         //LOADING SCREEN
-            Image image = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white-full.png", 450, 150, false, false);
+            Image image = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white-full.gif", 450, 150, false, false);
             final ImageView imv = new ImageView();
             imv.setImage(image);
+            Image image2 = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white-full-done.gif", 450, 150, false, false);
+            final ImageView imv2 = new ImageView();
+            imv2.setImage(image2);
+            
             final StackPane pictureRegion = new StackPane();
             pictureRegion.setPrefSize(800,500);
             pictureRegion.getChildren().add(imv);
@@ -96,25 +101,19 @@ public class SteamJavaLibrary extends Application{
             FadeTransition ft2 = new FadeTransition(Duration.millis(500), pictureRegion);
             ft2.setFromValue(1.0);
             ft2.setToValue(0.0);
-            ft2.setDelay(Duration.millis(3000));
-            SequentialTransition seqT = new SequentialTransition (pictureRegion,ft, ft2);
+            //ft2.setDelay(Duration.millis(3000));
+            SequentialTransition seqT = new SequentialTransition (pictureRegion,ft);
+            SequentialTransition seqT2 = new SequentialTransition (pictureRegion,ft2);
             
-            pictureRegion.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-		public void handle (MouseEvent mouseEvent) {
-                    seqT.stop();  
-                    root.getChildren().remove(pictureRegion);
-                    root.getChildren().add(borderPane);
-		}
-            });
-            seqT.onFinishedProperty().set(new EventHandler<ActionEvent>() {
+            
+            seqT2.onFinishedProperty().set(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event){
                     root.getChildren().remove(pictureRegion);
                     root.getChildren().add(borderPane);
                 }
             });
-        
+       
         //FIRST TAB
             Tab tab1 = new Tab();
             tab1.setText("Simulation");
@@ -201,9 +200,27 @@ public class SteamJavaLibrary extends Application{
         
         grid3.setGridLinesVisible(true);
         primaryStage.show();
-        seqT.play();
         
-        data=new Data();
+        seqT.play();
+        Task<Integer> task = new Task<Integer>() {
+            @Override
+            public Integer call() {
+                data = new Data();
+                return 1;
+            }
+        };
+        task.setOnSucceeded(e -> {
+                    pictureRegion.getChildren().clear();
+                    pictureRegion.getChildren().add(imv2);
+                    pictureRegion.setOnMousePressed(new EventHandler<MouseEvent>() {
+                        @Override
+                        public void handle (MouseEvent mouseEvent) {  
+                            seqT2.play();
+                        }
+                    });
+        });
+        new Thread(task).start();
+       
     }
     public static void appendText(String str) {
         Platform.runLater(() -> textField.appendText(str));
