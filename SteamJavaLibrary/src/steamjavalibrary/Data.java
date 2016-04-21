@@ -19,16 +19,12 @@ public class Data {
     
     public Data(){
         Gson gson = new GsonBuilder().create();
-        try(ZipFile zipFile = new ZipFile(new File("src/steamjavalibrary/allgames.zip")) ){
+        try(ZipFile zipFile = new ZipFile(new File("src/resources/allgames.zip")) ){
             System.out.println("\nLoading Users...");
             Enumeration<? extends ZipEntry> entries = zipFile.entries();         
             ZipEntry entry = entries.nextElement();
             InputStream stream = zipFile.getInputStream(entry);
             Reader read = new InputStreamReader(stream, "UTF-8");
-            /*
-            JsonObject jobject = jelement.getAsJsonObject();
-            JsonArray jarray = jobject.getAsJsonArray("app");
-            */
             allgames = gson.fromJson(read, GamesArray.class);
             read.close();
             System.out.println(allgames.getApps().size()+" games loaded.");
@@ -36,7 +32,7 @@ public class Data {
             System.out.println("error "+e);
         }
         
-        try(ZipFile zipFile = new ZipFile(new File("src/steamjavalibrary/allusers.zip")) ){
+        try(ZipFile zipFile = new ZipFile(new File("src/resources/allusers.zip")) ){
             System.out.println("\nLoading Users...");
             Enumeration<? extends ZipEntry> entries = zipFile.entries();         
             ZipEntry entry = entries.nextElement();

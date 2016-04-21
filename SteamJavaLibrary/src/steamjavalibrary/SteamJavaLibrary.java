@@ -35,6 +35,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -60,7 +61,10 @@ public class SteamJavaLibrary extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception{
         Group root = new Group();
-        Scene scene = new Scene(root, 800, 500);
+        root.getStyleClass().add("root");
+        primaryStage.setFullScreen(true);
+        primaryStage.setFullScreenExitHint("");
+        Scene scene = new Scene(root, 800, 500,Color.rgb(28, 28, 28));
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
         
@@ -68,27 +72,28 @@ public class SteamJavaLibrary extends Application{
         borderPane.prefHeightProperty().bind(scene.heightProperty());
         borderPane.prefWidthProperty().bind(scene.widthProperty());
         borderPane.setCenter(tabPane);
+        borderPane.opacityProperty().set(0.0);
         
-        BorderPane borderPane2 = new BorderPane();
-        borderPane2.prefHeightProperty().bind(scene.heightProperty());
-        borderPane2.prefWidthProperty().bind(scene.widthProperty());
+        FadeTransition ftB = new FadeTransition(Duration.millis(1000), borderPane);
+        ftB.setFromValue(0.0);
+        ftB.setToValue(1.0);
+        ftB.setDelay(Duration.millis(1000));
         
-        primaryStage.setScene(scene);
-        //scene.getStylesheets().add("/resources/css/style.css");
-        //scene.getStylesheets().add(getClass().getResource("resources/css/style.css").toExternalForm());
+        scene.getStylesheets().add(SteamJavaLibrary.class.getResource("../resources/style.css").toExternalForm());
         primaryStage.setTitle("Steam Sales Simulator");
-        
+        primaryStage.setScene(scene);
         
         //LOADING SCREEN
-            Image image = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white-full.gif", 450, 150, false, false);
+            Image image = new Image("resources/steamlogo-white-full.gif", 600, 203, false, false);
             final ImageView imv = new ImageView();
             imv.setImage(image);
-            Image image2 = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white-full-done.gif", 450, 150, false, false);
+            Image image2 = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white-full-done.gif", 600, 203, false, false);
             final ImageView imv2 = new ImageView();
             imv2.setImage(image2);
             
             final StackPane pictureRegion = new StackPane();
-            pictureRegion.setPrefSize(800,500);
+            pictureRegion.prefWidthProperty().bind(scene.widthProperty());
+            pictureRegion.prefHeightProperty().bind(scene.heightProperty());
             pictureRegion.getChildren().add(imv);
             pictureRegion.setAlignment(imv,Pos.CENTER);
             pictureRegion.opacityProperty().set(0.0);
@@ -101,7 +106,6 @@ public class SteamJavaLibrary extends Application{
             FadeTransition ft2 = new FadeTransition(Duration.millis(500), pictureRegion);
             ft2.setFromValue(1.0);
             ft2.setToValue(0.0);
-            //ft2.setDelay(Duration.millis(3000));
             SequentialTransition seqT = new SequentialTransition (pictureRegion,ft);
             SequentialTransition seqT2 = new SequentialTransition (pictureRegion,ft2);
             
@@ -111,6 +115,7 @@ public class SteamJavaLibrary extends Application{
                 public void handle(ActionEvent event){
                     root.getChildren().remove(pictureRegion);
                     root.getChildren().add(borderPane);
+                    ftB.play();
                 }
             });
        
