@@ -25,6 +25,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -67,6 +68,7 @@ public class SteamJavaLibrary extends Application{
         Scene scene = new Scene(root, 800, 500,Color.rgb(28, 28, 28));
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+        tabPane.setTabMinWidth(240);
         tabPane.getStyleClass().add("tabbar");
         
         BorderPane borderPane = new BorderPane();
@@ -91,7 +93,6 @@ public class SteamJavaLibrary extends Application{
             Image image2 = new Image("resources/steamlogo-white-full-done.gif", 600, 203, false, false);
             final ImageView imv2 = new ImageView();
             imv2.setImage(image2);
-            
             final StackPane pictureRegion = new StackPane();
             pictureRegion.prefWidthProperty().bind(scene.widthProperty());
             pictureRegion.prefHeightProperty().bind(scene.heightProperty());
@@ -109,8 +110,7 @@ public class SteamJavaLibrary extends Application{
             ft2.setToValue(0.0);
             SequentialTransition seqT = new SequentialTransition (pictureRegion,ft);
             SequentialTransition seqT2 = new SequentialTransition (pictureRegion,ft2);
-            
-            
+             
             seqT2.onFinishedProperty().set(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event){
@@ -211,7 +211,7 @@ public class SteamJavaLibrary extends Application{
             tabPane.getTabs().add(tab3);
         //END OF THIRD TAB
         
-        grid3.setGridLinesVisible(true);
+        //grid3.setGridLinesVisible(true);
         primaryStage.show();
         
         seqT.play();

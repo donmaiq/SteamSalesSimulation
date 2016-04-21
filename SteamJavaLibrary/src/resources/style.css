@@ -3,7 +3,8 @@
 }
 .root{
     -fx-background-color: #1c1c1c;
-    -fx-color:#d1d0d0;
+    -fx-color:#ffffff;
+    -fx-fill:#d1d0d0;
 }
 .textfield{
     -fx-background-color: rgb(35,35,35);
@@ -14,12 +15,23 @@
     -fx-color:#ffffff;
     -fx-fill:#d1d0d0;
 }
+.tab:focused{
+    -fx-focus-color: transparent;
+    -fx-fill:#ffffff;
+    -fx-border:none;
+}
 .tab{
+    -fx-border:none;
     -fx-background-color:#1c1c1c;
     -fx-color:#ffffff;
+    -fx-fill:#d1d0d0;
+    -fx-height:40px;
+    -fx-font-size:20px;
+    -fx-focus-color: transparent;
 }
 .tab-pane .tab-header-area .tab-header-background{
     -fx-background-color:#1c1c1c;
+    -fx-color:#ffffff;
     -fx-effect: null;
 }
 .butt{
