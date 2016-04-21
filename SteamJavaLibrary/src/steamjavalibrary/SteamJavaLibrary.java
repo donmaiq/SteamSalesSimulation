@@ -67,6 +67,7 @@ public class SteamJavaLibrary extends Application{
         Scene scene = new Scene(root, 800, 500,Color.rgb(28, 28, 28));
         TabPane tabPane = new TabPane();
         tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+        tabPane.getStyleClass().add("tabbar");
         
         BorderPane borderPane = new BorderPane();
         borderPane.prefHeightProperty().bind(scene.heightProperty());
@@ -87,7 +88,7 @@ public class SteamJavaLibrary extends Application{
             Image image = new Image("resources/steamlogo-white-full.gif", 600, 203, false, false);
             final ImageView imv = new ImageView();
             imv.setImage(image);
-            Image image2 = new Image("https://users.metropolia.fi/~jonniek/uploads/steamlogo-white-full-done.gif", 600, 203, false, false);
+            Image image2 = new Image("resources/steamlogo-white-full-done.gif", 600, 203, false, false);
             final ImageView imv2 = new ImageView();
             imv2.setImage(image2);
             
@@ -122,6 +123,7 @@ public class SteamJavaLibrary extends Application{
         //FIRST TAB
             Tab tab1 = new Tab();
             tab1.setText("Simulation");
+            tab1.getStyleClass().add("tab");
                 GridPane grid1 = new GridPane();
                 grid1.setAlignment(Pos.CENTER);
                 grid1.setHgap(10);
@@ -130,6 +132,7 @@ public class SteamJavaLibrary extends Application{
                 
                 Button simbut = new Button();
                 simbut.setText("Start");
+                simbut.getStyleClass().add("butt");
                 HBox hbsimbut = new HBox(10);  
                 hbsimbut.setAlignment(Pos.CENTER);
                 simbut.setOnAction(new EventHandler<ActionEvent>() {
@@ -146,6 +149,9 @@ public class SteamJavaLibrary extends Application{
                 });
                 hbsimbut.getChildren().add(simbut);
                 grid1.add(hbsimbut, 4,9,2,1);
+                textField.getStyleClass().add("textfield");
+                textField.wrapTextProperty().set(true);
+                textField.editableProperty().set(true);
                 grid1.add(textField, 0,1,8,5);
             tab1.setContent(grid1);
             tabPane.getTabs().add(tab1);
@@ -154,6 +160,7 @@ public class SteamJavaLibrary extends Application{
         //Second TAB
             Tab tab2 = new Tab();
             tab2.setText("Statistics");
+            tab2.getStyleClass().add("tab");
                 GridPane grid2 = new GridPane();
                 grid2.setAlignment(Pos.CENTER);
                 grid2.setHgap(10);
@@ -166,6 +173,7 @@ public class SteamJavaLibrary extends Application{
         //THIRD TAB
             Tab tab3 = new Tab();
             tab3.setText("Users");
+            tab3.getStyleClass().add("tab");
                 GridPane grid3 = new GridPane();
                 grid3.setAlignment(Pos.CENTER);
                 grid3.setHgap(10);
@@ -185,6 +193,7 @@ public class SteamJavaLibrary extends Application{
 
                 Button btn = new Button();
                 btn.setText("print random user in console");
+                btn.getStyleClass().add("butt");
                 HBox hbBtn = new HBox(10);  
                 hbBtn.setAlignment(Pos.CENTER);
                 btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -197,7 +206,6 @@ public class SteamJavaLibrary extends Application{
                     }
                 });
                 hbBtn.getChildren().add(btn);
-                hbBtn.setId("button");
                 grid3.add(hbBtn, 0,3,2,1);
             tab3.setContent(grid3);
             tabPane.getTabs().add(tab3);

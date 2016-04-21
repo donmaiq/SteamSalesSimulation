@@ -3,4 +3,31 @@
 }
 .root{
     -fx-background-color: #1c1c1c;
+    -fx-color:#d1d0d0;
+}
+.textfield{
+    -fx-background-color: rgb(35,35,35);
+    -fx-background-color: linear-gradient(#252525, #313131);
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+}
+#text{
+    -fx-color:#ffffff;
+    -fx-fill:#d1d0d0;
+}
+.tab{
+    -fx-background-color:#1c1c1c;
+    -fx-color:#ffffff;
+}
+.tab-pane .tab-header-area .tab-header-background{
+    -fx-background-color:#1c1c1c;
+    -fx-effect: null;
+}
+.butt{
+    -fx-border-width:1px;
+    -fx-border-color:#d1d0d0;
+    -fx-border-radius:4px;
+    -fx-background-color:transparent;
+    -fx-color:#ffffff;
+}
+.butt:hover{
 }
