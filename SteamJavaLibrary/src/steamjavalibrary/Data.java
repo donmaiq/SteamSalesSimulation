@@ -15,6 +15,7 @@ public class Data {
     public static  GamesArray allgames = new GamesArray();
     public static  UsersArray allusers = new UsersArray();
     public static String[] genreslist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
+    
     private static int gamessold;
     public Data(){
         this.steamsale=false;
@@ -46,7 +47,9 @@ public class Data {
         } catch(Exception e){
             System.out.println("error "+e);
         }
-        
+        allgames.sortGames();
+        allusers.sortUsers();
+        allgames.setupLists();
     }
 
     public static int getGamessold() {

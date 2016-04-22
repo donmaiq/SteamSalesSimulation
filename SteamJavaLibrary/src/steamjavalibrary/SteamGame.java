@@ -16,21 +16,25 @@ public class SteamGame implements Comparable<SteamGame>{
     private String name;
     private double price;
     private final String type; //Type of release. AAA / AA / A
-    private final ArrayList<String> genres = new ArrayList();
+    private final String genre;
     private final int review;    //0-100, review score and word of mouth
     private final int marketing; //0-100, marketing amount, bigger audience
     private int soldunits;
     private double revenue; //append on sales
     private double steamcut; //steam cut from revenue, append on sales
     private GameBehaviour behaviour;
+    private final ArrayList<PurchaseHist> history = new ArrayList();
 
     public void gameSold(){
         //calulate the 80% that will go to revenue and round it, leftover 20% to steamcut
-        soldunits += 1;
-        double roundedrevenue = round2decimal(price*0.8);
-        revenue += roundedrevenue;
-        steamcut += price-roundedrevenue;
+        incrementSoldunits();
+        double roundedrevenue = round2decimal(getPrice()*0.7);
+        incrementRevenue(roundedrevenue);
+        incrementSteamcut(getPrice()-roundedrevenue);
         SteamJavaLibrary.data.incrementSold();
+    }
+    public void addHistory(PurchaseHist history){
+        this.history.add(history);
     }
     public SteamGame() {
         Random r = new Random();
@@ -39,15 +43,18 @@ public class SteamGame implements Comparable<SteamGame>{
         steamcut = 0.0;
         soldunits = 0;
         double randomseed = r.nextInt(100);
-        if(randomseed<33){
+        if(randomseed<15){
             type="AAA";
             price=40 + round2decimal(r.nextDouble()*20);
-        }else if(randomseed<66){
-            type="AA";
+            marketing = r.nextInt(20)+80;
+        }else if(randomseed<80){
+            type="Normal";
             price=10 + round2decimal(r.nextDouble()*20);
+            marketing = r.nextInt(80)+20;
         }else{
-            type="A";
+            type="Indie";
             price=3 + round2decimal(r.nextDouble()*10);
+            marketing = r.nextInt(20);
         }
         //75% chance for a normal distribution 50-100
         //25% to be random int 0-100
@@ -61,21 +68,7 @@ public class SteamGame implements Comparable<SteamGame>{
         }else{
             review = r.nextInt(100);
         }
-        marketing = r.nextInt(100);
-        
-        //CREATE 1-3 GENRES FOR GAME
-        String[] list = SteamJavaLibrary.data.genreslist;
-        ArrayList<Integer> usedindex = new ArrayList();
-        for(int i=0;i<r.nextInt(2)+1;i++){
-            int rnd = -1;
-            do{
-                rnd = r.nextInt(list.length);
-            }while(usedindex.contains(rnd));
-            
-            String genretoadd = list[rnd];
-            genres.add(genretoadd);
-            usedindex.add(rnd);
-        }
+        genre = SteamJavaLibrary.data.genreslist[r.nextInt(SteamJavaLibrary.data.genreslist.length)];
     }
     
     @Override
@@ -84,6 +77,15 @@ public class SteamGame implements Comparable<SteamGame>{
         return comparevariation-this.getReview();
     }
     
+    public void incrementSteamcut(double steamcut){
+        this.steamcut += steamcut;
+    }
+    public void incrementRevenue(double revenue){
+        this.revenue += revenue;
+    }
+    public void incrementSoldunits(){
+        soldunits = soldunits + 1;
+    }
     public void reducePrice() {
         double percent = 1-behaviour.getPricedropamount()/100;
         price=round2decimal(price*percent);
@@ -109,8 +111,8 @@ public class SteamGame implements Comparable<SteamGame>{
     public String getType() {
         return type;
     }
-    public ArrayList<String> getGenres() {
-        return genres;
+    public String getGenre() {
+        return genre;
     }
     public int getReview() {
         return review;

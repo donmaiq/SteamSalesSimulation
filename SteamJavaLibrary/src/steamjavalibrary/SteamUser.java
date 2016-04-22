@@ -14,18 +14,14 @@ public class SteamUser implements Comparable<SteamUser>{
     private long steamid;
     private String personaname;
     private String avatar;
-    private UserBehaviour behaviour = new UserBehaviour();
-    private ArrayList<SteamGame> ownedgames = new ArrayList();
+    private final UserBehaviour behaviour = new UserBehaviour();
+    private final ArrayList<SteamGame> ownedgames = new ArrayList();
+    private final ArrayList<PurchaseHist> history = new ArrayList();
     
     //Constructor
     public SteamUser() {
-        PopulateGames();
+        //PopulateGames();
     }    
-    public SteamUser(long steamid, String personaname) {
-        this.steamid = steamid;
-        this.personaname = personaname;
-        PopulateGames();
-    }
     //Populate ownedgames with random games
     private void PopulateGames(){
         Random r = new Random();
@@ -49,6 +45,9 @@ public class SteamUser implements Comparable<SteamUser>{
     public boolean buyGame(SteamGame newgame) {
         if(ownedgames.contains(newgame)) return false;
         ownedgames.add(newgame);
+        PurchaseHist temphist = new PurchaseHist(newgame,this);
+        history.add(temphist);
+        newgame.addHistory(temphist);
         newgame.gameSold();
         return true;
     }

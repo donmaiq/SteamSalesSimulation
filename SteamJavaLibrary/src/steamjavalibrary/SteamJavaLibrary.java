@@ -5,6 +5,7 @@
  */
 package steamjavalibrary;
 
+import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -25,7 +26,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TabPane.TabClosingPolicy;
@@ -48,36 +48,60 @@ import javafx.util.Duration;
  */
 public class SteamJavaLibrary extends Application{
     public static Data data;
-    public static int simCount=0;
+    public static int simCount=1;
     public static TextArea textField = new TextArea();
     public static Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), 
             event -> mainLoop()));
+    
     public static void mainLoop(){
-        Random r = new Random();
-        appendText("Day "+simCount+"\n");
-        sellGames(r.nextInt(5)+5);
-        appendText("Total games sold"+data.getGamessold()+"\n\n");
-        simCount++;
+        if(simCount<366){
+            Random r = new Random();
+            appendText("Day "+simCount+"\n");
+            sellGames(r.nextInt(5)+5);
+            appendText("Total games sold"+data.getGamessold()+"\n\n");
+            simCount++;
+        }else{
+            startsimulation(0);
+        }
     }
     public static void sellGames(int amount){
+        int sold=0;
         for(int i=0;i<amount;i++){       
-            Random r = new Random();
-            int usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
-            while(usergaussian>data.allusers.getUsers().size()){
-                usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
-            }
+            SteamUser ruser = getRandomUser();
+            String genre = ruser.getBehaviour().getFavGenre();
+            SteamGame rgame = getRandomGame(genre);
+            if(ruser.buyGame(rgame)) sold++;
+            if(i+1==amount) appendText(ruser.getPersonaname()+" bought "+rgame.getName()+"\n");
+        }
+        appendText(sold+" games sold\n");
+    }
+    
+    public static SteamUser getRandomUser(){
+        Random r = new Random();
+        int usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
+        while(usergaussian>data.allusers.getUsers().size()){
+           usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
+        }
+        return data.allusers.getUsers().get(usergaussian);
+    }
+    public static SteamGame getRandomGame(String args){
+        Random r = new Random();
+        if(args.equals(null)){
             int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
             while(gamegaussian>data.allgames.getApps().size()){
                 gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
             }
-            SteamUser ruser = data.allusers.getUsers().get(usergaussian);
-            SteamGame rgame = data.allgames.getApps().get(gamegaussian);
-            ruser.buyGame(rgame);
-            if(i+1==amount) appendText(ruser.getPersonaname()+" bought "+rgame.getName()+"\n");
+            return data.allgames.getApps().get(gamegaussian);
+        }else{
+            int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getGenreArray(args).size());
+            while(gamegaussian>data.allgames.getGenreArray(args).size()){
+                gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getGenreArray(args).size());
+            }
+            return data.allgames.getGenreArray(args).get(gamegaussian);
         }
-        appendText(amount+" games sold\n");
     }
     
+    //UI LOGIC BELOW
     @Override
     public void start(Stage primaryStage) throws Exception{
         Group root = new Group();
@@ -159,12 +183,8 @@ public class SteamJavaLibrary extends Application{
                         simbut2.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                int list[] = new int[101];
-                                for(int i=0;i<data.allgames.getApps().size();i++){
-                                    list[data.allgames.getApps().get(i).getReview()] += 1;
-                                }
-                                for(int a=0;a<list.length;a++){
-                                    System.out.println("Review:"+a+"\tamount:"+list[a]);
+                                for(int a=0;a<data.allgames.getApps().size();a++){
+                                    System.out.println(data.allgames.getApps().get(a).getReview());
                                 }
                             }
                         });
@@ -262,7 +282,6 @@ public class SteamJavaLibrary extends Application{
             @Override
             public Integer call() {
                 data = new Data();
-                data.allusers.sortUsers();
                 return 1;
             }
         };
