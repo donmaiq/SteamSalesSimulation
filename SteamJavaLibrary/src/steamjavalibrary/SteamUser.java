@@ -10,7 +10,7 @@ import java.util.Random;
  *
  * @author Jonnie
  */
-public class SteamUser {
+public class SteamUser implements Comparable<SteamUser>{
     private long steamid;
     private String personaname;
     private String avatar;
@@ -33,6 +33,11 @@ public class SteamUser {
             int index = r.nextInt(SteamJavaLibrary.data.allgames.getApps().size());
             ownedgames.add(SteamJavaLibrary.data.allgames.getApps().get(index));
         }
+    }
+    @Override
+    public int compareTo(SteamUser steamuser){
+        int comparevariation=((SteamUser)steamuser).getBehaviour().getVariationscale();
+        return this.getBehaviour().variationscale-comparevariation;
     }
     
     public ArrayList<SteamGame> getOwnedgames() {

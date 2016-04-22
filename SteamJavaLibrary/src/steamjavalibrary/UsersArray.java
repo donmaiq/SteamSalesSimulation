@@ -5,6 +5,7 @@
  */
 package steamjavalibrary;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -18,5 +19,8 @@ public class UsersArray {
     }
     public void addApps(SteamUser user) {
         users.add(user);
+    }
+    public void sortUsers(){
+        Collections.sort(users);
     }
 }
