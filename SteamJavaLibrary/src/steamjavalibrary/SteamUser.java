@@ -37,7 +37,7 @@ public class SteamUser implements Comparable<SteamUser>{
     @Override
     public int compareTo(SteamUser steamuser){
         int comparevariation=((SteamUser)steamuser).getBehaviour().getVariationscale();
-        return this.getBehaviour().variationscale-comparevariation;
+        return comparevariation-this.getBehaviour().getVariationscale();
     }
     
     public ArrayList<SteamGame> getOwnedgames() {

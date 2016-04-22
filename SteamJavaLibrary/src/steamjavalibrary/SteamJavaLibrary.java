@@ -221,13 +221,6 @@ public class SteamJavaLibrary extends Application{
             public Integer call() {
                 data = new Data();
                 data.allusers.sortUsers();
-                int lista[] = new int[150];
-                for(int i=0;i<data.allusers.getUsers().size();i++){
-                    lista[data.allusers.getUsers().get(i).getBehaviour().getVariationscale()] += 1;
-                }
-                for(int a=0;a<lista.length;a++){
-                    System.out.println("review:"+a+" määrä:"+lista[a]);
-                }
                 return 1;
             }
         };

@@ -19,7 +19,7 @@ public class UserBehaviour {
     public UserBehaviour() {
         Random r = new Random();
         hypescale = r.nextInt(100);
-        variationscale = r.nextInt(100);
+        variationscale = r.nextInt(101);
         genrespectrum = new HashMap();
         String[] genres = SteamJavaLibrary.data.genreslist;
         for(int i=0;i<genres.length;i++){

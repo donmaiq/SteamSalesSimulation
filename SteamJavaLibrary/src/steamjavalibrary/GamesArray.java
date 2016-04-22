@@ -1,6 +1,7 @@
 package steamjavalibrary;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GamesArray {
     private ArrayList<SteamGame> app = new ArrayList();
@@ -13,4 +14,7 @@ public class GamesArray {
         this.app.add(apps);
     }
     
+    public void sortGames(){
+        Collections.sort(app);
+    }
 }

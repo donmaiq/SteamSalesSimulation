@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Jonnie
  */
-public class SteamGame {
+public class SteamGame implements Comparable<SteamGame>{
     private int appid;
     private String name;
     private double price;
@@ -72,7 +72,13 @@ public class SteamGame {
             usedindex.add(rnd);
         }
     }
-
+    
+    @Override
+    public int compareTo(SteamGame steamgame){
+        int comparevariation=((SteamGame)steamgame).getReview();
+        return comparevariation-this.getReview();
+    }
+    
     public void reducePrice() {
         double percent = 1-behaviour.getPricedropamount()/100;
         price=round2decimal(price*percent);
