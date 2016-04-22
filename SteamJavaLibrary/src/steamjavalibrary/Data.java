@@ -15,8 +15,6 @@ public class Data {
     public static  UsersArray allusers = new UsersArray();
     public static String[] genreslist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
     
-    
-    
     public Data(){
         Gson gson = new GsonBuilder().create();
         try(ZipFile zipFile = new ZipFile(new File("src/resources/allgames.zip")) ){

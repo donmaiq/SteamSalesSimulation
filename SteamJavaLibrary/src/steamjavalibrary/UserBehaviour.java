@@ -12,14 +12,15 @@ import java.util.Random;
  * @author Jonnie
  */
 public class UserBehaviour {
-    public int hypescale; //0-100, chance to buy new releases
-    public int variationscale; //0-100, variation in games
-    private Map<String, Integer> genrespectrum = new HashMap();
+    private final int hypescale; //0-100, chance to buy new releases
+    private final int variationscale; //0-100, variation in games
+    private final Map<String, Integer> genrespectrum;
 
     public UserBehaviour() {
         Random r = new Random();
         hypescale = r.nextInt(100);
         variationscale = r.nextInt(100);
+        genrespectrum = new HashMap();
         String[] genres = SteamJavaLibrary.data.genreslist;
         for(int i=0;i<genres.length;i++){
             genrespectrum.put(genres[i], r.nextInt(100));
@@ -39,5 +40,9 @@ public class UserBehaviour {
     public int getVariationscale() {
         return variationscale;
     }
+    public Map<String, Integer> getGenrespectrum() {
+        return genrespectrum;
+    }
+    
     
 }

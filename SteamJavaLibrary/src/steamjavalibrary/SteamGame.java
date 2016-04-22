@@ -48,7 +48,11 @@ public class SteamGame {
         //25% to be random int 0-100
         //this creates a linear chance until 50% where it rises until 75% and back to linear one in 100%
         if(r.nextInt(100)>25){
-            review = (int) ((r.nextGaussian()*25)+75);
+            int x = (int) Math.round((r.nextGaussian()*25)+75);
+            while(x>100){
+                x = (int) Math.round((r.nextGaussian()*25)+75);
+            }
+            review = x;
         }else{
             review = r.nextInt(100);
         }
