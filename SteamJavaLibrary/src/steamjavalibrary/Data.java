@@ -48,6 +48,11 @@ public class Data {
         }
         
     }
+
+    public static int getGamessold() {
+        return gamessold;
+    }
+    
     public static void incrementSold(){
         gamessold+=1;
     }

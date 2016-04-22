@@ -56,6 +56,7 @@ public class SteamJavaLibrary extends Application{
         Random r = new Random();
         appendText("Day "+simCount+"\n");
         sellGames(r.nextInt(5)+5);
+        appendText("Total games sold"+data.getGamessold()+"\n\n");
         simCount++;
     }
     public static void sellGames(int amount){
@@ -74,7 +75,7 @@ public class SteamJavaLibrary extends Application{
             ruser.buyGame(rgame);
             if(i+1==amount) appendText(ruser.getPersonaname()+" bought "+rgame.getName()+"\n");
         }
-        appendText(amount+" games sold\n\n");
+        appendText(amount+" games sold\n");
     }
     
     @Override
@@ -147,6 +148,30 @@ public class SteamJavaLibrary extends Application{
                 grid1.setHgap(10);
                 grid1.setVgap(10);
                 grid1.setPadding(new Insets(5, 5, 5, 5));
+                
+                
+                //TESTBUTTON
+                        Button simbut2 = new Button();
+                        simbut2.setText("TEST");
+                        simbut2.getStyleClass().add("butt");
+                        HBox hbsimbut2 = new HBox(10);  
+                        hbsimbut2.setAlignment(Pos.CENTER);
+                        simbut2.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                int list[] = new int[101];
+                                for(int i=0;i<data.allgames.getApps().size();i++){
+                                    list[data.allgames.getApps().get(i).getReview()] += 1;
+                                }
+                                for(int a=0;a<list.length;a++){
+                                    System.out.println("Review:"+a+"\tamount:"+list[a]);
+                                }
+                            }
+                        });
+                        hbsimbut2.getChildren().add(simbut2);
+                        grid1.add(hbsimbut2, 5,10,2,1);
+                //TESTBUTTON
+                
                 
                 Button simbut = new Button();
                 simbut.setText("Start");
