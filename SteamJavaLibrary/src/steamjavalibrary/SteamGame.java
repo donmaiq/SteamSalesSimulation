@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * @author Jonnie
  */
-public class SteamGame {
+public class SteamGame implements Comparable<SteamGame>{
     private int appid;
     private String name;
     private double price;
@@ -48,7 +48,11 @@ public class SteamGame {
         //25% to be random int 0-100
         //this creates a linear chance until 50% where it rises until 75% and back to linear one in 100%
         if(r.nextInt(100)>25){
-            review = (int) ((r.nextGaussian()*25)+75);
+            int x = (int) Math.round((r.nextGaussian()*25)+75);
+            while(x>100){
+                x = (int) Math.round((r.nextGaussian()*25)+75);
+            }
+            review = x;
         }else{
             review = r.nextInt(100);
         }
@@ -68,7 +72,13 @@ public class SteamGame {
             usedindex.add(rnd);
         }
     }
-
+    
+    @Override
+    public int compareTo(SteamGame steamgame){
+        int comparevariation=((SteamGame)steamgame).getReview();
+        return comparevariation-this.getReview();
+    }
+    
     public void reducePrice() {
         double percent = 1-behaviour.getPricedropamount()/100;
         price=round2decimal(price*percent);

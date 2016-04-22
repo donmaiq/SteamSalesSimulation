@@ -57,6 +57,7 @@ public class SteamJavaLibrary extends Application{
         Random r = new Random();
         SteamUser ruser = data.allusers.getUsers().get(r.nextInt(data.allusers.getUsers().size()));
         SteamGame rgame = data.allgames.getApps().get(r.nextInt(data.allgames.getApps().size()));
+        System.out.println(rgame.getReview());
         return ruser.getPersonaname()+" bought "+rgame.getName()+"\n";
     }
     @Override
@@ -219,6 +220,7 @@ public class SteamJavaLibrary extends Application{
             @Override
             public Integer call() {
                 data = new Data();
+                data.allusers.sortUsers();
                 return 1;
             }
         };

@@ -9,19 +9,26 @@ import java.util.Enumeration;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.Reader;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+=======
+import java.util.Collections;
+>>>>>>> e86083e3e21f5f53526ac92283dde661be5b7585
 
 public class Data {
     public static boolean steamsale;
     public static  GamesArray allgames = new GamesArray();
     public static  UsersArray allusers = new UsersArray();
     public static String[] genreslist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
+<<<<<<< HEAD
     public static List<Integer> apu=new ArrayList();
     public static int[] apu2=new int[0];
     
+=======
+>>>>>>> e86083e3e21f5f53526ac92283dde661be5b7585
     
     public Data(){
         this.steamsale=false;
@@ -61,6 +68,7 @@ public class Data {
     public static void setSale(boolean sale) {
         Data.steamsale = sale;
     }
+<<<<<<< HEAD
     public static void sortGames(){
         for(int i=0;i<allgames.getApps().size();i++){
             apu.add(allgames.getApps().get(i).getReview());
@@ -101,4 +109,7 @@ public class Data {
             vaihda(taulu, i, minInd);
         }
     }
+=======
+    
+>>>>>>> e86083e3e21f5f53526ac92283dde661be5b7585
 }
