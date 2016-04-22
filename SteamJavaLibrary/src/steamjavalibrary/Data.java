@@ -12,13 +12,13 @@ import java.io.Reader;
 import java.util.Collections;
 
 public class Data {
+    public static boolean steamsale;
     public static  GamesArray allgames = new GamesArray();
     public static  UsersArray allusers = new UsersArray();
     public static String[] genreslist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
     
-    
-    
     public Data(){
+        this.steamsale=false;
         Gson gson = new GsonBuilder().create();
         try(ZipFile zipFile = new ZipFile(new File("src/resources/allgames.zip")) ){
             System.out.println("\nLoading Users...");
@@ -46,6 +46,14 @@ public class Data {
         } catch(Exception e){
             System.out.println("error "+e);
         }
+        
+    }
+
+    public static boolean isSale() {
+        return steamsale;
+    }
+    public static void setSale(boolean sale) {
+        Data.steamsale = sale;
     }
     
 }
