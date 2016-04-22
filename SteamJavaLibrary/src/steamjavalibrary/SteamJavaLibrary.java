@@ -55,8 +55,16 @@ public class SteamJavaLibrary extends Application{
     
     public static String getOutput(){
         Random r = new Random();
-        SteamUser ruser = data.allusers.getUsers().get(r.nextInt(data.allusers.getUsers().size()));
-        SteamGame rgame = data.allgames.getApps().get(r.nextInt(data.allgames.getApps().size()));
+        int usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
+        while(usergaussian>data.allusers.getUsers().size()){
+            usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
+        }
+        int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
+        while(gamegaussian>data.allgames.getApps().size()){
+            gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
+        }
+        SteamUser ruser = data.allusers.getUsers().get(usergaussian);
+        SteamGame rgame = data.allgames.getApps().get(gamegaussian);
         System.out.println(rgame.getReview());
         return ruser.getPersonaname()+" bought "+rgame.getName()+"\n";
     }
