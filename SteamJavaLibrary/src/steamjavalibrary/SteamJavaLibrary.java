@@ -48,26 +48,35 @@ import javafx.util.Duration;
  */
 public class SteamJavaLibrary extends Application{
     public static Data data;
-    
+    public static int simCount=0;
     public static TextArea textField = new TextArea();
     public static Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), 
-            event -> appendText(getOutput())));
-    
-    public static String getOutput(){
+            event -> mainLoop()));
+    public static void mainLoop(){
         Random r = new Random();
-        int usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
-        while(usergaussian>data.allusers.getUsers().size()){
-            usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
-        }
-        int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
-        while(gamegaussian>data.allgames.getApps().size()){
-            gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
-        }
-        SteamUser ruser = data.allusers.getUsers().get(usergaussian);
-        SteamGame rgame = data.allgames.getApps().get(gamegaussian);
-        System.out.println(rgame.getReview());
-        return ruser.getPersonaname()+" bought "+rgame.getName()+"\n";
+        appendText("Day "+simCount+"\n");
+        sellGames(r.nextInt(5)+5);
+        simCount++;
     }
+    public static void sellGames(int amount){
+        for(int i=0;i<amount;i++){       
+            Random r = new Random();
+            int usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
+            while(usergaussian>data.allusers.getUsers().size()){
+                usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
+            }
+            int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
+            while(gamegaussian>data.allgames.getApps().size()){
+                gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
+            }
+            SteamUser ruser = data.allusers.getUsers().get(usergaussian);
+            SteamGame rgame = data.allgames.getApps().get(gamegaussian);
+            ruser.buyGame(rgame);
+            if(i+1==amount) appendText(ruser.getPersonaname()+" bought "+rgame.getName()+"\n");
+        }
+        appendText(amount+" games sold\n\n");
+    }
+    
     @Override
     public void start(Stage primaryStage) throws Exception{
         Group root = new Group();

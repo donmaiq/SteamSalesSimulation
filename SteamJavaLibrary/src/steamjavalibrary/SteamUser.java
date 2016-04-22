@@ -46,9 +46,10 @@ public class SteamUser implements Comparable<SteamUser>{
     
     //ADD GAME TO USERS LIBRARY, RETURNS TRUE WHEN ADDED, FALSE IF GAME WAS ALREADY IN
     //CALL THIS AFTER BUYING GAME
-    public boolean addToOwnedgames(SteamGame newgame) {
+    public boolean buyGame(SteamGame newgame) {
         if(ownedgames.contains(newgame)) return false;
         ownedgames.add(newgame);
+        newgame.gameSold();
         return true;
     }
     public long getSteamid() {

@@ -15,9 +15,10 @@ public class Data {
     public static  GamesArray allgames = new GamesArray();
     public static  UsersArray allusers = new UsersArray();
     public static String[] genreslist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
-    
+    private static int gamessold;
     public Data(){
         this.steamsale=false;
+        gamessold = 0;
         Gson gson = new GsonBuilder().create();
         try(ZipFile zipFile = new ZipFile(new File("src/resources/allgames.zip")) ){
             System.out.println("\nLoading Users...");
@@ -47,7 +48,9 @@ public class Data {
         }
         
     }
-
+    public static void incrementSold(){
+        gamessold+=1;
+    }
     public static boolean isSale() {
         return steamsale;
     }

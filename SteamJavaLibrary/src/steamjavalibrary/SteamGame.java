@@ -15,24 +15,29 @@ public class SteamGame implements Comparable<SteamGame>{
     private int appid;
     private String name;
     private double price;
-    private String type; //Type of release. AAA / AA / A
-    private ArrayList<String> genres = new ArrayList();
-    private int review;    //0-100, review score and word of mouth
-    private int marketing; //0-100, marketing amount, bigger audience
+    private final String type; //Type of release. AAA / AA / A
+    private final ArrayList<String> genres = new ArrayList();
+    private final int review;    //0-100, review score and word of mouth
+    private final int marketing; //0-100, marketing amount, bigger audience
+    private int soldunits;
     private double revenue; //append on sales
     private double steamcut; //steam cut from revenue, append on sales
-    private GameBehaviour behaviour = new GameBehaviour();
+    private GameBehaviour behaviour;
 
     public void gameSold(){
         //calulate the 80% that will go to revenue and round it, leftover 20% to steamcut
+        soldunits += 1;
         double roundedrevenue = round2decimal(price*0.8);
         revenue += roundedrevenue;
         steamcut += price-roundedrevenue;
+        SteamJavaLibrary.data.incrementSold();
     }
     public SteamGame() {
         Random r = new Random();
+        behaviour = new GameBehaviour();
         revenue = 0.0;
         steamcut = 0.0;
+        soldunits = 0;
         double randomseed = r.nextInt(100);
         if(randomseed<33){
             type="AAA";
