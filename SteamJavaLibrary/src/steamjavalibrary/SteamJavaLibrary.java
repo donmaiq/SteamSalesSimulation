@@ -53,6 +53,10 @@ public class SteamJavaLibrary extends Application{
     public static Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), 
             event -> mainLoop()));
     
+    /**
+     * The main loop for the simulation. 
+     * Will simulate up to 365 days of sales.
+     */
     public static void mainLoop(){
         if(simCount<366){
             Random r = new Random();
@@ -64,6 +68,30 @@ public class SteamJavaLibrary extends Application{
             startsimulation(0);
         }
     }
+    /**
+     * Starts or stops the simulation based on the args.
+     * 1 will play and 0 will stop.
+     * @param args 
+     */
+    public static void startsimulation(int args){
+        if(args==1){
+            timeline.setCycleCount(Animation.INDEFINITE);
+            timeline.play();
+        }else{
+            timeline.stop();
+        }
+    }
+    /**
+     * Outputs a string to the simulations textarea.
+     * @param string
+     */
+    public static void appendText(String string) {
+        Platform.runLater(() -> textField.appendText(string));
+    }
+    /**
+     * Sells an amount of games specified in the argument.
+     * @param amount 
+     */
     public static void sellGames(int amount){
         int sold=0;
         for(int i=0;i<amount;i++){       
@@ -75,7 +103,11 @@ public class SteamJavaLibrary extends Application{
         }
         appendText(sold+" games sold\n");
     }
-    
+    /**
+     * Returns a random user with a normal distribution based on users variationscale(0-100).
+     * The higher the variation the bigger the chance to return that user.
+     * @return 
+     */
     public static SteamUser getRandomUser(){
         Random r = new Random();
         int usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
@@ -84,20 +116,27 @@ public class SteamJavaLibrary extends Application{
         }
         return data.allusers.getUsers().get(usergaussian);
     }
-    public static SteamGame getRandomGame(String args){
+    /**
+     * Returns a SteamGame with a normal distribution based on review(0-100).
+     * The higher the review, the bigger the chance for returning that game.
+     * The argument specifies which genre the game should be. Null means any genre.
+     * @param genre
+     * @return 
+     */
+    public static SteamGame getRandomGame(String genre){
         Random r = new Random();
-        if(args.equals(null)){
+        if(genre.equals(null)){
             int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
             while(gamegaussian>data.allgames.getApps().size()){
                 gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
             }
             return data.allgames.getApps().get(gamegaussian);
         }else{
-            int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getGenreArray(args).size());
-            while(gamegaussian>data.allgames.getGenreArray(args).size()){
-                gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getGenreArray(args).size());
+            int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getGenreArray(genre).size());
+            while(gamegaussian>data.allgames.getGenreArray(genre).size()){
+                gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getGenreArray(genre).size());
             }
-            return data.allgames.getGenreArray(args).get(gamegaussian);
+            return data.allgames.getGenreArray(genre).get(gamegaussian);
         }
     }
     
@@ -298,18 +337,8 @@ public class SteamJavaLibrary extends Application{
         new Thread(task).start();
        
     }
-    public static void appendText(String str) {
-        Platform.runLater(() -> textField.appendText(str));
-    }
-    
-    public static void startsimulation(int args){
-        if(args==1){   
-            timeline.setCycleCount(Animation.INDEFINITE);
-            timeline.play();
-        }else{
-            timeline.stop();
-        }
-    }
+
+    //placeholder for printing a random user
     public static String[] Printrandom(){
         Random r = new Random();
         SteamUser user1 = data.allusers.getUsers().get(r.nextInt(data.allusers.getUsers().size()));
@@ -318,7 +347,11 @@ public class SteamJavaLibrary extends Application{
         returni[1] = user1.getAvatar();
         return returni;
     }
-    
+    /**
+     * The main for the project.
+     * Launches the UI.
+     * @param args 
+     */
     public static void main(String[] args){
         launch(args);
     }
