@@ -1,48 +1,38 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package steamjavalibrary;
+
 import java.util.ArrayList;
 import java.lang.Math;
 import java.util.Random;
 /**
- *
+ * A class for an individual steam game.
  * @author Jonnie
  */
 public class SteamGame implements Comparable<SteamGame>{
     private int appid;
     private String name;
     private double price;
-    private final String type; //Type of release. AAA / AA / A
+    private final String type; //Type of release. AAA / normal / indie
     private final String genre;
     private final int review;    //0-100, review score and word of mouth
     private final int marketing; //0-100, marketing amount, bigger audience
     private int soldunits;
     private double revenue; //append on sales
     private double steamcut; //steam cut from revenue, append on sales
-    private GameBehaviour behaviour;
+    private final GameBehaviour behaviour;
     private final ArrayList<PurchaseHist> history = new ArrayList();
-
-    public void gameSold(){
-        //calulate the 80% that will go to revenue and round it, leftover 20% to steamcut
-        incrementSoldunits();
-        double roundedrevenue = round2decimal(getPrice()*0.7);
-        incrementRevenue(roundedrevenue);
-        incrementSteamcut(getPrice()-roundedrevenue);
-        SteamJavaLibrary.data.incrementSold();
-    }
-    public void addHistory(PurchaseHist history){
-        this.history.add(history);
-    }
+    
+    /**
+     * The constructor for a steamgame.
+     * Creates random values for the game. Appid and name are created by the
+     * grandparent data zip constructor.
+     */
     public SteamGame() {
         Random r = new Random();
         behaviour = new GameBehaviour();
         revenue = 0.0;
         steamcut = 0.0;
         soldunits = 0;
-        double randomseed = r.nextInt(100);
+        int randomseed = r.nextInt(100);
         if(randomseed<15){
             type="AAA";
             price=40 + round2decimal(r.nextDouble()*20);
@@ -68,37 +58,87 @@ public class SteamGame implements Comparable<SteamGame>{
         }else{
             review = r.nextInt(100);
         }
-        genre = SteamJavaLibrary.data.genreslist[r.nextInt(SteamJavaLibrary.data.genreslist.length)];
+        String[] genrelist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
+        genre = genrelist[r.nextInt(genrelist.length)];
     }
     
+    /**
+     * Defines the custom comparison to compare SteamGame reviews.
+     * @param steamgame
+     * @return 
+     */
     @Override
     public int compareTo(SteamGame steamgame){
         int comparevariation=((SteamGame)steamgame).getReview();
         return comparevariation-this.getReview();
     }
     
-    public void incrementSteamcut(double steamcut){
-        this.steamcut += steamcut;
+    /**
+     * Method called when a game is sold. Counts the different revenues.
+     */
+    public void gameSold(){
+        //calulate the 80% that will go to revenue and round it, leftover 20% to steamcut
+        incrementSoldunits();
+        double roundedrevenue = round2decimal(getPrice()*0.7);
+        incrementRevenue(roundedrevenue);
+        incrementSteamcut(getPrice()-roundedrevenue);
+        SteamJavaLibrary.data.addSteamrevenue(getPrice()-roundedrevenue);
+        SteamJavaLibrary.data.incrementSold();
     }
+    
+    /**
+     * Adds a PurchaseHist object to the games purchase history.
+     * @param history 
+     */
+    public void addHistory(PurchaseHist history){
+        this.history.add(history);
+    }
+    
+    /**
+     * Increments the double value to steamcut.
+     * @param value 
+     */
+    public void incrementSteamcut(double value){
+        steamcut += value;
+    }
+    
+    /**
+     * Increments revenue.
+     * @param revenue 
+     */
     public void incrementRevenue(double revenue){
         this.revenue += revenue;
     }
+    
+    /**
+     * Increments the amount of soldunits by 1.
+     */
     public void incrementSoldunits(){
         soldunits = soldunits + 1;
     }
+    
+    /**
+     * Reduces the price of the game.
+     */
     public void reducePrice() {
         double percent = 1-behaviour.getPricedropamount()/100;
         price=round2decimal(price*percent);
     }
     
-    //ROUNDS DOUBLE TO 2 DECIMAL POINTS, 12.3059 -> 12.31
-    //USE AFTER MULTIPLYING A DOUBLE
+    /**
+     * Rounds a double to two decimal points.
+     * @param arg
+     * @return 
+     */
     public double round2decimal(double arg){
         arg=arg*100;
         return Math.round(arg)/100;       
     }
-    
-    //PUBLIC GETTERS
+
+    public ArrayList<PurchaseHist> getHistory() {
+        return history;
+    }
+  
     public String getName() {
         return name;
     }

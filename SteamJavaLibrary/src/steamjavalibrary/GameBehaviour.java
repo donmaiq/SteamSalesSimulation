@@ -8,7 +8,7 @@ import java.lang.Math;
 import java.util.Random;
 
 /**
- *
+ * A class containing information of a games behaviour.
  * @author Jonnie
  */
 public class GameBehaviour {

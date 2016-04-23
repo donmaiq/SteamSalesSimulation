@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package steamjavalibrary;
 
 import java.util.ArrayList;
@@ -68,6 +63,7 @@ public class SteamJavaLibrary extends Application{
             startsimulation(0);
         }
     }
+    
     /**
      * Starts or stops the simulation based on the args.
      * 1 will play and 0 will stop.
@@ -81,6 +77,7 @@ public class SteamJavaLibrary extends Application{
             timeline.stop();
         }
     }
+    
     /**
      * Outputs a string to the simulations textarea.
      * @param string
@@ -88,6 +85,7 @@ public class SteamJavaLibrary extends Application{
     public static void appendText(String string) {
         Platform.runLater(() -> textField.appendText(string));
     }
+    
     /**
      * Sells an amount of games specified in the argument.
      * @param amount 
@@ -103,6 +101,7 @@ public class SteamJavaLibrary extends Application{
         }
         appendText(sold+" games sold\n");
     }
+    
     /**
      * Returns a random user with a normal distribution based on users variationscale(0-100).
      * The higher the variation the bigger the chance to return that user.
@@ -110,12 +109,13 @@ public class SteamJavaLibrary extends Application{
      */
     public static SteamUser getRandomUser(){
         Random r = new Random();
-        int usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
-        while(usergaussian>data.allusers.getUsers().size()){
-           usergaussian = (int) Math.abs(r.nextGaussian()/2*data.allusers.getUsers().size());
+        int usergaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllusers().getUsers().size());
+        while(usergaussian>data.getAllusers().getUsers().size()){
+           usergaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllusers().getUsers().size());
         }
-        return data.allusers.getUsers().get(usergaussian);
+        return data.getAllusers().getUsers().get(usergaussian);
     }
+    
     /**
      * Returns a SteamGame with a normal distribution based on review(0-100).
      * The higher the review, the bigger the chance for returning that game.
@@ -126,21 +126,25 @@ public class SteamJavaLibrary extends Application{
     public static SteamGame getRandomGame(String genre){
         Random r = new Random();
         if(genre.equals(null)){
-            int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
-            while(gamegaussian>data.allgames.getApps().size()){
-                gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getApps().size());
+            int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllgames().getApps().size());
+            while(gamegaussian>data.getAllgames().getApps().size()){
+                gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllgames().getApps().size());
             }
-            return data.allgames.getApps().get(gamegaussian);
+            return data.getAllgames().getApps().get(gamegaussian);
         }else{
-            int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getGenreArray(genre).size());
-            while(gamegaussian>data.allgames.getGenreArray(genre).size()){
-                gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.allgames.getGenreArray(genre).size());
+            int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllgames().getGenreArray(genre).size());
+            while(gamegaussian>data.getAllgames().getGenreArray(genre).size()){
+                gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllgames().getGenreArray(genre).size());
             }
-            return data.allgames.getGenreArray(genre).get(gamegaussian);
+            return data.getAllgames().getGenreArray(genre).get(gamegaussian);
         }
     }
     
-    //UI LOGIC BELOW
+    /**
+     * Runs the UI for the application.
+     * @param primaryStage
+     * @throws Exception 
+     */
     @Override
     public void start(Stage primaryStage) throws Exception{
         Group root = new Group();
@@ -222,8 +226,8 @@ public class SteamJavaLibrary extends Application{
                         simbut2.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                for(int a=0;a<data.allgames.getApps().size();a++){
-                                    System.out.println(data.allgames.getApps().get(a).getReview());
+                                for(int a=0;a<data.getAllgames().getApps().size();a++){
+                                    System.out.println(data.getAllgames().getApps().get(a).getReview());
                                 }
                             }
                         });
@@ -341,7 +345,7 @@ public class SteamJavaLibrary extends Application{
     //placeholder for printing a random user
     public static String[] Printrandom(){
         Random r = new Random();
-        SteamUser user1 = data.allusers.getUsers().get(r.nextInt(data.allusers.getUsers().size()));
+        SteamUser user1 = data.getAllusers().getUsers().get(r.nextInt(data.getAllusers().getUsers().size()));
         String[] returni = new String[2];
         returni[0] = user1.getPersonaname();
         returni[1] = user1.getAvatar();

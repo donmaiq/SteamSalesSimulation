@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class containing different ArrayLists containing SteamGames sorted by genre.
+ * @author Jonnie
+ */
 public class GamesArray {
     private ArrayList<SteamGame> app = new ArrayList();
     
@@ -17,6 +21,12 @@ public class GamesArray {
     private final ArrayList<SteamGame> genrerts = new ArrayList();
     private final Map<String, ArrayList<SteamGame>> genreControl = new HashMap();
     
+    public GamesArray(){
+    }
+    
+    /**
+     * Custom controller that populates genre arraylists after the main list has been sorted.
+     */
     public void setupLists(){
         for(int i=0;i<getApps().size();i++){
             if(getApps().get(i).getGenre().equals("rpg")){genrerpg.add(getApps().get(i));}
@@ -28,7 +38,7 @@ public class GamesArray {
             else if(getApps().get(i).getGenre().equals("rts")){genrerts.add(getApps().get(i));}
         }
         genreControl.put("rpg", genrerpg);
-        genreControl.put("mmo", genrerpg);
+        genreControl.put("mmo", genremmo);
         genreControl.put("fps", genrefps);
         genreControl.put("casual", genrecasual);
         genreControl.put("adventure", genreadventure);
@@ -39,9 +49,11 @@ public class GamesArray {
     public ArrayList<SteamGame> getApps() {
         return app;
     }
+    
     public ArrayList<SteamGame> getGenreArray(String string){
         return genreControl.get(string);
     }
+    
     public void addApps(SteamGame apps) {
         this.app.add(apps);
     }

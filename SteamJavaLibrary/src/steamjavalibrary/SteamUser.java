@@ -7,7 +7,7 @@ package steamjavalibrary;
 import java.util.ArrayList;
 import java.util.Random;
 /**
- *
+ * A class for an Individual steam user.
  * @author Jonnie
  */
 public class SteamUser implements Comparable<SteamUser>{
@@ -18,48 +18,60 @@ public class SteamUser implements Comparable<SteamUser>{
     private final ArrayList<SteamGame> ownedgames = new ArrayList();
     private final ArrayList<PurchaseHist> history = new ArrayList();
     
-    //Constructor
+    /**
+     * Empty constructor for Gson to create user from json.
+     */
     public SteamUser() {
-        //PopulateGames();
-    }    
-    //Populate ownedgames with random games
-    private void PopulateGames(){
-        Random r = new Random();
-        for(int i=0;i<r.nextInt(4)+1;i++){
-            int index = r.nextInt(SteamJavaLibrary.data.allgames.getApps().size());
-            ownedgames.add(SteamJavaLibrary.data.allgames.getApps().get(index));
-        }
-    }
+    } 
+    
+    /**
+     * Defines the custom comparison to compare steamuser variationscale.
+     * @param steamuser
+     * @return 
+     */
     @Override
     public int compareTo(SteamUser steamuser){
         int comparevariation=((SteamUser)steamuser).getBehaviour().getVariationscale();
         return comparevariation-this.getBehaviour().getVariationscale();
     }
     
-    public ArrayList<SteamGame> getOwnedgames() {
-        return ownedgames;
-    }
-    
-    //ADD GAME TO USERS LIBRARY, RETURNS TRUE WHEN ADDED, FALSE IF GAME WAS ALREADY IN
-    //CALL THIS AFTER BUYING GAME
+    /**
+     * Method for purchasing a newgame. If the newgame is owned, return false,
+     * else will return true after creating a PurchaseHist object.
+     * @param newgame
+     * @return 
+     */
     public boolean buyGame(SteamGame newgame) {
         if(ownedgames.contains(newgame)) return false;
         ownedgames.add(newgame);
         PurchaseHist temphist = new PurchaseHist(newgame,this);
         history.add(temphist);
         newgame.addHistory(temphist);
+        SteamJavaLibrary.data.addHistory(temphist);
         newgame.gameSold();
         return true;
     }
+    
+    public ArrayList<SteamGame> getOwnedgames() {
+        return ownedgames;
+    }
+    
+    public ArrayList<PurchaseHist> getHistory(){
+        return history;
+    }
+    
     public long getSteamid() {
         return steamid;
     }
+    
     public String getPersonaname() {
         return personaname;
     }
+    
     public String getAvatar() {
         return avatar;
     }
+    
     public UserBehaviour getBehaviour() {
         return behaviour;
     }

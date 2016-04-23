@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package steamjavalibrary;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 /**
- *
+ * A class that specifies a users behaviour.
  * @author Jonnie
  */
 public class UserBehaviour {
@@ -21,11 +17,15 @@ public class UserBehaviour {
         hypescale = r.nextInt(100);
         variationscale = r.nextInt(101);
         genrespectrum = new HashMap();
-        String[] genres = SteamJavaLibrary.data.genreslist;
+        String[] genres = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
         for(int i=0;i<genres.length;i++){
             genrespectrum.put(genres[i], r.nextInt(100));
         }
     }
+    /**
+     * returns the string of the favourite genre of the user.
+     * @return 
+     */
     public String getFavGenre(){
         int max = 0;
         String fav = null;
@@ -34,12 +34,15 @@ public class UserBehaviour {
         }
         return fav;
     }
+    
     public int getHypescale() {
         return hypescale;
     }
+    
     public int getVariationscale() {
         return variationscale;
     }
+    
     public Map<String, Integer> getGenrespectrum() {
         return genrespectrum;
     }

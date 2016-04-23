@@ -14,6 +14,9 @@ import java.util.Collections;
 public class UsersArray {
     private ArrayList<SteamUser> users = new ArrayList();
     
+    public UsersArray(){
+    }
+    
     public ArrayList<SteamUser> getUsers() {
         return users;
     }

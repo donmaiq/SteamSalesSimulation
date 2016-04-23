@@ -9,17 +9,40 @@ import java.util.Enumeration;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Serializable;
+import java.util.ArrayList;
 
+/**
+ * A class containing all data concerning the simulation.
+ * User and Game data is loaded from zip files containing 
+ * json files with 15000 games and 200000 users.
+ * Object children tree:
+ *      GamesArray
+ *          SteamGame
+ *              GameBehaviour
+ *      UsersArray
+ *          SteamUser
+ *              UserBehaviour
+ * 
+ * @author Jonnie
+ */
 public class Data {
-    public static boolean steamsale;
-    public static  GamesArray allgames = new GamesArray();
-    public static  UsersArray allusers = new UsersArray();
-    public static String[] genreslist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
+    private boolean steamsale;
+    private GamesArray allgames = new GamesArray();
+    private UsersArray allusers = new UsersArray();
+    private String[] genreslist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
+    private int gamessold = 0;
+    private double steamrevenue = 0;
+    private ArrayList<PurchaseHist> allhistory = new ArrayList();
     
-    private static int gamessold;
+    /**
+     * Constructor for the Data class.
+     * Loads content from zip files and creates allgames and allusers classes from them.
+     * After creation they are sorted and an additional construtor for allgames is ran.
+     */
     public Data(){
-        this.steamsale=false;
-        gamessold = 0;
+        steamsale=false;
+        gamessold = 0;       
         Gson gson = new GsonBuilder().create();
         try(ZipFile zipFile = new ZipFile(new File("src/resources/allgames.zip")) ){
             System.out.println("\nLoading Users...");
@@ -51,18 +74,75 @@ public class Data {
         allusers.sortUsers();
         allgames.setupLists();
     }
-
-    public static int getGamessold() {
+    
+    /**
+     * Adds a PurchaseHist object to the allhistory ArrayList.
+     * @param purchase 
+     */
+    public void addHistory(PurchaseHist purchase){
+        allhistory.add(purchase);
+    }
+    
+    /**
+     * Adds the specified amount to steamrevenue. 
+     * @param amount 
+     */
+    public void addSteamrevenue(double amount){
+        steamrevenue += amount;
+    }
+    
+    /**
+     * Getter for the GamesArray object.
+     * @return 
+     */
+    public GamesArray getAllgames() {
+        return allgames;
+    }
+    
+    /**
+     * Getter for the UsersArray object.
+     * @return 
+     */
+    public UsersArray getAllusers() {
+        return allusers;
+    }
+    
+    /**
+     * Getter for the genrelist String array.
+     * @return 
+     */
+    public String[] getGenreslist() {
+        return genreslist;
+    }
+    
+    /**
+     * Getter for total amount of games sold.
+     * @return 
+     */
+    public int getGamessold() {
         return gamessold;
     }
     
-    public static void incrementSold(){
+    /**
+     * Increments games sold by 1.
+     */
+    public void incrementSold(){
         gamessold+=1;
     }
-    public static boolean isSale() {
+    
+    /**
+     * Returns boolean of state of sale events.
+     * @return 
+     */
+    public boolean isSteamsale() {
         return steamsale;
     }
-    public static void setSale(boolean sale) {
-        Data.steamsale = sale;
+    
+    /**
+     * Sets the boolean value for steamsale.
+     * @param sale 
+     */
+    public void setSale(boolean sale) {
+        steamsale = sale;
     }
 }
