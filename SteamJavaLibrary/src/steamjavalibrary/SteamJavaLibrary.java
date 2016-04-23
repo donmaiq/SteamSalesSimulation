@@ -7,8 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
-
-//testing utils
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import java.util.Random;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -19,6 +20,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
@@ -45,6 +47,8 @@ public class SteamJavaLibrary extends Application{
     public static Data data;
     public static int simCount=1;
     public static TextArea textField = new TextArea();
+    public static XYChart.Series series = new XYChart.Series();
+    public static XYChart.Series series2 = new XYChart.Series();
     public static Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), 
             event -> mainLoop()));
     
@@ -55,9 +59,9 @@ public class SteamJavaLibrary extends Application{
     public static void mainLoop(){
         if(simCount<366){
             Random r = new Random();
-            appendText("Day "+simCount+"\n");
-            sellGames(r.nextInt(5)+5);
-            appendText("Total games sold"+data.getGamessold()+"\n\n");
+            appendText("\nDay "+simCount+"\n");
+            sellGames((int) Math.abs(r.nextGaussian()*1000)+300);
+            appendText("Total games sold "+data.getGamessold()+"\n");
             simCount++;
         }else{
             startsimulation(0);
@@ -92,13 +96,19 @@ public class SteamJavaLibrary extends Application{
      */
     public static void sellGames(int amount){
         int sold=0;
-        for(int i=0;i<amount;i++){       
+        Random r = new Random();
+        for(int i=0;i<amount;i++){
             SteamUser ruser = getRandomUser();
             String genre = ruser.getBehaviour().getFavGenre();
-            SteamGame rgame = getRandomGame(genre);
+            SteamGame rgame;
+            if(r.nextBoolean()){
+                rgame = getRandomGame(genre);
+            }else{
+                rgame = getRandomGame("");
+            }
             if(ruser.buyGame(rgame)) sold++;
-            if(i+1==amount) appendText(ruser.getPersonaname()+" bought "+rgame.getName()+"\n");
         }
+        updategraphs(sold);
         appendText(sold+" games sold\n");
     }
     
@@ -110,7 +120,7 @@ public class SteamJavaLibrary extends Application{
     public static SteamUser getRandomUser(){
         Random r = new Random();
         int usergaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllusers().getUsers().size());
-        while(usergaussian>data.getAllusers().getUsers().size()){
+        while(usergaussian+1>data.getAllusers().getUsers().size()){
            usergaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllusers().getUsers().size());
         }
         return data.getAllusers().getUsers().get(usergaussian);
@@ -125,19 +135,32 @@ public class SteamJavaLibrary extends Application{
      */
     public static SteamGame getRandomGame(String genre){
         Random r = new Random();
-        if(genre.equals(null)){
+        if(genre.equals("")){
             int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllgames().getApps().size());
-            while(gamegaussian>data.getAllgames().getApps().size()){
+            while(gamegaussian+1>data.getAllgames().getApps().size()){
                 gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllgames().getApps().size());
             }
             return data.getAllgames().getApps().get(gamegaussian);
         }else{
             int gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllgames().getGenreArray(genre).size());
-            while(gamegaussian>data.getAllgames().getGenreArray(genre).size()){
+            while(gamegaussian+1>data.getAllgames().getGenreArray(genre).size()){
                 gamegaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllgames().getGenreArray(genre).size());
             }
             return data.getAllgames().getGenreArray(genre).get(gamegaussian);
         }
+    }
+    public static void initgraphs(){
+        int[] reviews = new int[101];
+        for(int i=0;i<data.getAllgames().getApps().size();i++){
+            SteamGame game = data.getAllgames().getApps().get(i);
+            reviews[game.getReview()] += 1;
+        }
+        for(int a=0;a<reviews.length;a++){
+            series2.getData().add(new XYChart.Data(a, reviews[a]));
+        }
+    }
+    public static void updategraphs(int soldcount){
+        series.getData().add(new XYChart.Data(simCount, soldcount));
     }
     
     /**
@@ -216,7 +239,6 @@ public class SteamJavaLibrary extends Application{
                 grid1.setVgap(10);
                 grid1.setPadding(new Insets(5, 5, 5, 5));
                 
-                
                 //TESTBUTTON
                         Button simbut2 = new Button();
                         simbut2.setText("TEST");
@@ -226,8 +248,13 @@ public class SteamJavaLibrary extends Application{
                         simbut2.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                for(int a=0;a<data.getAllgames().getApps().size();a++){
-                                    System.out.println(data.getAllgames().getApps().get(a).getReview());
+                                System.out.println("The last 10 receipts.");
+                                ArrayList<PurchaseHist> hist = data.getAllhistory();
+                                for(int a=10;a>0;a--){
+                                    String game = hist.get(hist.size()-a).getGame().getName();
+                                    String user = hist.get(hist.size()-a).getUser().getPersonaname();
+                                    double price = hist.get(hist.size()-a).getPrice();
+                                    appendText("\n"+user+"\n"+game+"\n"+price+"\n");
                                 }
                             }
                         });
@@ -272,7 +299,26 @@ public class SteamJavaLibrary extends Application{
                 grid2.setHgap(10);
                 grid2.setVgap(10);
                 grid2.setPadding(new Insets(5, 5, 5, 5));
-            tab2.setContent(grid2);
+                final NumberAxis xAxis = new NumberAxis();
+                final NumberAxis yAxis = new NumberAxis();
+                xAxis.setLabel("Day number");
+                yAxis.setLabel("units sold");
+                final LineChart<Number,Number> lineChart = 
+                new LineChart<Number,Number>(xAxis,yAxis);
+                lineChart.setTitle("Sale Monitoring");
+                lineChart.getData().add(series);
+                
+                final NumberAxis xAxis2 = new NumberAxis();
+                final NumberAxis yAxis2 = new NumberAxis();
+                xAxis2.setLabel("Review value");
+                yAxis2.setLabel("review amounts");
+                final LineChart<Number,Number> lineChart2 = 
+                new LineChart<Number,Number>(xAxis2,yAxis2);
+                lineChart2.setTitle("Review Monitoring");
+                lineChart2.getData().add(series2);
+                
+            
+            tab2.setContent(lineChart);
             tabPane.getTabs().add(tab2);
         //END OF SECOND TAB
         
@@ -329,6 +375,7 @@ public class SteamJavaLibrary extends Application{
             }
         };
         task.setOnSucceeded(e -> {
+                    initgraphs();
                     pictureRegion.getChildren().clear();
                     pictureRegion.getChildren().add(imv2);
                     pictureRegion.setOnMousePressed(new EventHandler<MouseEvent>() {

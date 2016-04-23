@@ -58,8 +58,18 @@ public class SteamGame implements Comparable<SteamGame>{
         }else{
             review = r.nextInt(100);
         }
+        int rand = r.nextInt(100);
+        int index;
+        if(rand<10){index=0;
+        }else if(rand<14){index=1;
+        }else if(rand<35){index=2;
+        }else if(rand<50){index=3;
+        }else if(rand<66){index=4;
+        }else if(rand<88){index=5;
+        }else{index=6;}
+        //todo: importing genrelist from data not working?
         String[] genrelist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
-        genre = genrelist[r.nextInt(genrelist.length)];
+        genre = genrelist[index];
     }
     
     /**
@@ -135,6 +145,14 @@ public class SteamGame implements Comparable<SteamGame>{
         return Math.round(arg)/100;       
     }
 
+    public int getAppid() {
+        return appid;
+    }
+
+    public int getSoldunits() {
+        return soldunits;
+    }
+
     public ArrayList<PurchaseHist> getHistory() {
         return history;
     }
@@ -142,34 +160,36 @@ public class SteamGame implements Comparable<SteamGame>{
     public String getName() {
         return name;
     }
-    public int getAppID() {
-        return appid;
-    }
+    
     public double getPrice() {
         return price;
     }
+    
     public String getType() {
         return type;
     }
+    
     public String getGenre() {
         return genre;
     }
+    
     public int getReview() {
         return review;
     }
+    
     public int getMarketing() {
         return marketing;
     }
+    
     public double getRevenue() {
         return revenue;
     }
+    
     public double getSteamcut() {
         return steamcut;
     }
+    
     public GameBehaviour getBehaviour() {
         return behaviour;
     }
-    
-    
-    
 }

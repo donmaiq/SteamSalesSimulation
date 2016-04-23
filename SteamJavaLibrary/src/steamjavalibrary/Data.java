@@ -100,6 +100,14 @@ public class Data {
     }
     
     /**
+     * Getter for the Array of all purchases.
+     * @return 
+     */
+    public ArrayList<PurchaseHist> getAllhistory() {
+        return allhistory;
+    }
+    
+    /**
      * Getter for the UsersArray object.
      * @return 
      */
