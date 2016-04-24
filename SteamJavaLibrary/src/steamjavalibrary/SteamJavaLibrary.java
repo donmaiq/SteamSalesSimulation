@@ -61,11 +61,28 @@ public class SteamJavaLibrary extends Application{
             Random r = new Random();
             appendText("\nDay "+simCount+"\n");
             sellGames((int) Math.abs(r.nextGaussian()*1000)+300);
-            appendText("Total games sold "+data.getGamessold()+"\n");
+            appendText("Total games sold "+formatthousands(data.getGamessold(),false)+"\n");
+            
+            appendText("Total revenue: "+formatthousands(data.getSteamrevenue(),false)+"€\n");
             simCount++;
         }else{
             startsimulation(0);
         }
+    }
+    /**
+     * Formats a double with a space between thousands.
+     * Amount is the double to be formatted, decimal is a boolean
+     * for preserving decimals. Returns the formatted double as a string.
+     * @param amount
+     * @param decimal
+     * @return 
+     */
+    public static String formatthousands(double amount, boolean decimal){        
+        int tmpint = (int) Math.floor(amount);
+        if(!decimal) return String.format("%,d", tmpint).replace(",", " ");
+        String part1 = String.format("%,d", tmpint).replace(",", " ");
+        String part2 = (""+(amount-tmpint)).substring(1);
+        return part1+part2;
     }
     
     /**
@@ -310,6 +327,8 @@ public class SteamJavaLibrary extends Application{
                 
                 final NumberAxis xAxis2 = new NumberAxis();
                 final NumberAxis yAxis2 = new NumberAxis();
+                xAxis2.setLowerBound(0);
+                xAxis2.setUpperBound(100);
                 xAxis2.setLabel("Review value");
                 yAxis2.setLabel("review amounts");
                 final LineChart<Number,Number> lineChart2 = 

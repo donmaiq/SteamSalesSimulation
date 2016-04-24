@@ -100,6 +100,16 @@ public class Data {
     }
     
     /**
+     * Getter for total steam revenue.
+     * @return 
+     */
+    public double getSteamrevenue() {
+        return steamrevenue;
+    }
+    
+    
+    
+    /**
      * Getter for the Array of all purchases.
      * @return 
      */
