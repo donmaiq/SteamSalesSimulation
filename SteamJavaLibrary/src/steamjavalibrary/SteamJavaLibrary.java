@@ -81,13 +81,13 @@ public class SteamJavaLibrary extends Application{
             startsimulation(0);
         }
     }
+    
     /**
-     * Formats a double with a space between thousands.
-     * Amount is the double to be formatted, decimal is a boolean
-     * for preserving decimals. Returns the formatted double as a string.
-     * @param amount
-     * @param decimal
-     * @return 
+     * Formats a value with a space between thousands.
+     * 
+     * @param amount double to format.
+     * @param decimal boolean to preserve decimal points.
+     * @return Formatted value as a string.
      */
     public static String formatthousands(double amount, boolean decimal){        
         int tmpint = (int) Math.floor(amount);
@@ -99,8 +99,8 @@ public class SteamJavaLibrary extends Application{
     
     /**
      * Starts or stops the simulation based on the args.
-     * 1 will play and 0 will stop.
-     * @param args 
+     * 
+     * @param args 1 will play and 0 will stop.
      */
     public static void startsimulation(int args){
         if(args==1){
@@ -122,7 +122,6 @@ public class SteamJavaLibrary extends Application{
     /**
      * Counts the base of daily sales for a weekly discount game
      * depending on the nature of the sale.
-     * @return 
      */
     public static void countWeeklydiscountsold(){
         int discountreview = data.getWeeklydiscount().getReview();
@@ -205,9 +204,9 @@ public class SteamJavaLibrary extends Application{
     /**
      * Returns a SteamGame with a normal distribution based on review(0-100).
      * The higher the review, the bigger the chance for returning that game.
-     * The argument specifies which genre the game should be. Null means any genre.
-     * @param genre
-     * @return 
+     * 
+     * @param genre String of genre to buy, empty string means any genre.
+     * @return a random SteamGame object
      */
     public static SteamGame getRandomGame(String genre){
         Random r = new Random();
