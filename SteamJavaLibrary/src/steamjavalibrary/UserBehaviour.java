@@ -14,16 +14,16 @@ public class UserBehaviour {
 
     public UserBehaviour() {
         Random r = new Random();
-        hypescale = r.nextInt(100);
+        hypescale = r.nextInt(101);
         variationscale = r.nextInt(101);
         genrespectrum = new HashMap();
         String[] genres = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
         for(int i=0;i<genres.length;i++){
-            genrespectrum.put(genres[i], r.nextInt(100));
+            genrespectrum.put(genres[i], r.nextInt(101));
         }
     }
     /**
-     * returns the string of the favourite genre of the user.
+     * returns the string of the favorite genre of the user.
      * @return 
      */
     public String getFavGenre(){

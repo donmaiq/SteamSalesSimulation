@@ -9,8 +9,8 @@ import java.util.Enumeration;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A class containing all data concerning the simulation.
@@ -34,6 +34,7 @@ public class Data {
     private int gamessold = 0;
     private double steamrevenue = 0;
     private ArrayList<PurchaseHist> allhistory = new ArrayList();
+    private SteamGame weeklydiscount;
     
     /**
      * Constructor for the Data class.
@@ -41,8 +42,8 @@ public class Data {
      * After creation they are sorted and an additional construtor for allgames is ran.
      */
     public Data(){
-        steamsale=false;
-        gamessold = 0;       
+        steamsale = false;
+        gamessold = 0; 
         Gson gson = new GsonBuilder().create();
         try(ZipFile zipFile = new ZipFile(new File("src/resources/allgames.zip")) ){
             System.out.println("\nLoading Users...");
@@ -73,6 +74,20 @@ public class Data {
         allgames.sortGames();
         allusers.sortUsers();
         allgames.setupLists();
+        Random r = new Random();
+        weeklydiscount = allgames.getApps().get(r.nextInt(allgames.getApps().size()));
+        weeklydiscount.setGameonsale();
+    }
+    
+    public void shuffleWeeklydiscount(){
+        Random r = new Random();
+        weeklydiscount.removeSale();
+        weeklydiscount = allgames.getApps().get(r.nextInt(allgames.getApps().size()));
+        weeklydiscount.setGameonsale();
+    }
+    
+    public SteamGame getWeeklydiscount(){
+        return weeklydiscount;
     }
     
     /**
@@ -106,8 +121,6 @@ public class Data {
     public double getSteamrevenue() {
         return steamrevenue;
     }
-    
-    
     
     /**
      * Getter for the Array of all purchases.

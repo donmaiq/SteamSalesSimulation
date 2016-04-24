@@ -1,7 +1,6 @@
 package steamjavalibrary;
 
 import java.util.ArrayList;
-import java.lang.Math;
 import java.util.Random;
 /**
  * A class for an individual steam game.
@@ -11,6 +10,9 @@ public class SteamGame implements Comparable<SteamGame>{
     private int appid;
     private String name;
     private double price;
+    private double saleprice;
+    private int saleamount;
+    private boolean sale = false;
     private final String type; //Type of release. AAA / normal / indie
     private final String genre;
     private final int review;    //0-100, review score and word of mouth
@@ -32,18 +34,18 @@ public class SteamGame implements Comparable<SteamGame>{
         revenue = 0.0;
         steamcut = 0.0;
         soldunits = 0;
-        int randomseed = r.nextInt(100);
+        int randomseed = r.nextInt(101);
         if(randomseed<15){
             type="AAA";
-            price=40 + round2decimal(r.nextDouble()*20);
-            marketing = r.nextInt(20)+80;
+            price=40 + r.nextInt(21);
+            marketing = r.nextInt(21)+80;
         }else if(randomseed<80){
             type="Normal";
-            price=10 + round2decimal(r.nextDouble()*20);
-            marketing = r.nextInt(80)+20;
+            price=10 + r.nextInt(21);
+            marketing = r.nextInt(81)+20;
         }else{
             type="Indie";
-            price=3 + round2decimal(r.nextDouble()*10);
+            price=3 + r.nextInt(21);
             marketing = r.nextInt(20);
         }
         //75% chance for a normal distribution 50-100
@@ -70,6 +72,7 @@ public class SteamGame implements Comparable<SteamGame>{
         //todo: importing genrelist from data not working?
         String[] genrelist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
         genre = genrelist[index];
+        saleprice = price;
     }
     
     /**
@@ -87,13 +90,13 @@ public class SteamGame implements Comparable<SteamGame>{
      * Method called when a game is sold. Counts the different revenues.
      */
     public void gameSold(){
-        //calulate the 80% that will go to revenue and round it, leftover 20% to steamcut
-        incrementSoldunits();
-        double roundedrevenue = round2decimal(getPrice()*0.7);
+        double sellingprice = (isSale() ? getSaleprice() : getPrice());
+        double roundedrevenue = round2decimal(sellingprice*0.7);
         incrementRevenue(roundedrevenue);
         incrementSteamcut(getPrice()-roundedrevenue);
         SteamJavaLibrary.data.addSteamrevenue(getPrice()-roundedrevenue);
         SteamJavaLibrary.data.incrementSold();
+        incrementSoldunits();
     }
     
     /**
@@ -102,6 +105,47 @@ public class SteamGame implements Comparable<SteamGame>{
      */
     public void addHistory(PurchaseHist history){
         this.history.add(history);
+    }
+    
+    /**
+     * Sets the steamgame on sale. Will calculate a sale price for the game.
+     */
+    public void setGameonsale(){
+        sale = true;
+        Random r = new Random();
+        saleamount = behaviour.getSalescale()[r.nextInt(3)];
+        saleprice = round2decimal(price * ((100.0-saleamount)/100));
+    }
+    
+    /**
+     * Stops the sale of a steamgame.
+     */
+    public void removeSale(){
+        sale=false;
+    }
+    
+    /**
+     * Gets the % how much the game is in sale.
+     * @return 
+     */
+    public int getSaleamount() {
+        return saleamount;
+    }
+    
+    /**
+     * Returns a boolean declaring state of sale.
+     * @return 
+     */
+    public boolean isSale(){
+        return sale;
+    }
+    
+    /**
+     * Gets the price the game is on sale for.
+     * @return 
+     */
+    public double getSaleprice(){
+        return saleprice;
     }
     
     /**
@@ -131,7 +175,7 @@ public class SteamGame implements Comparable<SteamGame>{
      * Reduces the price of the game.
      */
     public void reducePrice() {
-        double percent = 1-behaviour.getPricedropamount()/100;
+        double percent = 1-behaviour.getPricedropamount()/100.0;
         price=round2decimal(price*percent);
     }
     

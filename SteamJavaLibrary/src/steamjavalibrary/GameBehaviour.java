@@ -1,10 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package steamjavalibrary;
-import java.lang.Math;
 import java.util.Random;
 
 /**
@@ -12,29 +6,36 @@ import java.util.Random;
  * @author Jonnie
  */
 public class GameBehaviour {
-    private int salerating; //0-100, chance for a sale
-    private int[] salescale = new int[3];
-    private int pricetimescale; //0-100, variation in price over time
-    private int pricedropamount; //0-50 %, how much price drops per iteration
-
+    private final int salerating; //0-100, chance for a sale
+    private final int[] salescale = new int[3];
+    private final int pricetimescale; //0-100, variation in price over time
+    private final int pricedropamount; //0-50 %, how much price drops per iteration
+    
+    /**
+     * Constructor for the class. Randomly generates behaviour values for the object.
+     */
     public GameBehaviour() {
         Random r = new Random();
-        salerating = r.nextInt(100);
-        salescale[0] = (int) Math.ceil(r.nextDouble()*5)*5; //5-25
-        salescale[1] = (int) Math.ceil(r.nextDouble()*5+5)*5; //30-50
-        salescale[2] = (int) Math.ceil(r.nextDouble()*8+12)*5; //65-80
-        pricetimescale = r.nextInt(100); 
-        pricedropamount = (int) r.nextGaussian()*15+25; //normal dist. 10-40, 25peak.
+        salerating = r.nextInt(101);
+        salescale[0] = r.nextInt(21)+5; //5-25
+        salescale[1] = r.nextInt(21)+30; //30-50
+        salescale[2] = r.nextInt(16)+65; //65-80
+        pricetimescale = r.nextInt(101); 
+        pricedropamount = r.nextInt(31)+10; //10-40
     }
+    
     public int getPricedropamount() {
         return pricedropamount;
     }
+    
     public int getPricetimescale(){
         return pricetimescale;
     }
+    
     public int[] getSalescale(){
         return salescale;
     }
+    
     public int getSalerating(){
         return salerating;
     }

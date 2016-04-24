@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package steamjavalibrary;
 import java.util.ArrayList;
-import java.util.Random;
 /**
  * A class for an Individual steam user.
  * @author Jonnie
@@ -25,7 +19,7 @@ public class SteamUser implements Comparable<SteamUser>{
     } 
     
     /**
-     * Defines the custom comparison to compare steamuser variationscale.
+     * Defines the custom comparison to compare steamuser by variationscale.
      * @param steamuser
      * @return 
      */

@@ -1,6 +1,5 @@
 package steamjavalibrary;
 
-import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -20,7 +19,6 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
@@ -46,6 +44,7 @@ import javafx.util.Duration;
 public class SteamJavaLibrary extends Application{
     public static Data data;
     public static int simCount=1;
+    public static int discountsellamount;
     public static TextArea textField = new TextArea();
     public static XYChart.Series series = new XYChart.Series();
     public static XYChart.Series series2 = new XYChart.Series();
@@ -58,11 +57,24 @@ public class SteamJavaLibrary extends Application{
      */
     public static void mainLoop(){
         if(simCount<366){
+            if(simCount%7==0){
+                data.shuffleWeeklydiscount();
+                countWeeklydiscountsold();
+                appendText("\nNew weekly discount:\n"+data.getWeeklydiscount().getName()+
+                            "\n"+data.getWeeklydiscount().getSaleprice()+"€"+"\n"+
+                                data.getWeeklydiscount().getSaleamount()+"% sale\n");
+            }
+            //summersale
+            if(simCount==167) data.setSale(true);
+            if(simCount==174) data.setSale(false);
+            //winter sale
+            if(simCount==340) data.setSale(true);
+            if(simCount==347) data.setSale(false);
+            
             Random r = new Random();
             appendText("\nDay "+simCount+"\n");
-            sellGames((int) Math.abs(r.nextGaussian()*1000)+300);
-            appendText("Total games sold "+formatthousands(data.getGamessold(),false)+"\n");
-            
+            sellGames();
+            appendText("Total games sold: "+formatthousands(data.getGamessold(),false)+"\n");
             appendText("Total revenue: "+formatthousands(data.getSteamrevenue(),false)+"€\n");
             simCount++;
         }else{
@@ -108,18 +120,65 @@ public class SteamJavaLibrary extends Application{
     }
     
     /**
-     * Sells an amount of games specified in the argument.
-     * @param amount 
+     * Counts the base of daily sales for a weekly discount game
+     * depending on the nature of the sale.
+     * @return 
      */
-    public static void sellGames(int amount){
-        int sold=0;
+    public static void countWeeklydiscountsold(){
+        int discountreview = data.getWeeklydiscount().getReview();
+        double discountprice = data.getWeeklydiscount().getSaleprice();
+        int discountsize = data.getWeeklydiscount().getSaleamount();
+        int selldiscountamount = discountreview*discountreview/100; //exponential depending on reviewmax 100
+        
+        if(discountsize > 60){
+            if(discountprice<10){
+                selldiscountamount=selldiscountamount*10;
+            }else{
+                selldiscountamount=selldiscountamount*5;
+            }
+        }else if(discountsize>20){
+            if(discountprice<10){
+                selldiscountamount=selldiscountamount*8;
+            }else{
+                selldiscountamount=selldiscountamount*4;
+            }
+        }else{
+            if(discountprice<10){
+                selldiscountamount=selldiscountamount*6;
+            }else{
+                selldiscountamount=selldiscountamount*6;
+            }
+        }
+        discountsellamount = selldiscountamount;
+    }
+    
+    /**
+     * Sells games for one day.
+     */
+    public static void sellGames(){
         Random r = new Random();
+        int sold=0;
+        int amount = (int) Math.abs(r.nextGaussian()*100)+1000; // sell about 1000-1100 games
+        
+        //If the steamsale is on, sell more games. If not sell the weekly discount game.
+        if(data.isSteamsale()) { 
+            amount=amount*5 ;
+        }else{
+            int totalweeklysold = (int) Math.abs(discountsellamount + r.nextGaussian()/3*discountsellamount)+50;
+            for(int a=0;a<totalweeklysold;a++){
+                SteamUser ruser = data.getAllusers().getUsers().get(data.getAllusers().getUsers().size()-1);
+                ruser.buyGame(data.getWeeklydiscount());
+                sold++;
+            }
+        }
+        
         for(int i=0;i<amount;i++){
             SteamUser ruser = getRandomUser();
             String genre = ruser.getBehaviour().getFavGenre();
             SteamGame rgame;
+            // 50/50 if user buys a game in his favorite genre
             if(r.nextBoolean()){
-                rgame = getRandomGame(genre);
+                rgame = getRandomGame(genre); 
             }else{
                 rgame = getRandomGame("");
             }
@@ -166,6 +225,10 @@ public class SteamJavaLibrary extends Application{
             return data.getAllgames().getGenreArray(genre).get(gamegaussian);
         }
     }
+    
+    /**
+     * Initializes the graphs used to graph information about sales.
+     */
     public static void initgraphs(){
         int[] reviews = new int[101];
         for(int i=0;i<data.getAllgames().getApps().size();i++){
@@ -176,6 +239,11 @@ public class SteamJavaLibrary extends Application{
             series2.getData().add(new XYChart.Data(a, reviews[a]));
         }
     }
+    
+    /**
+     * Updates the graphs with the data in arguments.
+     * @param soldcount 
+     */
     public static void updategraphs(int soldcount){
         series.getData().add(new XYChart.Data(simCount, soldcount));
     }
@@ -265,14 +333,8 @@ public class SteamJavaLibrary extends Application{
                         simbut2.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                System.out.println("The last 10 receipts.");
-                                ArrayList<PurchaseHist> hist = data.getAllhistory();
-                                for(int a=10;a>0;a--){
-                                    String game = hist.get(hist.size()-a).getGame().getName();
-                                    String user = hist.get(hist.size()-a).getUser().getPersonaname();
-                                    double price = hist.get(hist.size()-a).getPrice();
-                                    appendText("\n"+user+"\n"+game+"\n"+price+"\n");
-                                }
+                                System.out.println("price: "+data.getWeeklydiscount().getPrice());
+                                System.out.println("saleprice: "+data.getWeeklydiscount().getSaleprice());
                             }
                         });
                         hbsimbut2.getChildren().add(simbut2);
@@ -395,6 +457,7 @@ public class SteamJavaLibrary extends Application{
         };
         task.setOnSucceeded(e -> {
                     initgraphs();
+                    countWeeklydiscountsold();
                     pictureRegion.getChildren().clear();
                     pictureRegion.getChildren().add(imv2);
                     pictureRegion.setOnMousePressed(new EventHandler<MouseEvent>() {
