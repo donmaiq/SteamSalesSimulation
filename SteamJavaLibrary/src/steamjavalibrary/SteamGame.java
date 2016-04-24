@@ -76,7 +76,7 @@ public class SteamGame implements Comparable<SteamGame>{
     }
     
     /**
-     * Defines the custom comparison to compare SteamGame reviews.
+     * Defines the custom comparison to compare SteamGame by reviews.
      * @param steamgame
      * @return 
      */
