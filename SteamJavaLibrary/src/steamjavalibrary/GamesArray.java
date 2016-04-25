@@ -45,19 +45,31 @@ public class GamesArray {
         genreControl.put("arcade", genrearcade);
         genreControl.put("rts", genrerts);
     }
-    
+    /**
+     * Getter for Array of all games.
+     * @return 
+     */
     public ArrayList<SteamGame> getApps() {
         return app;
     }
-    
+    /**
+     * Getter for Array of all genres.
+     * @param string
+     * @return 
+     */
     public ArrayList<SteamGame> getGenreArray(String string){
         return genreControl.get(string);
     }
-    
+    /**
+     * Adds games to Array SteamGame.
+     * @param apps 
+     */
     public void addApps(SteamGame apps) {
         this.app.add(apps);
     }
-    
+    /**
+     * Sorts games in app Array based on their review.
+     */
     public void sortGames(){
         Collections.sort(app);
     }

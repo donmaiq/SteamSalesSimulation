@@ -11,7 +11,9 @@ public class UserBehaviour {
     private final int hypescale; //0-100, chance to buy new releases
     private final int variationscale; //0-100, variation in games
     private final Map<String, Integer> genrespectrum;
-
+    /**
+     * Gives users their own behaviour (user that likes a certain genre is more likely to buy games from that genre)
+     */
     public UserBehaviour() {
         Random r = new Random();
         hypescale = r.nextInt(101);
@@ -34,15 +36,24 @@ public class UserBehaviour {
         }
         return fav;
     }
-    
+    /**
+     * Getter for user's hypescale.
+     * @return 
+     */
     public int getHypescale() {
         return hypescale;
     }
-    
+    /**
+     * Getter for user's variationscale.
+     * @return 
+     */
     public int getVariationscale() {
         return variationscale;
     }
-    
+    /**
+     * Getter for Map genrespectrum.
+     * @return 
+     */
     public Map<String, Integer> getGenrespectrum() {
         return genrespectrum;
     }

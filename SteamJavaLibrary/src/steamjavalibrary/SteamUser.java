@@ -2,6 +2,7 @@ package steamjavalibrary;
 import java.util.ArrayList;
 /**
  * A class for an Individual steam user.
+ * 
  * @author Jonnie
  */
 public class SteamUser implements Comparable<SteamUser>{
@@ -45,27 +46,45 @@ public class SteamUser implements Comparable<SteamUser>{
         newgame.gameSold();
         return true;
     }
-    
+    /**
+     * Getter for a user's owned games.
+     * @return 
+     */
     public ArrayList<SteamGame> getOwnedgames() {
         return ownedgames;
     }
-    
+    /**
+     * Getter for a user's purchase history.
+     * @return 
+     */
     public ArrayList<PurchaseHist> getHistory(){
         return history;
     }
-    
+    /**
+     * Getter for a user's steamid.
+     * @return 
+     */
     public long getSteamid() {
         return steamid;
     }
-    
+    /**
+     * Getter for a user's name.
+     * @return 
+     */
     public String getPersonaname() {
         return personaname;
     }
-    
+    /**
+     * Getter for a user's avatar.
+     * @return 
+     */
     public String getAvatar() {
         return avatar;
     }
-    
+    /**
+     * Getter for a user's behaviour.
+     * @return 
+     */
     public UserBehaviour getBehaviour() {
         return behaviour;
     }

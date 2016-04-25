@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 /**
  * A class for an individual steam game.
+ * 
  * @author Jonnie
  */
 public class SteamGame implements Comparable<SteamGame>{
@@ -188,51 +189,87 @@ public class SteamGame implements Comparable<SteamGame>{
         arg=arg*100;
         return Math.round(arg)/100;       
     }
-
+    /**
+     * Getter for app's id.
+     * @return 
+     */
     public int getAppid() {
         return appid;
     }
-
+    /**
+     * Getter for amount of sold games.
+     * @return 
+     */
     public int getSoldunits() {
         return soldunits;
     }
-
+    /**
+     * Getter for the Array of purchases.
+     * @return 
+     */
     public ArrayList<PurchaseHist> getHistory() {
         return history;
     }
-  
+    /**
+     * Getter for game's name.
+     * @return 
+     */
     public String getName() {
         return name;
     }
-    
+    /**
+     * Getter for game's price.
+     * @return 
+     */
     public double getPrice() {
         return price;
     }
-    
+    /**
+     * Getter for game's type.
+     * @return 
+     */
     public String getType() {
         return type;
     }
-    
+    /**
+     * Getter for game's genre.
+     * @return 
+     */
     public String getGenre() {
         return genre;
     }
-    
+    /**
+     * Getter for game's review.
+     * @return 
+     */
     public int getReview() {
         return review;
     }
-    
+    /**
+     * Getter for game's marketing.
+     * @return 
+     */
     public int getMarketing() {
         return marketing;
     }
-    
+    /**
+     * Getter for total revenue.
+     * @return 
+     */
     public double getRevenue() {
         return revenue;
     }
-    
+    /**
+     * Getter for steam's cut of total revenue.
+     * @return 
+     */
     public double getSteamcut() {
         return steamcut;
     }
-    
+    /**
+     * Getter for the GameBehaviour object.
+     * @return 
+     */
     public GameBehaviour getBehaviour() {
         return behaviour;
     }

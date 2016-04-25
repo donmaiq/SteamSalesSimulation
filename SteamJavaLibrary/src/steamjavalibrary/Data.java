@@ -78,7 +78,9 @@ public class Data {
         weeklydiscount = allgames.getApps().get(r.nextInt(allgames.getApps().size()));
         weeklydiscount.setGameonsale();
     }
-    
+    /**
+     * Removes the last sale and puts another random game on sale.
+     */
     public void shuffleWeeklydiscount(){
         Random r = new Random();
         weeklydiscount.removeSale();
@@ -92,7 +94,7 @@ public class Data {
     
     /**
      * Adds a PurchaseHist object to the allhistory ArrayList.
-     * @param purchase 
+     * @param purchase PurchaseHist
      */
     public void addHistory(PurchaseHist purchase){
         allhistory.add(purchase);

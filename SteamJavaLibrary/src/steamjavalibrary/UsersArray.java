@@ -16,13 +16,23 @@ public class UsersArray {
     
     public UsersArray(){
     }
-    
+    /**
+     * Getter for the Array of users.
+     * @return 
+     */
     public ArrayList<SteamUser> getUsers() {
         return users;
     }
+    /**
+     * Adds a game to the user's owned games.
+     * @param user 
+     */
     public void addApps(SteamUser user) {
         users.add(user);
     }
+    /**
+     * Sorts users by their variationscale.
+     */
     public void sortUsers(){
         Collections.sort(users);
     }
