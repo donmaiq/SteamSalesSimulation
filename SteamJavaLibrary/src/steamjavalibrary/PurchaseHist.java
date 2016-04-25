@@ -28,19 +28,31 @@ public class PurchaseHist {
         price = game.getPrice();
         timestamp = SteamJavaLibrary.simCount;
     }
-
+    /**
+    * Getter for a game.
+    * @return 
+    */
     public SteamGame getGame() {
         return game;
     }
-
+    /**
+    * Getter for a user.
+    * @return 
+    */
     public SteamUser getUser() {
         return user;
     }
-
+    /**
+     * Getter for game's price.
+     * @return 
+     */
     public double getPrice() {
         return price;
     }
-
+    /**
+     * Getter for timestamp.
+     * @return 
+     */
     public int getTimestamp() {
         return timestamp;
     }
