@@ -145,7 +145,7 @@ public class SteamJavaLibrary extends Application{
             if(discountprice<10){
                 selldiscountamount=selldiscountamount*6;
             }else{
-                selldiscountamount=selldiscountamount*6;
+                selldiscountamount=selldiscountamount*2;
             }
         }
         discountsellamount = selldiscountamount;
@@ -162,6 +162,7 @@ public class SteamJavaLibrary extends Application{
         //If the steamsale is on, sell more games. If not sell the weekly discount game.
         if(data.isSteamsale()) { 
             amount=amount*5 ;
+            
         }else{
             int totalweeklysold = (int) Math.abs(discountsellamount + r.nextGaussian()/3*discountsellamount)+50;
             for(int a=0;a<totalweeklysold;a++){
