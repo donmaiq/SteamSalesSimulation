@@ -26,7 +26,7 @@ public class PurchaseHist {
         this.game = game;
         this.user = user;
         price = game.getPrice();
-        timestamp = SteamJavaLibrary.simCount;
+        timestamp = FXcontroller.getDay();
     }
     /**
     * Getter for a game.
