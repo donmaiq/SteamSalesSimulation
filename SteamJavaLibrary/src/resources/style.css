@@ -2,36 +2,48 @@
     -fx-background-color: #1c1c1c;
 }
 .root{
+    -fx-font-size:20px;
     -fx-background-color: #1c1c1c;
-    -fx-color:#ffffff;
-    -fx-fill:#d1d0d0;
+    -fx-text-fill:#d1d0d0;
 }
-.textfield{
-    -fx-background-color: rgb(35,35,35);
-    -fx-background-color: linear-gradient(#252525, #313131);
-    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.2) , 1, 0.0 , 0 , 1);
+.tab .tab-label{
+    -fx-text-fill:#d1d0d0;
 }
-#text{
-    -fx-color:#ffffff;
-    -fx-fill:#d1d0d0;
+.textbox .scroll-bar:vertical, .textbox .decrement-button, .textbox .increment-button{
+    -fx-background-color:transparent;
 }
-.tab:focused{
-    -fx-focus-color: transparent;
-    -fx-fill:#ffffff;
-    -fx-border:none;
+.textbox .scroll-bar:vertical .track{-fx-background-color:#1c1c1c;}
+.textbox .scroll-bar:vertical .thumb{-fx-background-color:#303031;}
+.textbox .content{
+    -fx-background-color:linear-gradient(#262525, #303031);
+}
+.textbox{
+    -fx-text-fill:#d1d0d0;
+    -fx-background-color: #1c1c1c, #1c1c1c;
+}
+.textbox:focused .content{-fx-background-color:linear-gradient(#262525, #303031);}
+.txt{
+    -fx-text-fill:#d1d0d0;
+    
+}
+.txt2{
+    -fx-font-size:30px;
+    -fx-text-fill:#d1d0d0;
+    
+}
+.incometxt{
+    -fx-font-size:30px;
+    -fx-text-fill:#f2c511;
 }
 .tab{
     -fx-border:none;
-    -fx-background-color:#1c1c1c;
-    -fx-color:#ffffff;
-    -fx-fill:#d1d0d0;
+    -fx-background-color:rgb(34,34,34);
     -fx-height:40px;
     -fx-font-size:20px;
     -fx-focus-color: transparent;
 }
 .tab-pane .tab-header-area .tab-header-background{
     -fx-background-color:#1c1c1c;
-    -fx-color:#ffffff;
     -fx-effect: null;
 }
 .butt{
@@ -39,7 +51,6 @@
     -fx-border-color:#d1d0d0;
     -fx-border-radius:4px;
     -fx-background-color:transparent;
-    -fx-color:#ffffff;
 }
 .butt:hover{
 }

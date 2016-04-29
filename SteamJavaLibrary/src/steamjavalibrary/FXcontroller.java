@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -36,7 +37,7 @@ public class FXcontroller implements Initializable {
     
     public static XYChart.Series soldgraph = new XYChart.Series();
     public static XYChart.Series reviewgraph = new XYChart.Series();
-    
+    private int yearcounter = 1;
     private static int daycounter = 1;
     public static int getDay(){
         return daycounter;
@@ -62,9 +63,13 @@ public class FXcontroller implements Initializable {
             sellGames();
             soldcount.setText(""+formatthousands(data.getGamessold(),false));
             revenue.setText(formatthousands(data.getSteamrevenue(),false)+" €");
+            day.setText("Day "+daycounter);
             daycounter++;
         }else{
-            startsimulation(0);
+            yearcounter++;
+            year.setText("Year "+yearcounter);
+            daycounter=1;
+            simulationloop();
         }
     }
         
@@ -218,9 +223,11 @@ public class FXcontroller implements Initializable {
     @FXML
     private Label revenue;
     @FXML
-    private Slider simspeed;
-    @FXML
     private Label soldcount;
+    @FXML
+    private Label day;
+    @FXML
+    private Label year;
     @FXML
     private Button togglesim;
     @FXML
@@ -233,7 +240,7 @@ public class FXcontroller implements Initializable {
     @FXML
     private void changespeed(ActionEvent event){
         Duration tickspeed;
-        if(fastforward.getText().equals("Slower")){
+        if(fastforward.getText().equals("Fast")){
             tickspeed = Duration.millis(1500);
             fastforward.setText("Slow");
         }else{
@@ -271,6 +278,25 @@ public class FXcontroller implements Initializable {
         }
         
     }
+    //TAB 2
+    @FXML
+    LineChart linechart;
+    @FXML
+    private void salesgraph(ActionEvent event) {
+        linechart.getData().clear();
+        linechart.setTitle("SteamGame Sales");
+        linechart.getYAxis().setLabel("Sales/day");
+        linechart.getXAxis().setLabel("Day");
+        linechart.getData().add(soldgraph);
+    }
+    @FXML
+    private void reviewgraph(ActionEvent event) {
+        linechart.getData().clear();
+        linechart.setTitle("SteamGame Reviews");
+        linechart.getYAxis().setLabel("Score count");
+        linechart.getXAxis().setLabel("Review Score");
+        linechart.getData().add(reviewgraph);
+    }
     
     //TAB 3 
     @FXML
@@ -307,20 +333,10 @@ public class FXcontroller implements Initializable {
         usertextarea.appendText(tmpstring);
     }
     
-    @FXML
-    LineChart<Number,Number> linechart;
-    
-    @FXML
-    private void salesgraph(ActionEvent event) {
-
-    }
-    @FXML
-    private void reviewgraph(ActionEvent event) {
-    }
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        initgraphs();
     }    
     
 }

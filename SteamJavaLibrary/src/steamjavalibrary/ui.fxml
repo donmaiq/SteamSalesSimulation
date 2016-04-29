@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -12,7 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="888.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="steamjavalibrary.FXcontroller">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="888.0" stylesheets="@../resources/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="steamjavalibrary.FXcontroller">
    <children>
       <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="888.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -21,14 +20,16 @@
               <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Button fx:id="togglesim" alignment="CENTER" contentDisplay="CENTER" layoutX="702.0" layoutY="117.0" mnemonicParsing="false" onAction="#togglesim" text="Start" />
-                        <Label layoutX="85.0" layoutY="11.0" prefHeight="41.0" prefWidth="109.0" text="Total sales:" />
-                        <Label layoutX="248.0" layoutY="14.0" prefHeight="32.0" prefWidth="75.0" text="Total revenue:" />
-                        <Label fx:id="soldcount" layoutX="85.0" layoutY="50.0" prefHeight="46.0" prefWidth="115.0" text="0" />
-                        <Label fx:id="revenue" layoutX="250.0" layoutY="45.0" prefHeight="54.0" prefWidth="94.0" text="0" />
+                        <Label layoutX="278.0" layoutY="13.0" prefHeight="41.0" prefWidth="109.0" styleClass="txt" text="Total sales:" />
+                        <Label layoutX="435.0" layoutY="19.0" prefHeight="32.0" prefWidth="156.0" styleClass="txt" text="Total revenue:" />
+                        <Label fx:id="soldcount" layoutX="278.0" layoutY="57.0" prefHeight="46.0" prefWidth="115.0" styleClass="txt2" text="0" />
+                        <Label fx:id="revenue" layoutX="436.0" layoutY="53.0" prefHeight="54.0" prefWidth="199.0" styleClass="incometxt" text="0 €" />
                         <Button fx:id="skip" layoutX="704.0" layoutY="316.0" mnemonicParsing="false" onAction="#skiptoend" text="skip" />
-                        <TextArea fx:id="simtextarea" editable="false" layoutX="75.0" layoutY="117.0" prefHeight="306.0" prefWidth="514.0" />
-                        <Label alignment="CENTER" layoutX="668.0" layoutY="176.0" prefHeight="27.0" prefWidth="109.0" text="Simulation Speed" />
-                        <Button fx:id="fastforward" layoutX="699.0" layoutY="211.0" mnemonicParsing="false" onAction="#changespeed" text="Faster" />
+                        <TextArea fx:id="simtextarea" editable="false" layoutX="75.0" layoutY="117.0" prefHeight="306.0" prefWidth="514.0" styleClass="textbox" wrapText="true" />
+                        <Label alignment="CENTER" layoutX="635.0" layoutY="173.0" prefHeight="30.0" prefWidth="187.0" styleClass="txt" text="Simulation Speed" />
+                        <Button fx:id="fastforward" layoutX="699.0" layoutY="211.0" mnemonicParsing="false" onAction="#changespeed" text="Slow" />
+                        <Label fx:id="day" layoutX="74.0" layoutY="58.0" prefHeight="45.0" prefWidth="149.0" styleClass="txt2" text="Day 0" />
+                        <Label fx:id="year" layoutX="73.0" layoutY="17.0" prefHeight="45.0" prefWidth="148.0" styleClass="txt2" text="Year 0" />
                      </children>
                   </AnchorPane>
             </content>
@@ -37,17 +38,13 @@
                <content>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <LineChart fx:id="linechart" layoutY="48.0" prefHeight="401.0" prefWidth="684.0">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis side="LEFT" />
-                          </yAxis>
+                        <LineChart fx:id="linechart" layoutY="16.0" prefHeight="449.0" prefWidth="746.0">
+                            
+                        <xAxis><NumberAxis label="Values for X-Axis" lowerBound="0" side="BOTTOM" tickUnit="1" upperBound="3" /></xAxis>
+                        <yAxis><NumberAxis label="Values for Y-Axis" lowerBound="0" side="LEFT" tickUnit="1" upperBound="3" /></yAxis>
                         </LineChart>
-                        <Label alignment="CENTER" layoutX="44.0" layoutY="23.0" prefHeight="26.0" prefWidth="646.0" text="GraphTitle" />
-                        <Button layoutX="759.0" layoutY="64.0" mnemonicParsing="false" text="Sales" />
-                        <Button layoutX="751.0" layoutY="145.0" mnemonicParsing="false" text="Reviews" />
+                        <Button layoutX="774.0" layoutY="64.0" mnemonicParsing="false" onAction="#salesgraph" text="Sales" />
+                        <Button layoutX="766.0" layoutY="145.0" mnemonicParsing="false" onAction="#reviewgraph" text="Reviews" />
                      </children>
                   </AnchorPane>
                </content>
@@ -57,25 +54,25 @@
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="546.0">
                      <children>
                         <ImageView fx:id="profilepic" fitHeight="60.0" fitWidth="60.0" layoutX="39.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label id="totalgames" layoutX="105.0" layoutY="43.0" prefHeight="17.0" prefWidth="269.0" text="SteamID:">
+                        <Label id="totalgames" layoutX="105.0" layoutY="43.0" prefHeight="17.0" prefWidth="269.0" styleClass="txt" text="SteamID:">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <Label id="username" fx:id="username" layoutX="105.0" layoutY="9.0" prefHeight="30.0" prefWidth="260.0" text="Undefined">
+                        <Label id="username" fx:id="username" layoutX="104.0" layoutY="6.0" prefHeight="30.0" prefWidth="260.0" styleClass="txt2" text="Undefined">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <Label layoutX="105.0" layoutY="61.0" prefHeight="17.0" prefWidth="95.0" text="Games: ">
+                        <Label layoutX="105.0" layoutY="63.0" prefHeight="17.0" prefWidth="95.0" styleClass="txt" text="Games: ">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
                         </Label>
-                        <Button id="rnduser" fx:id="rnduser" layoutX="704.0" layoutY="96.0" mnemonicParsing="false" onAction="#randomuser" text="Random" />
-                        <Label fx:id="steamid" layoutX="186.0" layoutY="43.0" prefHeight="17.0" prefWidth="151.0" />
-                        <Label fx:id="usergamecount" layoutX="186.0" layoutY="62.0" prefHeight="17.0" prefWidth="77.0" />
-                        <TextArea fx:id="usertextarea" editable="false" layoutX="39.0" layoutY="96.0" prefHeight="349.0" prefWidth="568.0" wrapText="true" />
+                        <Button id="rnduser" fx:id="rnduser" layoutX="700.0" layoutY="114.0" mnemonicParsing="false" onAction="#randomuser" text="Random" />
+                        <Label fx:id="steamid" layoutX="206.0" layoutY="43.0" prefHeight="30.0" prefWidth="249.0" styleClass="txt" text="undefined" />
+                        <Label fx:id="usergamecount" layoutX="207.0" layoutY="64.0" prefHeight="30.0" prefWidth="205.0" styleClass="txt" text="undefined" />
+                        <TextArea fx:id="usertextarea" editable="false" layoutX="39.0" layoutY="114.0" prefHeight="316.0" prefWidth="568.0" styleClass="textbox" wrapText="true" />
                      </children>
                   </AnchorPane>
                </content>
