@@ -8,9 +8,11 @@ import java.util.zip.ZipEntry;
 import java.util.Enumeration;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.zip.ZipInputStream;
 
 /**
  * A class containing all data concerning the simulation.
@@ -45,29 +47,24 @@ public class Data {
         steamsale = false;
         gamessold = 0; 
         Gson gson = new GsonBuilder().create();
-        try(ZipFile zipFile = new ZipFile(new File("src/resources/allgames.zip")) ){
-            System.out.println("\nLoading Users...");
-            Enumeration<? extends ZipEntry> entries = zipFile.entries();         
-            ZipEntry entry = entries.nextElement();
-            InputStream stream = zipFile.getInputStream(entry);
-            Reader read = new InputStreamReader(stream, "UTF-8");
+        try(ZipInputStream zipStream = new ZipInputStream(this.getClass().getResourceAsStream("/resources/allgames.zip")) ){
+            System.out.println("\nLoading Games...");
+            zipStream.getNextEntry();
+            Reader read = new InputStreamReader(zipStream, "UTF-8");
             allgames = gson.fromJson(read, GamesArray.class);
-            read.close();
             System.out.println(allgames.getApps().size()+" games loaded.");
+            zipStream.close();
         } catch(Exception e){
             System.out.println("error "+e);
         }
         
-        try(ZipFile zipFile = new ZipFile(new File("src/resources/allusers.zip")) ){
+        try(ZipInputStream zipStream = new ZipInputStream(this.getClass().getResourceAsStream("/resources/allusers.zip")) ){
             System.out.println("\nLoading Users...");
-            Enumeration<? extends ZipEntry> entries = zipFile.entries();         
-            ZipEntry entry = entries.nextElement();
-            InputStream stream = zipFile.getInputStream(entry);
-            Reader read = new InputStreamReader(stream, "UTF-8");
+            zipStream.getNextEntry();
+            Reader read = new InputStreamReader(zipStream, "UTF-8");
             allusers = gson.fromJson(read, UsersArray.class);
-            read.close();
-            stream.close();
             System.out.println(allusers.getUsers().size()+" users loaded.\n");
+            zipStream.close();
         } catch(Exception e){
             System.out.println("error "+e);
         }
