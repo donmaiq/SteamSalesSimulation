@@ -117,6 +117,14 @@ public class SteamGame implements Comparable<SteamGame>{
         saleamount = behaviour.getSalescale()[r.nextInt(3)];
         saleprice = round2decimal(price * ((100.0-saleamount)/100));
     }
+     /**
+     * Sets the game on sale for steamsales. Will calculate a sale price for the game.
+     */
+    public void setGameonsteamsale(int index){
+        sale = true;
+        saleamount = behaviour.getSalescale()[index];
+        saleprice = round2decimal(price * ((100.0-saleamount)/100));
+    }
     
     /**
      * Stops the sale of a steamgame.
@@ -147,6 +155,14 @@ public class SteamGame implements Comparable<SteamGame>{
      */
     public double getSaleprice(){
         return saleprice;
+    }
+    
+    /**
+     * Method to return the current price of the game.
+     * @return price of the game
+     */
+    public double getTrueprice(){
+        return (isSale() ? getSaleprice() : getPrice());
     }
     
     /**

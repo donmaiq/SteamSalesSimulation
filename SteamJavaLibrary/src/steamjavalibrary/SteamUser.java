@@ -12,6 +12,7 @@ public class SteamUser implements Comparable<SteamUser>{
     private final UserBehaviour behaviour = new UserBehaviour();
     private final ArrayList<SteamGame> ownedgames = new ArrayList();
     private final ArrayList<PurchaseHist> history = new ArrayList();
+    private double moneyspent;
     
     /**
      * Empty constructor for Gson to create user from json.
@@ -38,6 +39,7 @@ public class SteamUser implements Comparable<SteamUser>{
      */
     public boolean buyGame(SteamGame newgame) {
         if(ownedgames.contains(newgame)) return false;
+        moneyspent += newgame.getTrueprice();
         ownedgames.add(newgame);
         PurchaseHist temphist = new PurchaseHist(newgame,this);
         history.add(temphist);
@@ -67,6 +69,12 @@ public class SteamUser implements Comparable<SteamUser>{
     public long getSteamid() {
         return steamid;
     }
+
+    public double getMoneyspent() {
+        return moneyspent;
+    }
+    
+    
     /**
      * Getter for a user's name.
      * @return 

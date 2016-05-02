@@ -14,7 +14,7 @@ public class PurchaseHist {
     private final SteamGame game;
     private final SteamUser user;
     private final double price;
-    private final int timestamp;
+    private final int[] timestamp = new int[2];
     
     /**
      * Constructor for the PurchaseHist class. User and Game are passed as
@@ -26,7 +26,8 @@ public class PurchaseHist {
         this.game = game;
         this.user = user;
         price = game.getPrice();
-        timestamp = FXcontroller.getDay();
+        timestamp[0] = FXcontroller.getYear();
+        timestamp[1] = FXcontroller.getDay();
     }
     /**
     * Getter for a game.
@@ -53,7 +54,7 @@ public class PurchaseHist {
      * Getter for timestamp.
      * @return 
      */
-    public int getTimestamp() {
+    public int[] getTimestamp() {
         return timestamp;
     }
     

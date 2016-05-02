@@ -6,6 +6,7 @@
 package steamjavalibrary;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.animation.Animation;
@@ -16,6 +17,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -35,29 +37,43 @@ public class FXcontroller implements Initializable {
     private Timeline timeline = new Timeline(timekeyframe);
     private int discountsellamount;
     
-    public static XYChart.Series soldgraph = new XYChart.Series();
-    public static XYChart.Series reviewgraph = new XYChart.Series();
-    private int yearcounter = 1;
+    private final XYChart.Series soldgraph = new XYChart.Series();
+    private final XYChart.Series reviewgraph = new XYChart.Series();
+    private final ArrayList<XYChart.Series> monthgraphlist = new ArrayList();
+    
+    private int[] daysinmonth = {31,28,31,30,31,30,31,31,30,31,30,31};
+    private int monthcounter = 0;
+    private int monthdaycounter = 1;
+    private static int yearcounter = 1;
     private static int daycounter = 1;
+    public static int getYear(){
+        return yearcounter;
+    }
     public static int getDay(){
         return daycounter;
     }
     
     private void simulationloop(){
         if(daycounter<366){
+            if(monthdaycounter>daysinmonth[monthcounter]){
+                monthcounter++;
+                monthdaycounter=1;
+            }
             if(daycounter%7==0){
                 data.shuffleWeeklydiscount();
-                countWeeklydiscountsold();
+                discountsellamount = countdiscountsold(data.getWeeklydiscount());
                 simtextarea.appendText("\nNew weekly discount:\n"+data.getWeeklydiscount().getName()+
                             "\n"+data.getWeeklydiscount().getSaleprice()+"€"+"\n"+
                                 data.getWeeklydiscount().getSaleamount()+"% sale\n");
             }
             //summersale
             if(daycounter==167) data.setSale(true);
-            if(daycounter==174) data.setSale(false);
+            if(daycounter>167 && daycounter<177) data.setsalegames();
+            if(daycounter==177) data.setSale(false);
             //winter sale
             if(daycounter==340) data.setSale(true);
-            if(daycounter==347) data.setSale(false);
+            if(daycounter>340 && daycounter<350) data.setsalegames();
+            if(daycounter==350) data.setSale(false);
             
             simtextarea.appendText("\nDay "+daycounter+"\n");
             sellGames();
@@ -65,10 +81,12 @@ public class FXcontroller implements Initializable {
             revenue.setText(formatthousands(data.getSteamrevenue(),false)+" €");
             day.setText("Day "+daycounter);
             daycounter++;
+            monthdaycounter++;
         }else{
             yearcounter++;
             year.setText("Year "+yearcounter);
             daycounter=1;
+            monthdaycounter=1;
             simulationloop();
         }
     }
@@ -92,7 +110,7 @@ public class FXcontroller implements Initializable {
     /**
      * Initializes the graphs used to graph information about sales.
      */
-    public static void initgraphs(){
+    public void initgraphs(){
         int[] reviews = new int[101];
         for(int i=0;i<data.getAllgames().getApps().size();i++){
             SteamGame game = data.getAllgames().getApps().get(i);
@@ -100,6 +118,9 @@ public class FXcontroller implements Initializable {
         }
         for(int a=0;a<reviews.length;a++){
             reviewgraph.getData().add(new XYChart.Data(a, reviews[a]));
+        }
+        for(int i=0;i<12;i++){
+            monthgraphlist.add(new XYChart.Series());
         }
     }
     
@@ -109,16 +130,19 @@ public class FXcontroller implements Initializable {
      */
     public void updategraphs(int soldcount){
         soldgraph.getData().add(new XYChart.Data(daycounter, soldcount));
+        monthgraphlist.get(monthcounter).getData().add(new XYChart.Data(daycounter, soldcount));
     }
     
     /**
-     * Counts the base of daily sales for a weekly discount game
+     * Counts the base of sales for a game on sale
      * depending on the nature of the sale.
+     * @param game SteamGame to calculate from
+     * @return int returns amount of games to be sold
      */
-    public void countWeeklydiscountsold(){
-        int discountreview = data.getWeeklydiscount().getReview();
-        double discountprice = data.getWeeklydiscount().getSaleprice();
-        int discountsize = data.getWeeklydiscount().getSaleamount();
+    public int countdiscountsold(SteamGame game){
+        int discountreview = game.getReview();
+        double discountprice = game.getSaleprice();
+        int discountsize = game.getSaleamount();
         int selldiscountamount = discountreview*discountreview/100; //exponential depending on reviewmax 100
         
         if(discountsize > 60){
@@ -140,7 +164,7 @@ public class FXcontroller implements Initializable {
                 selldiscountamount=selldiscountamount*2;
             }
         }
-        discountsellamount = selldiscountamount;
+        return selldiscountamount;
     }
     
     /**
@@ -149,18 +173,27 @@ public class FXcontroller implements Initializable {
     public void sellGames(){
         Random r = new Random();
         int sold=0;
-        int amount = (int) Math.abs(r.nextGaussian()*100)+1000; // sell about 1000-1100 games
+        int amount = (int) Math.abs(r.nextGaussian()*200)+2000; // sell about 1000-1100 games
         
         //If the steamsale is on, sell more games. If not sell the weekly discount game.
-        if(data.isSteamsale()) { 
-            amount=amount*5 ;
+        if(data.isSteamsale()) {
+            for(int i=0;i<data.getSteamsalelist().size();i++){
+                int multip = r.nextInt(4)*r.nextInt(4)+1;
+                int soldcount = multip * countdiscountsold(data.getSteamsalelist().get(i));
+                for(int a=0;a<soldcount;a++){
+                    if(data.getAllusers().getUsers().get(r.nextInt(data.getAllusers()
+                            .getUsers().size())).buyGame(data.getSteamsalelist().get(i))) sold++;
+                }
+            }
+            amount=amount*3;
             
         }else{
             int totalweeklysold = (int) Math.abs(discountsellamount + r.nextGaussian()/3*discountsellamount)+50;
             for(int a=0;a<totalweeklysold;a++){
-                SteamUser ruser = data.getAllusers().getUsers().get(data.getAllusers().getUsers().size()-1);
-                ruser.buyGame(data.getWeeklydiscount());
-                sold++;
+                SteamUser ruser = data.getAllusers().getUsers().get(r.nextInt(data.getAllusers().getUsers().size()));
+                if(ruser.buyGame(data.getWeeklydiscount())){
+                    sold++;
+                }
             }
         }
         
@@ -280,7 +313,12 @@ public class FXcontroller implements Initializable {
     }
     //TAB 2
     @FXML
-    LineChart linechart;
+    private LineChart linechart;
+    @FXML
+    private NumberAxis xAxis;
+
+    @FXML
+    private NumberAxis yAxis;
     @FXML
     private void salesgraph(ActionEvent event) {
         linechart.getData().clear();
@@ -297,6 +335,14 @@ public class FXcontroller implements Initializable {
         linechart.getXAxis().setLabel("Review Score");
         linechart.getData().add(reviewgraph);
     }
+    @FXML
+    private void monthgraph(ActionEvent event) {
+        linechart.getData().clear();
+        linechart.setTitle("SteamGame Sales");
+        linechart.getYAxis().setLabel("Sales/day");
+        linechart.getXAxis().setLabel("Day");
+        linechart.getData().add(monthgraphlist.get(monthcounter));
+    }
     
     //TAB 3 
     @FXML
@@ -309,28 +355,91 @@ public class FXcontroller implements Initializable {
     private Label usergamecount;
     @FXML
     private Label steamid;
-   
     @FXML
-    private void randomuser(ActionEvent event) {
-        Random r = new Random();
-        SteamUser user1 = data.getAllusers().getUsers().get(r.nextInt(data.getAllusers().getUsers().size()));
-        String url = user1.getAvatar().substring(0, user1.getAvatar().length()-4) +"_medium.jpg";
+    private Label usermoneyspent;
+   
+    private void setuser(SteamUser user){
+        String url = user.getAvatar().substring(0, user.getAvatar().length()-4) +"_medium.jpg";
         Image avatar = new Image(url, 60, 60, false, false);
         profilepic.setImage(avatar);
-        username.setText(user1.getPersonaname());
-        steamid.setText(""+user1.getSteamid());
-        usergamecount.setText(""+user1.getOwnedgames().size());
-        
+        username.setText(user.getPersonaname());
+        steamid.setText(""+user.getSteamid());
+        usergamecount.setText(""+user.getOwnedgames().size());
+        usermoneyspent.setText(""+formatthousands(user.getMoneyspent(),true)+"€");
         usertextarea.clear();
         String tmpstring = "";
-        for(int i=0; i<user1.getHistory().size();i++){
-            PurchaseHist tmphist = user1.getHistory().get(i);
+        for(int i=0; i<user.getHistory().size();i++){
+            PurchaseHist tmphist = user.getHistory().get(i);
             tmpstring +=        "\n"+
                                 tmphist.getGame().getName()+"\n"+ 
                                 tmphist.getPrice()+"€\t"+
-                                "purchased on day: "+tmphist.getTimestamp()+"\n";
+                                "purchased on year: "+tmphist.getTimestamp()[0]+" Day: "+tmphist.getTimestamp()[1]+"\n";
         }
         usertextarea.appendText(tmpstring);
+    }
+    @FXML
+    private void randomuser(ActionEvent event) {
+        Random r = new Random();
+        SteamUser user = data.getAllusers().getUsers().get(r.nextInt(data.getAllusers().getUsers().size()));
+        setuser(user);
+    }
+    @FXML
+    private void topuser(ActionEvent event) {
+        SteamUser user = data.getAllusers().getUsers().get(0);
+        for(int i=0;i<data.getAllusers().getUsers().size();i++){
+            if(user.getOwnedgames().size()<data.getAllusers().getUsers().get(i).getOwnedgames().size()){
+                user = data.getAllusers().getUsers().get(i);
+            }
+        }
+        setuser(user);
+    }
+    
+    @FXML
+    private TextArea gametextarea;
+    @FXML
+    private Label gamename;
+    @FXML
+    private Label gamegamecount;
+    @FXML
+    private Label gamegenre;
+    @FXML
+    private Label gametotalrevenue;
+    @FXML
+    private Label gamesteamrevenue;
+    private void setgame(SteamGame game){
+        gamename.setText(game.getName());
+        gamegenre.setText(game.getGenre());
+        gamegamecount.setText(""+game.getSoldunits());
+        gametotalrevenue.setText(""+formatthousands(game.getRevenue(), false)+"€");
+        gamesteamrevenue.setText(""+formatthousands(game.getSteamcut(),false)+"€");
+        
+        gametextarea.clear();
+        String tmpstring = "";
+        for(int i=0; i<game.getHistory().size();i++){
+            PurchaseHist tmphist = game.getHistory().get(i);
+            tmpstring +=        "\n"+
+                                tmphist.getUser().getPersonaname()+"\n"+ 
+                                tmphist.getPrice()+"€\t"+
+                                "purchased on year: "+tmphist.getTimestamp()[0]+" Day: "+tmphist.getTimestamp()[1]+"\n";
+        }
+        gametextarea.appendText(tmpstring);
+    }
+    
+    @FXML
+    private void randomgame(ActionEvent event) {
+        Random r = new Random();
+        SteamGame game = data.getAllgames().getApps().get(r.nextInt(data.getAllgames().getApps().size()));
+        setgame(game);
+    }
+    @FXML
+    private void topgame(ActionEvent event){
+        SteamGame game = data.getAllgames().getApps().get(0);
+        for(int i=0;i<data.getAllgames().getApps().size();i++){
+            if(game.getSoldunits()<data.getAllgames().getApps().get(i).getSoldunits()){
+                game = data.getAllgames().getApps().get(i);
+            }
+        }
+        setgame(game);
     }
     
     @Override

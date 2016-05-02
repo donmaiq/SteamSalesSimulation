@@ -2,13 +2,7 @@ package steamjavalibrary;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.io.InputStream;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipEntry;
-import java.util.Enumeration;
-import java.io.File;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Random;
@@ -37,6 +31,7 @@ public class Data {
     private double steamrevenue = 0;
     private ArrayList<PurchaseHist> allhistory = new ArrayList();
     private SteamGame weeklydiscount;
+    private ArrayList<SteamGame> steamsalelist = new ArrayList();
     
     /**
      * Constructor for the Data class.
@@ -168,11 +163,47 @@ public class Data {
         return steamsale;
     }
     
+    public void setsalegames(){
+        steamsalelist.clear();
+        Random r = new Random();
+        for(int i=0;i<r.nextInt(6)+15;i++){
+            SteamGame random = getAllgames().getApps().get(r.nextInt(getAllgames().getApps().size()));
+            if(!steamsalelist.contains(random)){
+                steamsalelist.add(random);
+                random.setGameonsteamsale(2);
+            }
+        }
+    }
+
+    public ArrayList<SteamGame> getSteamsalelist() {
+        return steamsalelist;
+    }
+    
+    
+    
+    public void discountallgames(){
+        for(int i=0;i<getAllgames().getApps().size();i++){
+            getAllgames().getApps().get(i).setGameonsteamsale(0);
+        }
+        shuffleWeeklydiscount();
+    }
+    public void removediscountfromallgames(){
+        for(int i=0;i<getAllgames().getApps().size();i++){
+            getAllgames().getApps().get(i).removeSale();
+        }
+    }
+    
     /**
      * Sets the boolean value for steamsale.
      * @param sale 
      */
     public void setSale(boolean sale) {
         steamsale = sale;
+        if(sale){
+            discountallgames();
+            setsalegames();
+        }else{
+            removediscountfromallgames();
+        }
     }
 }
