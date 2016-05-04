@@ -122,6 +122,7 @@ public class FXcontroller implements Initializable {
         for(int i=0;i<12;i++){
             monthgraphlist.add(new XYChart.Series());
         }
+        linechart.setLegendVisible(false);
     }
     
     /**
@@ -306,6 +307,7 @@ public class FXcontroller implements Initializable {
     private void skiptoend(ActionEvent event){
         timeline.stop();
         togglesim.setText("Start");
+        simulationloop();
         while(daycounter<366){
             simulationloop();
         }
@@ -394,6 +396,7 @@ public class FXcontroller implements Initializable {
         setuser(user);
     }
     
+    //TAB 4
     @FXML
     private TextArea gametextarea;
     @FXML
@@ -415,7 +418,8 @@ public class FXcontroller implements Initializable {
         
         gametextarea.clear();
         String tmpstring = "";
-        for(int i=0; i<game.getHistory().size();i++){
+        int a = (game.getHistory().size() < 100 ? 0: game.getHistory().size()-99);
+        for(int i=a; i<game.getHistory().size();i++){
             PurchaseHist tmphist = game.getHistory().get(i);
             tmpstring +=        "\n"+
                                 tmphist.getUser().getPersonaname()+"\n"+ 
