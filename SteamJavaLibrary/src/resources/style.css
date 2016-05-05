@@ -37,20 +37,72 @@
 }
 .tab{
     -fx-border:none;
-    -fx-background-color:rgb(34,34,34);
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#4c4c4d 0%, #29292a 20%, #1c1c1c 100%),
+        linear-gradient(#29292a, #1c1c1c);
     -fx-height:40px;
-    -fx-font-size:20px;
+    -fx-min-width:50px;
+    -fx-font-size:28px;
     -fx-focus-color: transparent;
+}
+.tab:selected{
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#46494c 0%, #262728 20%, #1c1c1c 100%),
+        linear-gradient(#26282a, #1c1c1c),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,114,114,0.5), rgba(255,255,255,0));
+}
+.tab:hover{
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#46494c 0%, #262728 20%, #1c1c1c 100%),
+        linear-gradient(#26282a, #1c1c1c),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,114,114,0.5), rgba(255,255,255,0));
 }
 .tab-pane .tab-header-area .tab-header-background{
     -fx-background-color:#1c1c1c;
-    -fx-effect: null;
+}
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+     -fx-border-style: segments(0.166667em, 0.166667em);
+     -fx-border-width: 1;
+     -fx-border-color: -fx-focus-color;
 }
 .butt{
-    -fx-border-width:1px;
-    -fx-border-color:#d1d0d0;
-    -fx-border-radius:4px;
-    -fx-background-color:transparent;
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#46494c 0%, #262728 20%, #1d1e1f 100%),
+        linear-gradient(#26282a, #1f2122),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,114,114,0.4), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-padding: 10 20 10 20;
 }
 .butt:hover{
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#46494c 0%, #262728 20%, #1d1e1f 100%),
+        linear-gradient(#26282a, #1f2122),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,114,114,0.9), rgba(255,255,255,0));
+    -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.6) , 5, 0.0 , 0 , 1 );
+    
+}
+.chart-plot-background  {
+    -fx-background-color:rgb(40,40,40);
+}
+.chart-vertical-grid-lines {
+    -fx-stroke: rgb(100,100,100);
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: rgb(100,100,100);
+}
+.chart-title{
+    -fx-text-fill:#d1d0d0;
+    
+}
+.axis-label {
+    -fx-text-fill:#d1d0d0;
 }

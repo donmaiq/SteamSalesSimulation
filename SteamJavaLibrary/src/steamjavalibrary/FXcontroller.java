@@ -263,6 +263,8 @@ public class FXcontroller implements Initializable {
     @FXML
     private Label year;
     @FXML
+    private ImageView loading1;
+    @FXML
     private Button togglesim;
     @FXML
     private Button skip;
@@ -305,19 +307,22 @@ public class FXcontroller implements Initializable {
     }
     @FXML
     private void skiptoend(ActionEvent event){
+        loading1.setVisible(true);
         timeline.stop();
         togglesim.setText("Start");
         simulationloop();
         while(daycounter<366){
             simulationloop();
         }
-        
+        loading1.setVisible(false);
     }
     //TAB 2
     @FXML
     private LineChart linechart;
     @FXML
     private NumberAxis xAxis;
+    @FXML
+    private ImageView loading2;
 
     @FXML
     private NumberAxis yAxis;
@@ -356,6 +361,8 @@ public class FXcontroller implements Initializable {
     @FXML
     private Label usergamecount;
     @FXML
+    private ImageView loading3;
+    @FXML
     private Label steamid;
     @FXML
     private Label usermoneyspent;
@@ -382,11 +389,14 @@ public class FXcontroller implements Initializable {
     @FXML
     private void randomuser(ActionEvent event) {
         Random r = new Random();
+        loading3.setVisible(true);
         SteamUser user = data.getAllusers().getUsers().get(r.nextInt(data.getAllusers().getUsers().size()));
         setuser(user);
+        loading3.setVisible(false);
     }
     @FXML
     private void topuser(ActionEvent event) {
+        loading3.setVisible(true);
         SteamUser user = data.getAllusers().getUsers().get(0);
         for(int i=0;i<data.getAllusers().getUsers().size();i++){
             if(user.getOwnedgames().size()<data.getAllusers().getUsers().get(i).getOwnedgames().size()){
@@ -394,6 +404,7 @@ public class FXcontroller implements Initializable {
             }
         }
         setuser(user);
+        loading3.setVisible(false);
     }
     
     //TAB 4
@@ -405,6 +416,8 @@ public class FXcontroller implements Initializable {
     private Label gamegamecount;
     @FXML
     private Label gamegenre;
+    @FXML
+    private ImageView loading4;
     @FXML
     private Label gametotalrevenue;
     @FXML
@@ -432,11 +445,14 @@ public class FXcontroller implements Initializable {
     @FXML
     private void randomgame(ActionEvent event) {
         Random r = new Random();
+        loading4.setVisible(true);
         SteamGame game = data.getAllgames().getApps().get(r.nextInt(data.getAllgames().getApps().size()));
         setgame(game);
+        loading4.setVisible(false);
     }
     @FXML
     private void topgame(ActionEvent event){
+        loading4.setVisible(true);
         SteamGame game = data.getAllgames().getApps().get(0);
         for(int i=0;i<data.getAllgames().getApps().size();i++){
             if(game.getSoldunits()<data.getAllgames().getApps().get(i).getSoldunits()){
@@ -444,11 +460,11 @@ public class FXcontroller implements Initializable {
             }
         }
         setgame(game);
+        loading4.setVisible(false);
     }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
         initgraphs();
     }    
     

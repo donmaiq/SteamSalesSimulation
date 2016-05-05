@@ -8,28 +8,62 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="888.0" stylesheets="@../resources/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="steamjavalibrary.FXcontroller">
    <children>
-      <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="888.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="888.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab text="Simulation">
             <content>
               <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="togglesim" alignment="CENTER" contentDisplay="CENTER" layoutX="702.0" layoutY="117.0" mnemonicParsing="false" onAction="#togglesim" text="Start" />
-                        <Label layoutX="221.0" layoutY="13.0" prefHeight="41.0" prefWidth="109.0" styleClass="txt" text="Total sales:" />
-                        <Label layoutX="452.0" layoutY="19.0" prefHeight="32.0" prefWidth="156.0" styleClass="txt" text="Total revenue:" />
-                        <Label fx:id="soldcount" layoutX="221.0" layoutY="57.0" prefHeight="46.0" prefWidth="229.0" styleClass="txt2" text="0" />
-                        <Label fx:id="revenue" layoutX="453.0" layoutY="53.0" prefHeight="54.0" prefWidth="199.0" styleClass="incometxt" text="0 €" />
-                        <Button fx:id="skip" layoutX="704.0" layoutY="316.0" mnemonicParsing="false" onAction="#skiptoend" text="skip" />
-                        <TextArea fx:id="simtextarea" editable="false" layoutX="75.0" layoutY="117.0" prefHeight="306.0" prefWidth="514.0" styleClass="textbox" wrapText="true" />
-                        <Label alignment="CENTER" layoutX="635.0" layoutY="173.0" prefHeight="30.0" prefWidth="187.0" styleClass="txt" text="Simulation Speed" />
-                        <Button fx:id="fastforward" layoutX="699.0" layoutY="211.0" mnemonicParsing="false" onAction="#changespeed" text="Slow" />
-                        <Label fx:id="day" layoutX="74.0" layoutY="58.0" prefHeight="45.0" prefWidth="149.0" styleClass="txt2" text="Day 1" />
-                        <Label fx:id="year" layoutX="73.0" layoutY="17.0" prefHeight="45.0" prefWidth="148.0" styleClass="txt2" text="Year 1" />
+                        <GridPane layoutX="613.0" layoutY="118.0" prefHeight="300.0" prefWidth="253.0" AnchorPane.bottomAnchor="32.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="118.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="80.0" vgrow="NEVER" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Button fx:id="togglesim" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#togglesim" prefHeight="50.0" prefWidth="121.0" styleClass="butt" text="Start" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button fx:id="skip" alignment="BOTTOM_CENTER" mnemonicParsing="false" onAction="#skiptoend" prefHeight="50.0" prefWidth="123.0" styleClass="butt" text="skip year" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                              <Label alignment="CENTER" prefHeight="30.0" prefWidth="187.0" styleClass="txt" text="Simulation Speed" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                 <GridPane.margin>
+                                    <Insets bottom="-30.0" />
+                                 </GridPane.margin>
+                              </Label>
+                              <Button fx:id="fastforward" mnemonicParsing="false" onAction="#changespeed" prefHeight="50.0" prefWidth="122.0" styleClass="butt" text="Slow" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                                 <GridPane.margin>
+                                    <Insets top="-35.0" />
+                                 </GridPane.margin>
+                              </Button>
+                           </children>
+                        </GridPane>
+                        <Pane layoutX="73.0" layoutY="13.0" prefHeight="94.0" prefWidth="797.0" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
+                           <children>
+                              <Label layoutX="148.0" prefHeight="41.0" prefWidth="109.0" styleClass="txt" text="Total sales:" />
+                              <Label layoutX="379.0" layoutY="6.0" prefHeight="32.0" prefWidth="156.0" styleClass="txt" text="Total revenue:" />
+                              <Label fx:id="soldcount" layoutX="148.0" layoutY="44.0" prefHeight="46.0" prefWidth="229.0" styleClass="txt2" text="0" />
+                              <Label fx:id="revenue" layoutX="380.0" layoutY="40.0" prefHeight="54.0" prefWidth="199.0" styleClass="incometxt" text="0 €" />
+                              <Label fx:id="day" layoutX="1.0" layoutY="45.0" prefHeight="45.0" prefWidth="149.0" styleClass="txt2" text="Day 1" />
+                              <Label fx:id="year" layoutY="4.0" prefHeight="45.0" prefWidth="148.0" styleClass="txt2" text="Year 1" />
+                           </children>
+                        </Pane>
+                        <TextArea fx:id="simtextarea" editable="false" layoutX="75.0" layoutY="117.0" minHeight="306.0" minWidth="514.0" prefHeight="306.0" prefWidth="514.0" styleClass="textbox" wrapText="true" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="299.0" AnchorPane.topAnchor="117.0" />
+                        <ImageView fx:id="loading1" fitHeight="150.0" fitWidth="200.0" layoutX="344.0" layoutY="153.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="256.3314781188965" AnchorPane.leftAnchor="344.0" AnchorPane.rightAnchor="344.0" AnchorPane.topAnchor="153.0">
+                           <image>
+                              <Image url="@../resources/loading.gif" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
             </content>
@@ -38,14 +72,35 @@
                <content>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <LineChart fx:id="linechart" layoutY="16.0" prefHeight="449.0" prefWidth="746.0">
+                        <LineChart fx:id="linechart" layoutY="16.0" legendVisible="false" prefHeight="449.0" prefWidth="746.0" title="Graph" AnchorPane.bottomAnchor="-15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="16.0">
                             
-                        <xAxis><NumberAxis fx:id="xAxis" label="Values for X-Axis" lowerBound="0" side="BOTTOM" tickUnit="1" upperBound="3" /></xAxis>
-                        <yAxis><NumberAxis fx:id="yAxis" label="Values for Y-Axis" lowerBound="0" side="LEFT" tickUnit="1" upperBound="3" /></yAxis>
+                                    <xAxis>
+                              <NumberAxis label="Values for X-Axis" lowerBound="0" side="BOTTOM" tickUnit="1" upperBound="3" fx:id="xAxis" />
+                           </xAxis>
+                        <yAxis>
+                              <NumberAxis fx:id="yAxis" label="Values for Y-Axis" lowerBound="0" side="LEFT" tickUnit="1" upperBound="3" />
+                           </yAxis>
                         </LineChart>
-                        <Button layoutX="774.0" layoutY="64.0" mnemonicParsing="false" onAction="#salesgraph" text="Sales" />
-                        <Button layoutX="766.0" layoutY="145.0" mnemonicParsing="false" onAction="#reviewgraph" text="Reviews" />
-                        <Button layoutX="766.0" layoutY="241.0" mnemonicParsing="false" onAction="#monthgraph" text="january" />
+                        <GridPane layoutX="766.0" layoutY="69.0" prefHeight="316.0" prefWidth="146.0" AnchorPane.bottomAnchor="63.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="69.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#salesgraph" prefHeight="50.0" prefWidth="112.0" styleClass="butt" text="Sales" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button mnemonicParsing="false" onAction="#reviewgraph" styleClass="butt" text="Reviews" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                              <Button mnemonicParsing="false" onAction="#monthgraph" styleClass="butt" text="january" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+                           </children>
+                        </GridPane>
+                        <ImageView fx:id="loading2" fitHeight="150.0" fitWidth="200.0" layoutX="344.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="240.33147811889648" AnchorPane.leftAnchor="344.0" AnchorPane.rightAnchor="344.0" AnchorPane.topAnchor="169.0">
+                           <image>
+                              <Image url="@../resources/loading.gif" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
                </content>
@@ -54,29 +109,49 @@
                <content>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="546.0">
                      <children>
-                        <ImageView fx:id="profilepic" fitHeight="60.0" fitWidth="60.0" layoutX="39.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" />
-                        <Label id="totalgames" layoutX="105.0" layoutY="43.0" prefHeight="17.0" prefWidth="269.0" styleClass="txt" text="SteamID:">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </Label>
-                        <Label id="username" fx:id="username" layoutX="104.0" layoutY="6.0" prefHeight="30.0" prefWidth="260.0" styleClass="txt2" text="Undefined">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </Label>
-                        <Label layoutX="105.0" layoutY="63.0" prefHeight="17.0" prefWidth="95.0" styleClass="txt" text="Games: ">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </Label>
-                        <Button id="rnduser" fx:id="rnduser" layoutX="700.0" layoutY="114.0" mnemonicParsing="false" onAction="#randomuser" text="Random" />
-                        <Label fx:id="steamid" layoutX="206.0" layoutY="43.0" prefHeight="30.0" prefWidth="249.0" styleClass="txt" text="undefined" />
-                        <Label fx:id="usergamecount" layoutX="207.0" layoutY="64.0" prefHeight="30.0" prefWidth="205.0" styleClass="txt" text="undefined" />
-                        <TextArea fx:id="usertextarea" editable="false" layoutX="39.0" layoutY="114.0" prefHeight="316.0" prefWidth="568.0" styleClass="textbox" wrapText="true" />
-                        <Label layoutX="366.0" layoutY="54.0" prefHeight="32.0" prefWidth="156.0" styleClass="txt" text="Money spent:" />
-                        <Label fx:id="usermoneyspent" layoutX="508.0" layoutY="42.0" prefHeight="54.0" prefWidth="199.0" styleClass="incometxt" text="0 €" />
-                        <Button id="rnduser" fx:id="topuser" layoutX="700.0" layoutY="209.0" mnemonicParsing="false" onAction="#topuser" text="Top user" />
+                        <Pane layoutX="39.0" layoutY="6.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="6.0">
+                           <children>
+                              <ImageView fx:id="profilepic" fitHeight="60.0" fitWidth="60.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true" />
+                              <Label id="totalgames" layoutX="66.0" layoutY="37.0" prefHeight="17.0" prefWidth="269.0" styleClass="txt" text="SteamID:">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label id="username" fx:id="username" layoutX="65.0" prefHeight="45.0" prefWidth="763.0" styleClass="txt2" text="Undefined">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label layoutX="66.0" layoutY="63.0" prefHeight="17.0" prefWidth="95.0" styleClass="txt" text="Games: ">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="steamid" layoutX="167.0" layoutY="36.0" prefHeight="30.0" prefWidth="249.0" styleClass="txt" text="undefined" />
+                              <Label fx:id="usergamecount" layoutX="168.0" layoutY="63.0" prefHeight="30.0" prefWidth="205.0" styleClass="txt" text="undefined" />
+                              <Label layoutX="327.0" layoutY="61.0" prefHeight="32.0" prefWidth="156.0" styleClass="txt" text="Money spent:" />
+                              <Label fx:id="usermoneyspent" layoutX="469.0" layoutY="50.0" prefHeight="54.0" prefWidth="199.0" styleClass="incometxt" text="0 €" />
+                           </children>
+                        </Pane>
+                        <GridPane layoutX="649.0" layoutY="114.0" prefHeight="316.0" prefWidth="209.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="114.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Button id="rnduser" fx:id="rnduser" mnemonicParsing="false" onAction="#randomuser" styleClass="butt" text="Random" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button id="rnduser" fx:id="topuser" mnemonicParsing="false" onAction="#topuser" styleClass="butt" text="Top user" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                           </children>
+                        </GridPane>
+                        <TextArea fx:id="usertextarea" editable="false" layoutX="39.0" layoutY="114.0" prefHeight="316.0" prefWidth="568.0" styleClass="textbox" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="281.0" AnchorPane.topAnchor="114.0" />
+                        <ImageView fx:id="loading3" fitHeight="150.0" fitWidth="200.0" layoutX="312.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../resources/loading.gif" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
                </content>
@@ -85,30 +160,50 @@
                <content>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="371.0" prefWidth="546.0">
                      <children>
-                        <Label id="genre" layoutX="26.0" layoutY="45.0" prefHeight="17.0" prefWidth="269.0" styleClass="txt" text="Genre:">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </Label>
-                        <Label id="username" fx:id="gamename" layoutX="26.0" layoutY="6.0" prefHeight="45.0" prefWidth="580.0" styleClass="txt2" text="Undefined">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </Label>
-                        <Label layoutX="25.0" layoutY="76.0" prefHeight="17.0" prefWidth="95.0" styleClass="txt" text="Sold:">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                        </Label>
-                        <Button id="rnduser" fx:id="rndgame" layoutX="700.0" layoutY="114.0" mnemonicParsing="false" onAction="#randomgame" text="Random" />
+                        <Pane layoutX="37.0" layoutY="6.0" prefHeight="114.0" prefWidth="848.0" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="6.0">
+                           <children>
+                              <Label id="genre" layoutX="1.0" layoutY="39.0" prefHeight="17.0" prefWidth="269.0" styleClass="txt" text="Genre:">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label id="username" fx:id="gamename" layoutX="1.0" prefHeight="45.0" prefWidth="859.0" styleClass="txt2" text="Undefined">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label layoutY="70.0" prefHeight="17.0" prefWidth="95.0" styleClass="txt" text="Sold:">
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="gamegamecount" layoutX="82.0" layoutY="69.0" prefHeight="30.0" prefWidth="157.0" styleClass="txt" text="undefined" />
+                              <Label layoutX="270.0" layoutY="38.0" prefHeight="32.0" prefWidth="156.0" styleClass="txt" text="Game revenue:" />
+                              <Label fx:id="gametotalrevenue" layoutX="421.0" layoutY="26.0" prefHeight="54.0" prefWidth="199.0" styleClass="incometxt" text="0 €" />
+                              <Label layoutX="270.0" layoutY="70.0" prefHeight="32.0" prefWidth="156.0" styleClass="txt" text="Steam revenue:" />
+                              <Label fx:id="gamesteamrevenue" layoutX="421.0" layoutY="60.0" prefHeight="54.0" prefWidth="199.0" styleClass="incometxt" text="0 €" />
+                           </children>
+                        </Pane>
+                        <GridPane layoutX="630.0" layoutY="114.0" prefHeight="314.0" prefWidth="235.0" AnchorPane.bottomAnchor="22.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="114.0">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Button id="rnduser" fx:id="rndgame" alignment="CENTER" mnemonicParsing="false" onAction="#randomgame" prefHeight="50.0" prefWidth="126.0" styleClass="butt" text="Random" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button id="rnduser" fx:id="topgame" mnemonicParsing="false" onAction="#topgame" styleClass="butt" text="Top game" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                           </children>
+                        </GridPane>
                         <Label fx:id="gamegenre" layoutX="106.0" layoutY="45.0" prefHeight="30.0" prefWidth="178.0" styleClass="txt" text="undefined" />
-                        <Label fx:id="gamegamecount" layoutX="107.0" layoutY="75.0" prefHeight="30.0" prefWidth="157.0" styleClass="txt" text="undefined" />
-                        <TextArea fx:id="gametextarea" editable="false" layoutX="39.0" layoutY="114.0" prefHeight="316.0" prefWidth="568.0" styleClass="textbox" wrapText="true" />
-                        <Label layoutX="295.0" layoutY="44.0" prefHeight="32.0" prefWidth="156.0" styleClass="txt" text="Game revenue:" />
-                        <Label fx:id="gametotalrevenue" layoutX="446.0" layoutY="32.0" prefHeight="54.0" prefWidth="199.0" styleClass="incometxt" text="0 €" />
-                        <Label layoutX="295.0" layoutY="76.0" prefHeight="32.0" prefWidth="156.0" styleClass="txt" text="Steam revenue:" />
-                        <Label fx:id="gamesteamrevenue" layoutX="446.0" layoutY="66.0" prefHeight="54.0" prefWidth="199.0" styleClass="incometxt" text="0 €" />
-                        <Button id="rnduser" fx:id="topgame" layoutX="693.0" layoutY="187.0" mnemonicParsing="false" onAction="#topgame" text="Top game" />
+                        <TextArea fx:id="gametextarea" editable="false" layoutX="39.0" layoutY="114.0" prefHeight="316.0" prefWidth="568.0" styleClass="textbox" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="281.0" AnchorPane.topAnchor="114.0" />
+                        <ImageView fx:id="loading4" fitHeight="150.0" fitWidth="200.0" layoutX="273.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                           <image>
+                              <Image url="@../resources/loading.gif" />
+                           </image>
+                        </ImageView>
                      </children>
                   </AnchorPane>
                </content>
