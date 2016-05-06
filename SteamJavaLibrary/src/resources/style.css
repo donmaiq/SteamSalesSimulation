@@ -36,6 +36,7 @@
     -fx-text-fill:#f2c511;
 }
 .tab{
+    -fx-tab-min-width:60px;
     -fx-border:none;
     -fx-background-color: 
         #090a0c,

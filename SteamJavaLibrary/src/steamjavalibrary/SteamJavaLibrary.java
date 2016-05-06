@@ -5,7 +5,9 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -20,10 +22,13 @@ public class SteamJavaLibrary extends Application{
      */
     @Override
     public void start(Stage stage) throws Exception {
+        stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/resources/steamlogo-white-s.png")));
+        stage.setTitle("Steam Sales Simulator");
         
         Parent loadroot = FXMLLoader.load(getClass().getResource("loading.fxml"));
         Scene loadingscene = new Scene(loadroot);
         
+        stage.centerOnScreen();
         stage.setScene(loadingscene);
         stage.show();
         
@@ -40,8 +45,7 @@ public class SteamJavaLibrary extends Application{
                 Scene mainscene = new Scene(root);
                 stage.setScene(mainscene);
                 stage.show();
-            }catch(Exception a){
-            };
+            }catch(Exception a){}
         });
         new Thread(task).start();
         
