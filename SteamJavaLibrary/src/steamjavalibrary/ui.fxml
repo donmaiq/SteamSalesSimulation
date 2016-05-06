@@ -42,7 +42,10 @@
                                     <Insets bottom="-30.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Slider fx:id="slidervalue" blockIncrement="100.0" majorTickUnit="100.0" max="3000.0" min="100.0" minorTickCount="100" onMouseReleased="#mousereleased" prefHeight="24.0" prefWidth="170.0" snapToTicks="true" value="1000.0" GridPane.rowIndex="1" />
+                              <Slider fx:id="slidervalue" blockIncrement="100.0" majorTickUnit="100.0" max="3000.0" min="100.0" minorTickCount="100" nodeOrientation="RIGHT_TO_LEFT" onMouseReleased="#mousereleased" prefHeight="24.0" prefWidth="170.0" snapToTicks="true" value="1000.0" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets top="10.0" />
+                                 </GridPane.margin></Slider>
                            </children>
                         </GridPane>
                         <Pane layoutX="73.0" layoutY="13.0" prefHeight="94.0" prefWidth="797.0" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="13.0">
