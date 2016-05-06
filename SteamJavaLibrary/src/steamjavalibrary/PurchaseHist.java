@@ -25,7 +25,7 @@ public class PurchaseHist {
     public PurchaseHist(SteamGame game, SteamUser user){
         this.game = game;
         this.user = user;
-        price = game.getPrice();
+        price = game.getTrueprice();
         timestamp[0] = FXcontroller.getYear();
         timestamp[1] = FXcontroller.getDay();
     }

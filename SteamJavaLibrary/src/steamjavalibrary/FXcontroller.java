@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,9 +22,11 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import static steamjavalibrary.SteamJavaLibrary.data;
 
@@ -63,18 +65,6 @@ public class FXcontroller implements Initializable {
     private boolean yeargraphvisible = false;
     private String savedoutput = "";
     private void simulationloop(boolean output){
-        if(daycounter==0) {
-            Random r = new Random();
-            yearlygaintrend = yearlygaintrend * (r.nextDouble()*1.6+0.5);
-            resetgraphs();
-            yearcounter++;
-            year.setText("Year "+yearcounter);
-            monthcounter=0;
-            monthdaycounter=1;
-            daycounter=1;
-            day.setText("Day "+daycounter);
-            return;
-        }
         if(daycounter<366){
             if(monthdaycounter>daysinmonth[monthcounter]){
                 if(monthgraphvisible && currentmonthgraph==monthcounter) { monthgraphforward(new ActionEvent());}
@@ -102,10 +92,24 @@ public class FXcontroller implements Initializable {
             int sold = sellGames();
             if(output) loopprint(sold, false);
             if(!output) loopprint(sold, true);
+            reduceprice();
             daycounter++;
             monthdaycounter++;
         }else{
-            daycounter=0;
+            Random r = new Random();
+            yearlygaintrend = yearlygaintrend * (r.nextDouble()*1.6+0.5);
+            resetgraphs();
+            monthcounter=0;
+            yearcounter++;
+            monthdaycounter=1;
+            daycounter=1;
+            uirefresh();
+        }
+    }
+    public void reduceprice(){
+        Random r = new Random();
+        for(int i=0;i<r.nextInt(10)+2;i++){
+            data.getAllgames().getApps().get(r.nextInt(data.getAllgames().getApps().size())).reducePrice();
         }
     }
     public void loopprint(int sold, boolean saveprint){
@@ -293,9 +297,9 @@ public class FXcontroller implements Initializable {
      */
     public SteamUser getRandomUser(){
         Random r = new Random();
-        int usergaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllusers().getUsers().size());
+        int usergaussian = (int) ((Math.log(1-r.nextDouble())/(-10))*data.getAllusers().getUsers().size());
         while(usergaussian+1>data.getAllusers().getUsers().size()){
-           usergaussian = (int) Math.abs(r.nextGaussian()/2*data.getAllusers().getUsers().size());
+           usergaussian = (int) ((Math.log(1-r.nextDouble())/(-10))*data.getAllusers().getUsers().size());
         }
         return data.getAllusers().getUsers().get(usergaussian);
     }
@@ -341,20 +345,14 @@ public class FXcontroller implements Initializable {
     @FXML
     private Button skip;
     @FXML
-    private Button fastforward;
+    private Slider slidervalue;
     @FXML
     private TextArea simtextarea;
     
     @FXML
-    private void changespeed(ActionEvent event){
-        Duration tickspeed;
-        if(fastforward.getText().equals("Fast")){
-            tickspeed = Duration.millis(1000);
-            fastforward.setText("Slow");
-        }else{
-            tickspeed = Duration.millis(200);
-            fastforward.setText("Fast");
-        }
+    private void mousereleased(MouseEvent event){
+        if(timeline.getRate()==slidervalue.getValue()) return;
+        Duration tickspeed = Duration.millis(slidervalue.getValue());
         boolean restart = false;
         if(timeline.getStatus().toString().equals("RUNNING")) restart=true;
         KeyFrame newframe = new KeyFrame(tickspeed,new EventHandler<ActionEvent>() {
@@ -367,6 +365,7 @@ public class FXcontroller implements Initializable {
         timeline.getKeyFrames().setAll(newframe);
         if(restart) timeline.play();
     }
+    
     @FXML
     private void togglesim(ActionEvent event){
         if(togglesim.getText().equals("Start")){
@@ -383,7 +382,23 @@ public class FXcontroller implements Initializable {
         togglesim.setText("Start");
         loading1.setVisible(true);
         savedoutput = "";
-        
+        if(daycounter!=1) simulationloop(true);
+        Task<Integer> task = new Task<Integer>() {
+            @Override
+            public Integer call() {
+                while(daycounter<366){
+                    simulationloop(false);
+                }
+                return 1;
+            }
+        };
+        task.setOnSucceeded(e -> {
+            uirefresh();
+            simtextarea.appendText(savedoutput);
+            loading1.setVisible(false);
+        });
+        new Thread(task).start();
+        /*
         new Thread() {
             public void run() {
                 simulationloop(false);
@@ -398,7 +413,7 @@ public class FXcontroller implements Initializable {
                     }
                 });
             }
-        }.start();
+        }.start();*/
     }
     //TAB 2
     @FXML
@@ -418,18 +433,19 @@ public class FXcontroller implements Initializable {
         yeargraphvisible = false;
         rndgamegraph.getData().clear();
         Random r = new Random();
-        SteamGame rndgame = data.getAllgames().getApps().get(r.nextInt(100));
-        int[] daycounter = new int[366];
-        for(int i=0;i<rndgame.getHistory().size();i++){
-            daycounter[rndgame.getHistory().get(i).getTimestamp()[1]] += 1;
+        int averageowned=0;
+        for(int i=0,a=0;i<200000;i++,a++){
+            averageowned += data.getAllusers().getUsers().get(i).getOwnedgames().size();
+            if(a==1999){
+                averageowned = averageowned/2000;
+                rndgamegraph.getData().add(new XYChart.Data(i/2000, averageowned));
+                averageowned = 0;
+                a=0;
+            }
         }
-        for(int a=0;a<daycounter.length;a++){
-            rndgamegraph.getData().add(new XYChart.Data(a+1, daycounter[a]));
-        }
-        
-        linechart.setTitle(rndgame.getName()+" | Sold:"+rndgame.getSoldunits());
-        linechart.getYAxis().setLabel("Sales/day");
-        linechart.getXAxis().setLabel("Day");
+        linechart.setTitle("Amount of games owned by users");
+        linechart.getYAxis().setLabel("Owned games");
+        linechart.getXAxis().setLabel("Userbase");
         linechart.getData().add(rndgamegraph);
     }
     @FXML
@@ -566,6 +582,8 @@ public class FXcontroller implements Initializable {
     @FXML
     private Label gamegamecount;
     @FXML
+    private Label gamereview;
+    @FXML
     private Label gamegenre;
     @FXML
     private Label gametotalrevenue;
@@ -577,7 +595,7 @@ public class FXcontroller implements Initializable {
         gamegamecount.setText(""+game.getSoldunits());
         gametotalrevenue.setText(""+formatthousands(game.getRevenue(), false)+"€");
         gamesteamrevenue.setText(""+formatthousands(game.getSteamcut(),false)+"€");
-        
+        gamereview.setText(""+game.getReview());
         gametextarea.clear();
         String tmpstring = "";
         int a = (game.getHistory().size() < 100 ? 0: game.getHistory().size()-99);

@@ -45,7 +45,9 @@ public class SteamJavaLibrary extends Application{
                 Scene mainscene = new Scene(root);
                 stage.setScene(mainscene);
                 stage.show();
-            }catch(Exception a){}
+            }catch(Exception a){
+                System.out.println(a);
+            }
         });
         new Thread(task).start();
         

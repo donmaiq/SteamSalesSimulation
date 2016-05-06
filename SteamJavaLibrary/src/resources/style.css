@@ -107,3 +107,11 @@
 .axis-label {
     -fx-text-fill:#d1d0d0;
 }
+.slider .thumb {
+    -fx-background-color:#d1d0d0;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+.slider .track{
+    -fx-background-color:rgb(60,60,60);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}

@@ -93,9 +93,10 @@ public class SteamGame implements Comparable<SteamGame>{
     public void gameSold(){
         double sellingprice = (isSale() ? getSaleprice() : getPrice());
         double roundedrevenue = round2decimal(sellingprice*0.8);
+        double steamrevenue = sellingprice-roundedrevenue;
         incrementRevenue(roundedrevenue);
-        incrementSteamcut(sellingprice-roundedrevenue);
-        SteamJavaLibrary.data.addSteamrevenue(sellingprice-roundedrevenue);
+        incrementSteamcut(steamrevenue);
+        SteamJavaLibrary.data.addSteamrevenue(steamrevenue);
         SteamJavaLibrary.data.incrementSold();
         incrementSoldunits();
     }
