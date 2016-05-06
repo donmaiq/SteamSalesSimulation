@@ -133,11 +133,6 @@
                               </Button>
                            </children>
                         </GridPane>
-                        <ImageView fx:id="loading2" fitHeight="150.0" fitWidth="200.0" layoutX="344.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="240.33147811889648" AnchorPane.leftAnchor="344.0" AnchorPane.rightAnchor="344.0" AnchorPane.topAnchor="169.0">
-                           <image>
-                              <Image url="@../resources/loading.gif" />
-                           </image>
-                        </ImageView>
                      </children>
                   </AnchorPane>
                </content>
@@ -184,11 +179,6 @@
                            </children>
                         </GridPane>
                         <TextArea fx:id="usertextarea" editable="false" layoutX="39.0" layoutY="114.0" prefHeight="316.0" prefWidth="568.0" styleClass="textbox" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="281.0" AnchorPane.topAnchor="114.0" />
-                        <ImageView fx:id="loading3" fitHeight="150.0" fitWidth="200.0" layoutX="312.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                           <image>
-                              <Image url="@../resources/loading.gif" />
-                           </image>
-                        </ImageView>
                      </children>
                   </AnchorPane>
                </content>
@@ -236,11 +226,6 @@
                         </GridPane>
                         <Label fx:id="gamegenre" layoutX="119.0" layoutY="45.0" prefHeight="30.0" prefWidth="178.0" styleClass="txt" text="undefined" />
                         <TextArea fx:id="gametextarea" editable="false" layoutX="39.0" layoutY="114.0" prefHeight="316.0" prefWidth="568.0" styleClass="textbox" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="281.0" AnchorPane.topAnchor="114.0" />
-                        <ImageView fx:id="loading4" fitHeight="150.0" fitWidth="200.0" layoutX="273.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true" visible="false">
-                           <image>
-                              <Image url="@../resources/loading.gif" />
-                           </image>
-                        </ImageView>
                      </children>
                   </AnchorPane>
                </content>

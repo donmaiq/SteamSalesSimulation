@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,7 +33,7 @@ import static steamjavalibrary.SteamJavaLibrary.data;
  * @author anon
  */
 public class FXcontroller implements Initializable {
-    private KeyFrame timekeyframe = new KeyFrame(Duration.millis(1000), event -> simulationloop());
+    private KeyFrame timekeyframe = new KeyFrame(Duration.millis(1000), event -> simulationloop(true));
     private Timeline timeline = new Timeline(timekeyframe);
     private int discountsellamount;
     
@@ -60,17 +61,18 @@ public class FXcontroller implements Initializable {
     
     private int currentyeargraph = 0;
     private boolean yeargraphvisible = false;
-    
-    private void simulationloop(){
+    private String savedoutput = "";
+    private void simulationloop(boolean output){
         if(daycounter==0) {
             Random r = new Random();
             yearlygaintrend = yearlygaintrend * (r.nextDouble()*1.6+0.5);
             resetgraphs();
             yearcounter++;
+            year.setText("Year "+yearcounter);
             monthcounter=0;
             monthdaycounter=1;
-            year.setText("Year "+yearcounter);
             daycounter=1;
+            day.setText("Day "+daycounter);
             return;
         }
         if(daycounter<366){
@@ -82,43 +84,67 @@ public class FXcontroller implements Initializable {
             if(daycounter%7==0){
                 data.shuffleWeeklydiscount();
                 discountsellamount = countdiscountsold(data.getWeeklydiscount());
-                simtextarea.appendText("\nNew weekly discount:\n"+data.getWeeklydiscount().getName()+
-                            "\n"+data.getWeeklydiscount().getSaleprice()+"€"+"\n"+
-                                data.getWeeklydiscount().getSaleamount()+"% sale\n");
             }
             //summersale
             if(daycounter==167) {
                 data.setSale(true);
-                simtextarea.appendText("\n!!! STEAM SUMMER SALE HAS STARTED !!!\n"
-                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n"
-                        + "!!! STEAM SUMMER SALE HAS STARTED !!!\n"
-                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n");
             }
             if(daycounter>167 && daycounter<177) data.setsalegames();
             if(daycounter==177) data.setSale(false);
             //winter sale
             if(daycounter==340) {
                 data.setSale(true);
-                simtextarea.appendText("\n!!! STEAM WINTER SALE HAS STARTED !!!\n"
-                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n"
-                        + "!!! STEAM WINTER SALE HAS STARTED !!!\n"
-                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n");
             }
             if(daycounter>340 && daycounter<350) data.setsalegames();
             if(daycounter==350) data.setSale(false);
             
-            simtextarea.appendText("\nYear "+yearcounter+", Day "+daycounter+"\n");
-            sellGames();
-            soldcount.setText(""+formatthousands(data.getGamessold(),false));
-            revenue.setText(formatthousands(data.getSteamrevenue(),false)+" €");
-            day.setText("Day "+daycounter);
+            
+            int sold = sellGames();
+            if(output) loopprint(sold, false);
+            if(!output) loopprint(sold, true);
             daycounter++;
             monthdaycounter++;
         }else{
             daycounter=0;
         }
     }
-        
+    public void loopprint(int sold, boolean saveprint){
+        String output = "";
+        if(daycounter%7==0){
+            output += "\nNew weekly discount:\n"+data.getWeeklydiscount().getName()+
+                            "\n"+data.getWeeklydiscount().getSaleprice()+"€"+"\n"+
+                                data.getWeeklydiscount().getSaleamount()+"% sale\n";
+        }
+        if(daycounter==167) {
+                output += ("\n!!! STEAM SUMMER SALE HAS STARTED !!!\n"
+                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n"
+                        + "!!! STEAM SUMMER SALE HAS STARTED !!!\n"
+                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n");
+        }
+        if(daycounter==340) {
+                output += ("\n!!! STEAM WINTER SALE HAS STARTED !!!\n"
+                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n"
+                        + "!!! STEAM WINTER SALE HAS STARTED !!!\n"
+                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n");
+        }
+        output += ("\nYear "+yearcounter+", Day "+daycounter+"\n");
+        output += (sold+" games sold\n");
+        if(!saveprint){
+            soldcount.setText(""+formatthousands(data.getGamessold(),false));
+            revenue.setText(formatthousands(data.getSteamrevenue(),false)+" €");
+            day.setText("Day "+daycounter);
+            simtextarea.appendText(output);
+        }else{
+            savedoutput += output;
+        }
+    }
+    public void uirefresh(){
+        year.setText("Year "+yearcounter);
+        soldcount.setText(""+formatthousands(data.getGamessold(),false));
+        revenue.setText(formatthousands(data.getSteamrevenue(),false)+" €");
+        day.setText("Day "+(daycounter-1));
+    }
+    
     public void startsimulation(int args){
         if(args==1){
             timeline.setCycleCount(Animation.INDEFINITE);
@@ -210,7 +236,7 @@ public class FXcontroller implements Initializable {
     /**
      * Sells games for one day.
      */
-    public void sellGames(){
+    public int sellGames(){
         Random r = new Random();
         int sold=0;
         int amount = (int) Math.abs(r.nextGaussian()*200)+ (int)(yearlygaintrend*1000);
@@ -257,7 +283,7 @@ public class FXcontroller implements Initializable {
             }
         }
         updategraphs(sold);
-        simtextarea.appendText(sold+" games sold\n");
+        return sold;
     }
     
     /**
@@ -334,7 +360,7 @@ public class FXcontroller implements Initializable {
         KeyFrame newframe = new KeyFrame(tickspeed,new EventHandler<ActionEvent>() {
                                                 @Override
                                                 public void handle(ActionEvent event) {
-                                                    simulationloop();  
+                                                    simulationloop(true);  
                                                 }
                                             });
         timeline.stop();
@@ -355,11 +381,24 @@ public class FXcontroller implements Initializable {
     private void skiptoend(ActionEvent event){
         timeline.stop();
         togglesim.setText("Start");
-        simulationloop();
-        while(daycounter<366){
-            simulationloop();
-        }
-        simulationloop();
+        loading1.setVisible(true);
+        savedoutput = "";
+        
+        new Thread() {
+            public void run() {
+                simulationloop(false);
+                while(daycounter<366){
+                    simulationloop(false);
+                }
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                         uirefresh();
+                         simtextarea.appendText(savedoutput);
+                         loading1.setVisible(false);
+                    }
+                });
+            }
+        }.start();
     }
     //TAB 2
     @FXML
@@ -370,8 +409,6 @@ public class FXcontroller implements Initializable {
     private Button rightnav;
     @FXML
     private NumberAxis xAxis;
-    @FXML
-    private ImageView loading2;
 
     @FXML
     private NumberAxis yAxis;@FXML
@@ -481,8 +518,6 @@ public class FXcontroller implements Initializable {
     @FXML
     private Label usergamecount;
     @FXML
-    private ImageView loading3;
-    @FXML
     private Label steamid;
     @FXML
     private Label usermoneyspent;
@@ -509,14 +544,11 @@ public class FXcontroller implements Initializable {
     @FXML
     private void randomuser(ActionEvent event) {
         Random r = new Random();
-        loading3.setVisible(true);
         SteamUser user = data.getAllusers().getUsers().get(r.nextInt(data.getAllusers().getUsers().size()));
         setuser(user);
-        loading3.setVisible(false);
     }
     @FXML
     private void topuser(ActionEvent event) {
-        loading3.setVisible(true);
         SteamUser user = data.getAllusers().getUsers().get(0);
         for(int i=0;i<data.getAllusers().getUsers().size();i++){
             if(user.getOwnedgames().size()<data.getAllusers().getUsers().get(i).getOwnedgames().size()){
@@ -524,7 +556,6 @@ public class FXcontroller implements Initializable {
             }
         }
         setuser(user);
-        loading3.setVisible(false);
     }
     
     //TAB 4
@@ -536,8 +567,6 @@ public class FXcontroller implements Initializable {
     private Label gamegamecount;
     @FXML
     private Label gamegenre;
-    @FXML
-    private ImageView loading4;
     @FXML
     private Label gametotalrevenue;
     @FXML
@@ -565,14 +594,11 @@ public class FXcontroller implements Initializable {
     @FXML
     private void randomgame(ActionEvent event) {
         Random r = new Random();
-        loading4.setVisible(true);
         SteamGame game = data.getAllgames().getApps().get(r.nextInt(data.getAllgames().getApps().size()));
         setgame(game);
-        loading4.setVisible(false);
     }
     @FXML
     private void topgame(ActionEvent event){
-        loading4.setVisible(true);
         SteamGame game = data.getAllgames().getApps().get(0);
         for(int i=0;i<data.getAllgames().getApps().size();i++){
             if(game.getSoldunits()<data.getAllgames().getApps().get(i).getSoldunits()){
@@ -580,7 +606,6 @@ public class FXcontroller implements Initializable {
             }
         }
         setgame(game);
-        loading4.setVisible(false);
     }
     
     @Override
