@@ -81,34 +81,56 @@
                               <NumberAxis fx:id="yAxis" label="Values for Y-Axis" lowerBound="0" side="LEFT" tickUnit="1" upperBound="3" />
                            </yAxis>
                         </LineChart>
-                        <GridPane layoutX="766.0" layoutY="38.0" prefHeight="347.0" prefWidth="146.0" AnchorPane.bottomAnchor="63.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="38.0">
+                        <GridPane layoutX="766.0" layoutY="38.0" prefHeight="410.0" prefWidth="146.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="38.0">
                            <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="152.0" minHeight="10.0" prefHeight="110.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="132.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="152.0" minHeight="10.0" prefHeight="101.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="185.0" minHeight="10.0" prefHeight="112.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="169.0" minHeight="10.0" prefHeight="169.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
                               <Button mnemonicParsing="false" onAction="#salesgraph" prefHeight="50.0" prefWidth="120.0" styleClass="butt" text="Yearly" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-                              <Button mnemonicParsing="false" onAction="#reviewgraph" prefHeight="50.0" prefWidth="120.0" styleClass="butt" text="Reviews" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                              <Button mnemonicParsing="false" onAction="#monthgraph" prefHeight="50.0" prefWidth="120.0" styleClass="butt" text="Montly" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                              <Button mnemonicParsing="false" onAction="#rndgamegraph" prefHeight="27.0" prefWidth="120.0" styleClass="butt" text="R Game" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                                 <GridPane.margin>
+                                    <Insets bottom="40.0" />
+                                 </GridPane.margin></Button>
+                              <Button mnemonicParsing="false" onAction="#monthgraph" prefHeight="50.0" prefWidth="120.0" styleClass="butt" text="Montly" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
                                  <GridPane.margin>
                                     <Insets top="10.0" />
                                  </GridPane.margin></Button>
-                              <Button mnemonicParsing="false" onAction="#monthgraphforward" prefHeight="50.0" prefWidth="20.0" styleClass="butt" text="&gt;" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                              <Button fx:id="rightnav" mnemonicParsing="false" onAction="#monthgraphforward" prefHeight="50.0" prefWidth="20.0" styleClass="butt" text="&gt;" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                                  <GridPane.margin>
                                     <Insets right="15.0" top="10.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Button mnemonicParsing="false" onAction="#monthgraphback" prefHeight="50.0" prefWidth="40.0" styleClass="butt" text="&lt;" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                              <Button fx:id="leftnav" mnemonicParsing="false" onAction="#monthgraphback" prefHeight="50.0" prefWidth="40.0" styleClass="butt" text="&lt;" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                                  <GridPane.margin>
                                     <Insets left="15.0" top="10.0" />
                                  </GridPane.margin>
                               </Button>
-                              <Label alignment="CENTER" prefHeight="30.0" prefWidth="92.0" styleClass="txt" text="Sales" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Label alignment="CENTER" prefHeight="30.0" prefWidth="92.0" styleClass="txt" text="Sales" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
+                              <Button fx:id="rightnav1" mnemonicParsing="false" onAction="#yeargraphforward" prefHeight="50.0" prefWidth="20.0" styleClass="butt" text="&gt;" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                                 <GridPane.margin>
+                                    <Insets right="15.0" />
+                                 </GridPane.margin>
+                              </Button>
+                              <Button fx:id="leftnav1" mnemonicParsing="false" onAction="#yeargraphback" prefHeight="50.0" prefWidth="40.0" styleClass="butt" text="&lt;" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                                 <GridPane.margin>
+                                    <Insets left="15.0" />
+                                 </GridPane.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#reviewgraph" prefHeight="15.0" prefWidth="120.0" styleClass="butt" text="Reviews" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                                 <GridPane.margin>
+                                    <Insets top="15.0" />
+                                 </GridPane.margin>
+                              </Button>
                            </children>
                         </GridPane>
                         <ImageView fx:id="loading2" fitHeight="150.0" fitWidth="200.0" layoutX="344.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true" visible="false" AnchorPane.bottomAnchor="240.33147811889648" AnchorPane.leftAnchor="344.0" AnchorPane.rightAnchor="344.0" AnchorPane.topAnchor="169.0">
@@ -212,7 +234,7 @@
                               <Button id="rnduser" fx:id="topgame" mnemonicParsing="false" onAction="#topgame" styleClass="butt" text="Top game" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                            </children>
                         </GridPane>
-                        <Label fx:id="gamegenre" layoutX="106.0" layoutY="45.0" prefHeight="30.0" prefWidth="178.0" styleClass="txt" text="undefined" />
+                        <Label fx:id="gamegenre" layoutX="119.0" layoutY="45.0" prefHeight="30.0" prefWidth="178.0" styleClass="txt" text="undefined" />
                         <TextArea fx:id="gametextarea" editable="false" layoutX="39.0" layoutY="114.0" prefHeight="316.0" prefWidth="568.0" styleClass="textbox" wrapText="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="281.0" AnchorPane.topAnchor="114.0" />
                         <ImageView fx:id="loading4" fitHeight="150.0" fitWidth="200.0" layoutX="273.0" layoutY="189.0" pickOnBounds="true" preserveRatio="true" visible="false">
                            <image>

@@ -36,9 +36,10 @@ public class FXcontroller implements Initializable {
     private Timeline timeline = new Timeline(timekeyframe);
     private int discountsellamount;
     
-    private final XYChart.Series soldgraph = new XYChart.Series();
+    private final ArrayList<XYChart.Series> soldgraph = new ArrayList();
     private final XYChart.Series reviewgraph = new XYChart.Series();
-    private final ArrayList<XYChart.Series> monthgraphlist = new ArrayList();
+    private final XYChart.Series rndgamegraph = new XYChart.Series();
+    private final ArrayList<ArrayList<XYChart.Series>> monthgraphlist = new ArrayList();
     
     private int[] daysinmonth = {31,28,31,30,31,30,31,31,30,31,30,31};
     private String[] monthstrings = {"January","February","March","April","May","June",
@@ -53,12 +54,17 @@ public class FXcontroller implements Initializable {
     public static int getDay(){
         return daycounter;
     }
-    
-    private int currentmonthgraph;
+    private double yearlygaintrend = 1.0;
+    private int currentmonthgraph = 0;
     private boolean monthgraphvisible = false;
+    
+    private int currentyeargraph = 0;
+    private boolean yeargraphvisible = false;
     
     private void simulationloop(){
         if(daycounter==0) {
+            Random r = new Random();
+            yearlygaintrend = yearlygaintrend * (r.nextDouble()*1.6+0.5);
             resetgraphs();
             yearcounter++;
             monthcounter=0;
@@ -69,7 +75,7 @@ public class FXcontroller implements Initializable {
         }
         if(daycounter<366){
             if(monthdaycounter>daysinmonth[monthcounter]){
-                if(monthgraphvisible && currentmonthgraph==monthcounter) monthgraphforward(new ActionEvent());
+                if(monthgraphvisible && currentmonthgraph==monthcounter) { monthgraphforward(new ActionEvent());}
                 monthcounter++;
                 monthdaycounter=1;
             }
@@ -81,15 +87,27 @@ public class FXcontroller implements Initializable {
                                 data.getWeeklydiscount().getSaleamount()+"% sale\n");
             }
             //summersale
-            if(daycounter==167) data.setSale(true);
+            if(daycounter==167) {
+                data.setSale(true);
+                simtextarea.appendText("\n!!! STEAM SUMMER SALE HAS STARTED !!!\n"
+                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n"
+                        + "!!! STEAM SUMMER SALE HAS STARTED !!!\n"
+                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n");
+            }
             if(daycounter>167 && daycounter<177) data.setsalegames();
             if(daycounter==177) data.setSale(false);
             //winter sale
-            if(daycounter==340) data.setSale(true);
+            if(daycounter==340) {
+                data.setSale(true);
+                simtextarea.appendText("\n!!! STEAM WINTER SALE HAS STARTED !!!\n"
+                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n"
+                        + "!!! STEAM WINTER SALE HAS STARTED !!!\n"
+                        + "!!! EVERY GAME IS DISCOUNTED AND THERE'S FLASH SALES !!!\n");
+            }
             if(daycounter>340 && daycounter<350) data.setsalegames();
             if(daycounter==350) data.setSale(false);
             
-            simtextarea.appendText("\nDay "+daycounter+"\n");
+            simtextarea.appendText("\nYear "+yearcounter+", Day "+daycounter+"\n");
             sellGames();
             soldcount.setText(""+formatthousands(data.getGamessold(),false));
             revenue.setText(formatthousands(data.getSteamrevenue(),false)+" €");
@@ -98,8 +116,6 @@ public class FXcontroller implements Initializable {
             monthdaycounter++;
         }else{
             daycounter=0;
-            togglesim.setText("Start");
-            startsimulation(0);
         }
     }
         
@@ -131,16 +147,20 @@ public class FXcontroller implements Initializable {
         for(int a=0;a<reviews.length;a++){
             reviewgraph.getData().add(new XYChart.Data(a, reviews[a]));
         }
+        monthgraphlist.add(new ArrayList());
         for(int i=0;i<12;i++){
-            monthgraphlist.add(new XYChart.Series());
+            monthgraphlist.get(0).add(new XYChart.Series());
         }
+        soldgraph.add(new XYChart.Series());
         linechart.setLegendVisible(false);
+        linechart.setAnimated(false);
         currentmonthgraph = 0;
     }
     public void resetgraphs(){
-        soldgraph.getData().clear();
+        soldgraph.add(new XYChart.Series());
+        monthgraphlist.add(new ArrayList());
         for(int i=0;i<12;i++){
-            monthgraphlist.get(i).getData().clear();
+            monthgraphlist.get(monthgraphlist.size()-1).add(new XYChart.Series());
         }
     }
     /**
@@ -148,8 +168,8 @@ public class FXcontroller implements Initializable {
      * @param soldcount 
      */
     public void updategraphs(int soldcount){
-        soldgraph.getData().add(new XYChart.Data(daycounter, soldcount));
-        monthgraphlist.get(monthcounter).getData().add(new XYChart.Data(monthdaycounter, soldcount));
+        soldgraph.get(yearcounter-1).getData().add(new XYChart.Data(daycounter, soldcount));
+        monthgraphlist.get(yearcounter-1).get(monthcounter).getData().add(new XYChart.Data(monthdaycounter, soldcount));
 
     }
     
@@ -193,9 +213,8 @@ public class FXcontroller implements Initializable {
     public void sellGames(){
         Random r = new Random();
         int sold=0;
-        int amount = (int) Math.abs(r.nextGaussian()*200)+2000; // sell about 1000-1100 games
+        int amount = (int) Math.abs(r.nextGaussian()*200)+ (int)(yearlygaintrend*1000);
         
-        //If the steamsale is on, sell more games. If not sell the weekly discount game.
         if(data.isSteamsale()) {
             for(int i=0;i<data.getSteamsalelist().size();i++){
                 int multip = r.nextInt(4)*r.nextInt(4)+1;
@@ -216,7 +235,7 @@ public class FXcontroller implements Initializable {
                 }
             }
         }
-        
+        //Sell random games to random users
         for(int i=0;i<amount;i++){
             SteamUser ruser = getRandomUser();
             String genre = ruser.getBehaviour().getFavGenre();
@@ -228,6 +247,14 @@ public class FXcontroller implements Initializable {
                 rgame = getRandomGame("");
             }
             if(ruser.buyGame(rgame)) sold++;
+        }
+        //sell popular games for random users
+        for(int i=0;i<200;i++){
+            SteamGame game = data.getAllgames().getApps().get(i);
+            for(int a=0; a<Math.abs(r.nextGaussian()*(30-0.4*i))+(30-i*0.1);a++){
+                SteamUser ruser = getRandomUser();
+                if(ruser.buyGame(game)) sold++;
+            }
         }
         updategraphs(sold);
         simtextarea.appendText(sold+" games sold\n");
@@ -296,10 +323,10 @@ public class FXcontroller implements Initializable {
     private void changespeed(ActionEvent event){
         Duration tickspeed;
         if(fastforward.getText().equals("Fast")){
-            tickspeed = Duration.millis(1500);
+            tickspeed = Duration.millis(1000);
             fastforward.setText("Slow");
         }else{
-            tickspeed = Duration.millis(50);
+            tickspeed = Duration.millis(200);
             fastforward.setText("Fast");
         }
         boolean restart = false;
@@ -327,6 +354,7 @@ public class FXcontroller implements Initializable {
     @FXML
     private void skiptoend(ActionEvent event){
         timeline.stop();
+        togglesim.setText("Start");
         simulationloop();
         while(daycounter<366){
             simulationloop();
@@ -337,25 +365,76 @@ public class FXcontroller implements Initializable {
     @FXML
     private LineChart linechart;
     @FXML
+    private Button leftnav;
+    @FXML
+    private Button rightnav;
+    @FXML
     private NumberAxis xAxis;
     @FXML
     private ImageView loading2;
 
     @FXML
-    private NumberAxis yAxis;
+    private NumberAxis yAxis;@FXML
+    private void rndgamegraph(ActionEvent event) {
+        linechart.getData().clear();
+        monthgraphvisible = false;
+        yeargraphvisible = false;
+        rndgamegraph.getData().clear();
+        Random r = new Random();
+        SteamGame rndgame = data.getAllgames().getApps().get(r.nextInt(100));
+        int[] daycounter = new int[366];
+        for(int i=0;i<rndgame.getHistory().size();i++){
+            daycounter[rndgame.getHistory().get(i).getTimestamp()[1]] += 1;
+        }
+        for(int a=0;a<daycounter.length;a++){
+            rndgamegraph.getData().add(new XYChart.Data(a+1, daycounter[a]));
+        }
+        
+        linechart.setTitle(rndgame.getName()+" | Sold:"+rndgame.getSoldunits());
+        linechart.getYAxis().setLabel("Sales/day");
+        linechart.getXAxis().setLabel("Day");
+        linechart.getData().add(rndgamegraph);
+    }
     @FXML
     private void salesgraph(ActionEvent event) {
         linechart.getData().clear();
         monthgraphvisible = false;
-        linechart.setTitle("SteamGame Sales");
+        yeargraphvisible = true;
+        currentyeargraph = yearcounter-1;
+        linechart.setTitle("Sales for year "+(currentyeargraph+1));
         linechart.getYAxis().setLabel("Sales/day");
         linechart.getXAxis().setLabel("Day");
-        linechart.getData().add(soldgraph);
+        linechart.getData().add(soldgraph.get(yearcounter-1));
+    }
+    @FXML
+    private void yeargraphback(ActionEvent event) {
+        if(yeargraphvisible && currentyeargraph!=0){
+            linechart.getData().clear();
+            currentyeargraph = currentyeargraph-1;
+            linechart.setTitle("Sales for year "+(currentyeargraph+1));
+            linechart.getData().add(soldgraph.get(currentyeargraph));
+        }else if(monthgraphvisible && currentyeargraph!=0){
+            currentyeargraph = currentyeargraph-1;
+            setmonthgraph(currentmonthgraph);
+        }
+    }
+    @FXML
+    private void yeargraphforward(ActionEvent event) {
+        if(yeargraphvisible && currentyeargraph!=soldgraph.size()-1){
+            linechart.getData().clear();
+            currentyeargraph = currentyeargraph+1;
+            linechart.setTitle("Sales for year "+(currentyeargraph+1));
+            linechart.getData().add(soldgraph.get(currentyeargraph));
+        }else if(monthgraphvisible && currentyeargraph!=soldgraph.size()-1){
+            currentyeargraph = currentyeargraph+1;
+            setmonthgraph(currentmonthgraph);
+        }
     }
     @FXML
     private void reviewgraph(ActionEvent event) {
         linechart.getData().clear();
         monthgraphvisible = false;
+        yeargraphvisible = false;
         linechart.setTitle("SteamGame Reviews");
         linechart.getYAxis().setLabel("Score count");
         linechart.getXAxis().setLabel("Review Score");
@@ -363,34 +442,31 @@ public class FXcontroller implements Initializable {
     }
     private void setmonthgraph(int month){
         linechart.getData().clear();
-        if(linechart.getData().contains(monthgraphlist.get(month))) return;
-        linechart.getData().add(monthgraphlist.get(month));
-        
+        linechart.setTitle("Sales for "+monthstrings[currentmonthgraph] + " year "+(currentyeargraph+1));
+        linechart.getYAxis().setLabel("Sales/day");
+        linechart.getXAxis().setLabel("Day");
+        linechart.getData().add(monthgraphlist.get(currentyeargraph).get(month));
     }
     @FXML
     private void monthgraph(ActionEvent event) {
         if(!monthgraphvisible){
+            yeargraphvisible = false;
             monthgraphvisible = true;
             currentmonthgraph = monthcounter;
-            linechart.setTitle("Sales for "+monthstrings[currentmonthgraph] + " year "+yearcounter);
-            linechart.getYAxis().setLabel("Sales/day");
-            linechart.getXAxis().setLabel("Day");
             setmonthgraph(currentmonthgraph);
         }
     }
     @FXML
     private void monthgraphback(ActionEvent event) {
-        if(monthgraphvisible && currentmonthgraph!=0 && daycounter==0){
+        if(monthgraphvisible && currentmonthgraph!=0){
             currentmonthgraph = currentmonthgraph-1;
-            linechart.setTitle("Sales for "+monthstrings[currentmonthgraph] + " year "+yearcounter);
             setmonthgraph(currentmonthgraph);
         }
     }
     @FXML
     private void monthgraphforward(ActionEvent event) {
-        if(monthgraphvisible && currentmonthgraph!=11 && daycounter==0){
+        if(monthgraphvisible && currentmonthgraph!=11){
             currentmonthgraph = currentmonthgraph+1;
-            linechart.setTitle("Sales for "+monthstrings[currentmonthgraph] + " year "+yearcounter);
             setmonthgraph(currentmonthgraph);
         }
     }
