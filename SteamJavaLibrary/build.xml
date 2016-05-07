@@ -10,6 +10,17 @@
 <project name="SteamJavaLibrary" default="default" basedir=".">
     <description>Builds, tests, and runs the project SteamJavaLibrary.</description>
     <import file="nbproject/build-impl.xml"/>
+
+    <target name="jar" depends="compile"> 
+      <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpath="lib/jarjar-1.4.jar"/> 
+      <jarjar jarfile="dist/steamsimulation.jar"> 
+        <fileset dir="build/classes"/> 
+        <zipfileset includes="**/*.class" src="lib/gson-2.2.2.jar"/>
+        <manifest>
+          <attribute name="Main-Class" value="steamjavalibrary.SteamJavaLibrary"/>
+        </manifest>
+      </jarjar> 
+   </target> 
     <!--
 
     There exist several targets which are by default empty and which can be 
