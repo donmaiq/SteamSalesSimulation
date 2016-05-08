@@ -91,6 +91,14 @@
     -fx-effect: dropshadow( three-pass-box , rgba(255,255,255,0.6) , 5, 0.0 , 0 , 1 );
     
 }
+.butt:pressed {
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#46494c 0%, #262728 20%, #1d1e1f 100%),
+        linear-gradient(#26282a, #1f2122),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,114,114,0.3), rgba(255,255,255,0));
+    -fx-effect: innershadow( gaussian , rgba(0,0,0,1) , 15,0,0,0 );
+}
 .chart-plot-background  {
     -fx-background-color:rgb(40,40,40);
 }
