@@ -70,7 +70,6 @@ public class SteamGame implements Comparable<SteamGame>{
         }else if(rand<66){index=4;
         }else if(rand<88){index=5;
         }else{index=6;}
-        //todo: importing genrelist from data not working?
         String[] genrelist = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
         genre = genrelist[index];
         saleprice = price;
@@ -78,13 +77,13 @@ public class SteamGame implements Comparable<SteamGame>{
     
     /**
      * Defines the custom comparison to compare SteamGame by reviews.
-     * @param steamgame
-     * @return 
+     * @param steamgame SteamGame
+     * @return int of review difference
      */
     @Override
     public int compareTo(SteamGame steamgame){
-        int comparevariation=((SteamGame)steamgame).getReview();
-        return comparevariation-this.getReview();
+        int comparereview=((SteamGame)steamgame).getReview();
+        return comparereview-this.getReview();
     }
     
     /**
@@ -136,7 +135,7 @@ public class SteamGame implements Comparable<SteamGame>{
     
     /**
      * Gets the % how much the game is in sale.
-     * @return 
+     * @return int saleamount
      */
     public int getSaleamount() {
         return saleamount;
@@ -144,7 +143,7 @@ public class SteamGame implements Comparable<SteamGame>{
     
     /**
      * Returns a boolean declaring state of sale.
-     * @return 
+     * @return sale boolean
      */
     public boolean isSale(){
         return sale;
@@ -152,7 +151,7 @@ public class SteamGame implements Comparable<SteamGame>{
     
     /**
      * Gets the price the game is on sale for.
-     * @return 
+     * @return saleprice double
      */
     public double getSaleprice(){
         return saleprice;
@@ -168,7 +167,7 @@ public class SteamGame implements Comparable<SteamGame>{
     
     /**
      * Increments the double value to steamcut.
-     * @param value 
+     * @param value to be added
      */
     public void incrementSteamcut(double value){
         steamcut += value;
@@ -176,7 +175,7 @@ public class SteamGame implements Comparable<SteamGame>{
     
     /**
      * Increments revenue.
-     * @param revenue 
+     * @param revenue to be added
      */
     public void incrementRevenue(double revenue){
         this.revenue += revenue;
@@ -199,93 +198,93 @@ public class SteamGame implements Comparable<SteamGame>{
     
     /**
      * Rounds a double to two decimal points.
-     * @param arg
-     * @return 
+     * @param arg double to round
+     * @return rounded double
      */
     public double round2decimal(double arg){
         arg=arg*100;
         return Math.round(arg)/100;       
     }
     /**
-     * Getter for app's id.
-     * @return 
+     * Getter for apps id.
+     * @return int ID
      */
     public int getAppid() {
         return appid;
     }
     /**
      * Getter for amount of sold games.
-     * @return 
+     * @return int soldunits
      */
     public int getSoldunits() {
         return soldunits;
     }
     /**
      * Getter for the Array of purchases.
-     * @return 
+     * @return ArrayList of Purchasehists
      */
     public ArrayList<PurchaseHist> getHistory() {
         return history;
     }
     /**
-     * Getter for game's name.
-     * @return 
+     * Getter for games name.
+     * @return String name
      */
     public String getName() {
         return name;
     }
     /**
-     * Getter for game's price.
-     * @return 
+     * Getter for games price.
+     * @return double price
      */
     public double getPrice() {
         return price;
     }
     /**
-     * Getter for game's type.
-     * @return 
+     * Getter for games type.
+     * @return String type
      */
     public String getType() {
         return type;
     }
     /**
-     * Getter for game's genre.
-     * @return 
+     * Getter for games genre.
+     * @return String genre
      */
     public String getGenre() {
         return genre;
     }
     /**
-     * Getter for game's review.
-     * @return 
+     * Getter for games review.
+     * @return int review
      */
     public int getReview() {
         return review;
     }
     /**
-     * Getter for game's marketing.
-     * @return 
+     * Getter for games marketing.
+     * @return int marketing
      */
     public int getMarketing() {
         return marketing;
     }
     /**
      * Getter for total revenue.
-     * @return 
+     * @return double revenue
      */
     public double getRevenue() {
         return revenue;
     }
     /**
-     * Getter for steam's cut of total revenue.
-     * @return 
+     * Getter for steams cut of total revenue.
+     * @return double steamcut
      */
     public double getSteamcut() {
         return steamcut;
     }
     /**
      * Getter for the GameBehaviour object.
-     * @return 
+     * @return GameBehaviour 
      */
     public GameBehaviour getBehaviour() {
         return behaviour;

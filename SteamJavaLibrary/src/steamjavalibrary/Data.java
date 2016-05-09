@@ -12,13 +12,13 @@ import java.util.zip.ZipInputStream;
  * A class containing all data concerning the simulation.
  * User and Game data is loaded from zip files containing 
  * json files with 15000 games and 200000 users.
- * Object children tree:
- *      GamesArray
- *          SteamGame
- *              GameBehaviour
- *      UsersArray
- *          SteamUser
- *              UserBehaviour
+ * Object children tree:\n
+ *      \tGamesArray\n
+ *          \t\tSteamGame\n
+ *              \t\t\tGameBehaviour\n
+ *      \tUsersArray\n
+ *          \t\tSteamUser\n
+ *              \t\t\tUserBehaviour\n
  * 
  * @author Jonnie
  */
@@ -79,7 +79,10 @@ public class Data {
         weeklydiscount = allgames.getApps().get(r.nextInt(allgames.getApps().size()));
         weeklydiscount.setGameonsale();
     }
-    
+    /**
+     * Getter for the game currently on weeklydiscount.
+     * @return SteamGame
+     */
     public SteamGame getWeeklydiscount(){
         return weeklydiscount;
     }
@@ -94,7 +97,7 @@ public class Data {
     
     /**
      * Adds the specified amount to steamrevenue. 
-     * @param amount 
+     * @param amount amount to add
      */
     public void addSteamrevenue(double amount){
         steamrevenue += amount;
@@ -102,7 +105,7 @@ public class Data {
     
     /**
      * Getter for the GamesArray object.
-     * @return 
+     * @return GamesArray
      */
     public GamesArray getAllgames() {
         return allgames;
@@ -110,7 +113,7 @@ public class Data {
     
     /**
      * Getter for total steam revenue.
-     * @return 
+     * @return double steamrevenue
      */
     public double getSteamrevenue() {
         return steamrevenue;
@@ -118,7 +121,7 @@ public class Data {
     
     /**
      * Getter for the Array of all purchases.
-     * @return 
+     * @return allhistory ArrayList with PurchaseHist objects
      */
     public ArrayList<PurchaseHist> getAllhistory() {
         return allhistory;
@@ -126,7 +129,7 @@ public class Data {
     
     /**
      * Getter for the UsersArray object.
-     * @return 
+     * @return UsersArray
      */
     public UsersArray getAllusers() {
         return allusers;
@@ -134,7 +137,7 @@ public class Data {
     
     /**
      * Getter for the genrelist String array.
-     * @return 
+     * @return String[] genrelist
      */
     public String[] getGenreslist() {
         return genreslist;
@@ -142,7 +145,7 @@ public class Data {
     
     /**
      * Getter for total amount of games sold.
-     * @return 
+     * @return int games sold
      */
     public int getGamessold() {
         return gamessold;
@@ -157,12 +160,14 @@ public class Data {
     
     /**
      * Returns boolean of state of sale events.
-     * @return 
+     * @return boolean
      */
     public boolean isSteamsale() {
         return steamsale;
     }
-    
+    /**
+     * Randomizes the games to be put on special sale during steamsales.
+     */
     public void setsalegames(){
         steamsalelist.clear();
         Random r = new Random();
@@ -174,19 +179,27 @@ public class Data {
             }
         }
     }
-
+    /**
+     * Getter for the arraylist of SteamGames containing games that are in special steamsale.
+     * @return steamsalelist ArrayList of SteamGames
+     */
     public ArrayList<SteamGame> getSteamsalelist() {
         return steamsalelist;
     }
     
     
-    
+    /**
+     * Discounts all games.
+     */
     public void discountallgames(){
         for(int i=0;i<getAllgames().getApps().size();i++){
             getAllgames().getApps().get(i).setGameonsteamsale(0);
         }
         shuffleWeeklydiscount();
     }
+    /**
+     * Remove discount from all games.
+     */
     public void removediscountfromallgames(){
         for(int i=0;i<getAllgames().getApps().size();i++){
             getAllgames().getApps().get(i).removeSale();
@@ -195,7 +208,7 @@ public class Data {
     
     /**
      * Sets the boolean value for steamsale.
-     * @param sale 
+     * @param sale boolean
      */
     public void setSale(boolean sale) {
         steamsale = sale;

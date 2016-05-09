@@ -19,8 +19,8 @@ public class PurchaseHist {
     /**
      * Constructor for the PurchaseHist class. User and Game are passed as
      * parameters, price is taken from the game and timestamp from the simulation.
-     * @param game
-     * @param user 
+     * @param game SteamGame that was sold
+     * @param user SteamUser that bought the game
      */
     public PurchaseHist(SteamGame game, SteamUser user){
         this.game = game;
@@ -31,28 +31,28 @@ public class PurchaseHist {
     }
     /**
     * Getter for a game.
-    * @return 
+    * @return SteamGame
     */
     public SteamGame getGame() {
         return game;
     }
     /**
     * Getter for a user.
-    * @return 
+    * @return SteamUser
     */
     public SteamUser getUser() {
         return user;
     }
     /**
-     * Getter for game's price.
-     * @return 
+     * Getter for games price.
+     * @return double price
      */
     public double getPrice() {
         return price;
     }
     /**
      * Getter for timestamp.
-     * @return 
+     * @return int[2] {year,day}
      */
     public int[] getTimestamp() {
         return timestamp;

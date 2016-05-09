@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class containing different ArrayLists containing SteamGames sorted by genre.
+ * Container for the different SteamGame ArrayLists.
  * @author Jonnie
  */
 public class GamesArray {
@@ -21,11 +21,14 @@ public class GamesArray {
     private final ArrayList<SteamGame> genrerts = new ArrayList();
     private final Map<String, ArrayList<SteamGame>> genreControl = new HashMap();
     
+    /**
+     * Empty constructor for json to populate.
+     */
     public GamesArray(){
     }
     
     /**
-     * Custom controller that populates genre arraylists after the main list has been sorted.
+     * Custom controller that populates genre ArrayLists after the main list has been sorted.
      */
     public void setupLists(){
         for(int i=0;i<getApps().size();i++){
@@ -45,27 +48,28 @@ public class GamesArray {
         genreControl.put("arcade", genrearcade);
         genreControl.put("rts", genrerts);
     }
+    
     /**
      * Getter for Array of all games.
-     * @return 
+     * @return ArrayList of all SteamGames
      */
     public ArrayList<SteamGame> getApps() {
         return app;
     }
     /**
-     * Getter for Array of all genres.
-     * @param string
-     * @return 
+     * Getter for ArrayLists of specified genre.
+     * @param string genre to fetch.
+     * @return  ArrayList of SteamGames by parameter genre.
      */
     public ArrayList<SteamGame> getGenreArray(String string){
         return genreControl.get(string);
     }
     /**
      * Adds games to Array SteamGame.
-     * @param apps 
+     * @param game game to be added.
      */
-    public void addApps(SteamGame apps) {
-        this.app.add(apps);
+    public void addApps(SteamGame game) {
+        this.app.add(game);
     }
     /**
      * Sorts games in app Array based on their review.

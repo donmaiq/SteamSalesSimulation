@@ -7,16 +7,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
- *
- * @author joona
+ * Steam Sales Simulator main class.
+ * @author joona, jonnie, joni
  */
 public class SteamJavaLibrary extends Application{
     public static Data data;
     /**
-     * Runs the UI for the application.
+     * Runs the loading screen until Data has loaded. Loads main UI afterwards.
      * @param stage
      * @throws Exception 
      */
@@ -50,9 +49,6 @@ public class SteamJavaLibrary extends Application{
             }
         });
         new Thread(task).start();
-        
-        
-        
     }
     
     /**

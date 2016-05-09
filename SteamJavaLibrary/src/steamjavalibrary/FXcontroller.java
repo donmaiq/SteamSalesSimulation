@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package steamjavalibrary;
 
 import java.net.URL;
@@ -31,7 +26,7 @@ import javafx.util.Duration;
 import static steamjavalibrary.SteamJavaLibrary.data;
 
 /**
- *
+ * The controller for the fxml file and also contains the simulation logic.
  * @author anon
  */
 public class FXcontroller implements Initializable {
@@ -51,9 +46,17 @@ public class FXcontroller implements Initializable {
     private int monthdaycounter = 1;
     private static int yearcounter = 1;
     private static int daycounter = 1;
+    /**
+     * Static method to read current year.
+     * @return int yearcounter
+     */
     public static int getYear(){
         return yearcounter;
     }
+    /**
+     * Static method to read current day.
+     * @return int daycounter
+     */
     public static int getDay(){
         return daycounter;
     }
@@ -64,6 +67,12 @@ public class FXcontroller implements Initializable {
     private int currentyeargraph = 0;
     private boolean yeargraphvisible = false;
     private String savedoutput = "";
+
+    /**
+    * The mainloop. One call goes one day forward, and calls
+    * all necessary components from within.
+    * @param output boolean deciding if output should be printed or stashed
+    */
     private void simulationloop(boolean output){
         if(daycounter<366){
             if(monthdaycounter>daysinmonth[monthcounter]){
@@ -106,12 +115,20 @@ public class FXcontroller implements Initializable {
             uirefresh();
         }
     }
+    /**
+    * Reduces random number of games prices.
+    */
     public void reduceprice(){
         Random r = new Random();
         for(int i=0;i<r.nextInt(10)+2;i++){
             data.getAllgames().getApps().get(r.nextInt(data.getAllgames().getApps().size())).reducePrice();
         }
     }
+    /**
+    * Print called from mainloop.
+    * @param sold amount of games sold
+    * @param saveprint decides if output is printed or stashed
+    */
     public void loopprint(int sold, boolean saveprint){
         String output = "";
         if(daycounter%7==0){
@@ -142,13 +159,19 @@ public class FXcontroller implements Initializable {
             savedoutput += output;
         }
     }
+    /**
+    * Refreshes the ui. Called after a timeskip.
+    */
     public void uirefresh(){
         year.setText("Year "+yearcounter);
         soldcount.setText(""+formatthousands(data.getGamessold(),false));
         revenue.setText(formatthousands(data.getSteamrevenue(),false)+" €");
         day.setText("Day "+(daycounter-1));
     }
-    
+    /**
+    * Toggle for simulation.
+    * @param args 1 to play, 0 to stop
+    */
     public void startsimulation(int args){
         if(args==1){
             timeline.setCycleCount(Animation.INDEFINITE);
@@ -157,6 +180,12 @@ public class FXcontroller implements Initializable {
             timeline.stop();
         }
     }
+    /**
+    * Formats a number to a string with spaces between thousands.
+    * @param amount double value for number to be formatted.
+    * @param decimal boolean deciding if decimals should be left in.
+    * @return String of formatted number
+    */
     public String formatthousands(double amount, boolean decimal){        
         int tmpint = (int) Math.floor(amount);
         if(!decimal) return String.format("%,d", tmpint).replace(",", " ");
@@ -186,6 +215,9 @@ public class FXcontroller implements Initializable {
         linechart.setAnimated(false);
         currentmonthgraph = 0;
     }
+    /**
+    * Initializes a new year for the graphs. Called at the end of the year.
+    */
     public void resetgraphs(){
         soldgraph.add(new XYChart.Series());
         monthgraphlist.add(new ArrayList());
@@ -195,7 +227,7 @@ public class FXcontroller implements Initializable {
     }
     /**
      * Updates the graphs with the data in arguments.
-     * @param soldcount 
+     * @param soldcount amount of games sold
      */
     public void updategraphs(int soldcount){
         soldgraph.get(yearcounter-1).getData().add(new XYChart.Data(daycounter, soldcount));
@@ -239,6 +271,7 @@ public class FXcontroller implements Initializable {
     
     /**
      * Sells games for one day.
+     * @return int of amount of games sold.
      */
     public int sellGames(){
         Random r = new Random();
@@ -293,7 +326,7 @@ public class FXcontroller implements Initializable {
     /**
      * Returns a random user with a normal distribution based on users variationscale(0-100).
      * The higher the variation the bigger the chance to return that user.
-     * @return 
+     * @return SteamUser 
      */
     public SteamUser getRandomUser(){
         Random r = new Random();
@@ -398,22 +431,6 @@ public class FXcontroller implements Initializable {
             loading1.setVisible(false);
         });
         new Thread(task).start();
-        /*
-        new Thread() {
-            public void run() {
-                simulationloop(false);
-                while(daycounter<366){
-                    simulationloop(false);
-                }
-                Platform.runLater(new Runnable() {
-                    public void run() {
-                         uirefresh();
-                         simtextarea.appendText(savedoutput);
-                         loading1.setVisible(false);
-                    }
-                });
-            }
-        }.start();*/
     }
     //TAB 2
     @FXML
@@ -537,7 +554,7 @@ public class FXcontroller implements Initializable {
     private Label steamid;
     @FXML
     private Label usermoneyspent;
-   
+    
     private void setuser(SteamUser user){
         String url = user.getAvatar().substring(0, user.getAvatar().length()-4) +"_medium.jpg";
         Image avatar = new Image(url, 60, 60, false, false);

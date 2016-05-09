@@ -6,9 +6,7 @@ import java.util.Random;
  * @author Jonnie
  */
 public class GameBehaviour {
-    private final int salerating; //0-100, chance for a sale
     private final int[] salescale = new int[3];
-    private final int pricetimescale; //0-100, variation in price over time
     private final int pricedropamount; //0-50 %, how much price drops per iteration
     
     /**
@@ -16,28 +14,24 @@ public class GameBehaviour {
      */
     public GameBehaviour() {
         Random r = new Random();
-        salerating = r.nextInt(101);
         salescale[0] = r.nextInt(21)+5; //5-25
         salescale[1] = r.nextInt(21)+30; //30-50
         salescale[2] = r.nextInt(16)+65; //65-80
-        pricetimescale = r.nextInt(101); 
         pricedropamount = r.nextInt(31)+10; //10-40
     }
-    
+    /**
+    * Getter for the amount a game reduces in price.
+    * @return value of price drop
+    */
     public int getPricedropamount() {
         return pricedropamount;
     }
-    
-    public int getPricetimescale(){
-        return pricetimescale;
-    }
-    
+    /**
+    * Getter for the 3 different sales a game can have.
+    * @return int[3] with 3 sale values in size order.
+    */
     public int[] getSalescale(){
         return salescale;
-    }
-    
-    public int getSalerating(){
-        return salerating;
     }
     
 }

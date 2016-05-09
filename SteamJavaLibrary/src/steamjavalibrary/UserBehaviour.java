@@ -8,7 +8,6 @@ import java.util.Random;
  * @author Jonnie
  */
 public class UserBehaviour {
-    private final int hypescale; //0-100, chance to buy new releases
     private final int variationscale; //0-100, variation in games
     private final Map<String, Integer> genrespectrum;
     /**
@@ -16,7 +15,6 @@ public class UserBehaviour {
      */
     public UserBehaviour() {
         Random r = new Random();
-        hypescale = r.nextInt(101);
         variationscale = r.nextInt(101);
         genrespectrum = new HashMap();
         String[] genres = {"rpg","mmo","fps","casual","adventure","arcade","rts"};
@@ -26,7 +24,7 @@ public class UserBehaviour {
     }
     /**
      * returns the string of the favorite genre of the user.
-     * @return 
+     * @return String genre
      */
     public String getFavGenre(){
         int max = 0;
@@ -37,22 +35,15 @@ public class UserBehaviour {
         return fav;
     }
     /**
-     * Getter for user's hypescale.
-     * @return 
-     */
-    public int getHypescale() {
-        return hypescale;
-    }
-    /**
      * Getter for user's variationscale.
-     * @return 
+     * @return int variationscale
      */
     public int getVariationscale() {
         return variationscale;
     }
     /**
      * Getter for Map genrespectrum.
-     * @return 
+     * @return Map of String,Integer of genrespectrum
      */
     public Map<String, Integer> getGenrespectrum() {
         return genrespectrum;

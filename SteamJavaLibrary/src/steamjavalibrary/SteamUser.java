@@ -22,8 +22,8 @@ public class SteamUser implements Comparable<SteamUser>{
     
     /**
      * Defines the custom comparison to compare steamuser by variationscale.
-     * @param steamuser
-     * @return 
+     * @param steamuser user to be compared with this user.
+     * @return int of variation difference.
      */
     @Override
     public int compareTo(SteamUser steamuser){
@@ -34,8 +34,8 @@ public class SteamUser implements Comparable<SteamUser>{
     /**
      * Method for purchasing a newgame. If the newgame is owned, return false,
      * else will return true after creating a PurchaseHist object.
-     * @param newgame
-     * @return 
+     * @param newgame game to be purchased
+     * @return boolean of success
      */
     public boolean buyGame(SteamGame newgame) {
         if(ownedgames.contains(newgame)) return false;
@@ -50,48 +50,49 @@ public class SteamUser implements Comparable<SteamUser>{
     }
     /**
      * Getter for a user's owned games.
-     * @return 
+     * @return ArrayList of SteamGames
      */
     public ArrayList<SteamGame> getOwnedgames() {
         return ownedgames;
     }
     /**
      * Getter for a user's purchase history.
-     * @return 
+     * @return ArrayList of PurchaseHists
      */
     public ArrayList<PurchaseHist> getHistory(){
         return history;
     }
     /**
      * Getter for a user's steamid.
-     * @return 
+     * @return long steamid.
      */
     public long getSteamid() {
         return steamid;
     }
-
+    /**
+     * Getter for a user's amount of spent money.
+     * @return double money spent.
+     */
     public double getMoneyspent() {
         return moneyspent;
     }
-    
-    
     /**
      * Getter for a user's name.
-     * @return 
+     * @return String name
      */
     public String getPersonaname() {
         return personaname;
     }
     /**
      * Getter for a user's avatar.
-     * @return 
+     * @return String url for avatar
      */
     public String getAvatar() {
         return avatar;
     }
     /**
      * Getter for a user's behaviour.
-     * @return 
+     * @return UserBehaviour
      */
     public UserBehaviour getBehaviour() {
         return behaviour;
