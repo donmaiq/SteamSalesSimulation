@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="AnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="888.0" stylesheets="@../resources/style.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="221.0" layoutY="57.0" prefHeight="290.0" prefWidth="446.0" AnchorPane.bottomAnchor="153.0" AnchorPane.leftAnchor="221.0" AnchorPane.rightAnchor="221.0" AnchorPane.topAnchor="57.0">
+         <children>
+            <ImageView fitHeight="151.0" fitWidth="446.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../resources/steamlogo-white-full.gif" />
+               </image>
+               <effect>
+                  <Glow level="0.43" />
+               </effect>
+            </ImageView>
+            <Label alignment="CENTER" layoutX="8.0" layoutY="22.0" prefHeight="81.0" prefWidth="431.0" style="-fx-font-size: 40; -fx-font-weight: bold;" styleClass="txt" text="Steam Sales Simulator">
+               <effect>
+                  <Glow level="0.51" />
+               </effect>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
