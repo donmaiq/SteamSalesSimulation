@@ -1,4 +1,4 @@
-# Steam Sale Simulator
+# Steam Sales Simulator
 Java project created by Joona, Jonnie, and Joni.  
   
 Simulates selling of games and displays data about it.  
